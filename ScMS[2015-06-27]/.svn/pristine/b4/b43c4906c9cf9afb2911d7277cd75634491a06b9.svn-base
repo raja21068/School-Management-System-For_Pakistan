@@ -1,0 +1,5 @@
+#Tue Apr 07 18:09:59 PKT 2015
+hibernate.connection.username=root
+hibernate.connection.password=root
+hibernate.connection.url=jdbc\:mysql\://localhost\:3306/tg_school?zeroDateTimeBehavior\=convertToNull&createDatabaseIfNotExist\=true
+hibernate.connection.driver_class=com.mysql.jdbc.Driver

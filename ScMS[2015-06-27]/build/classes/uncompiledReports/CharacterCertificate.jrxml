@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="820" columnWidth="575" leftMargin="10" rightMargin="10" topMargin="0" bottomMargin="0" uuid="f6ce7404-b8a6-4bd9-902b-ead5bd241f0c">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="254"/>
+	<field name="studentName" class="java.lang.String"/>
+	<field name="fatherName" class="java.lang.String"/>
+	<field name="sesssionYear" class="java.lang.String"/>
+	<field name="gender" class="java.lang.String"/>
+	<field name="grNo" class="java.lang.String"/>
+	<variable name="sonOrDuaghter" class="java.lang.String">
+		<variableExpression><![CDATA[$F{gender}.startsWith("M")?"S/O":"D/O"]]></variableExpression>
+	</variable>
+	<variable name="hisOrHer" class="java.lang.String">
+		<variableExpression><![CDATA[$F{gender}.startsWith("M")?"his":"her"]]></variableExpression>
+	</variable>
+	<variable name="mrOrmiss" class="java.lang.String">
+		<variableExpression><![CDATA[$F{gender}.startsWith("M")?"Mr. ":"Miss "]]></variableExpression>
+	</variable>
+	<variable name="heshe" class="java.lang.String">
+		<variableExpression><![CDATA[$F{gender}.startsWith("M")?"He":"She"]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="820" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="377f580d-36f5-45c1-a228-6a6d437d83c2" x="112" y="266" width="383" height="40"/>
+				<textElement textAlignment="Center">
+					<font fontName="Impuls BT" size="32" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Character Certificate]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="d0e343ba-8b1f-44a6-87d2-c1ceeb2d505e" x="393" y="570" width="79" height="19"/>
+				<textElement>
+					<font fontName="Arial" size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Principal]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0996ed37-959d-42f2-984d-b4724a006913" x="52" y="343" width="504" height="28"/>
+				<textElement>
+					<font size="13"/>
+				</textElement>
+				<text><![CDATA[This is to certify that   ______________________________________]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="ebda2463-e46d-477a-bde7-c513e9f3b79d" x="185" y="341" width="316" height="20"/>
+				<textElement textAlignment="Left">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{studentName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="0996ed37-959d-42f2-984d-b4724a006913" x="52" y="415" width="494" height="28"/>
+				<textElement>
+					<font size="13"/>
+				</textElement>
+				<text><![CDATA[bona fide student of this school during the years__________________]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="30e01e61-41a5-4c65-84bc-2a930fe7a484" x="140" y="378" width="332" height="20"/>
+				<textElement textAlignment="Left">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fatherName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="3058728f-0626-42c0-8c91-2a29b0d22399" x="52" y="380" width="504" height="28"/>
+				<textElement>
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sonOrDuaghter}+"___________________________________________has been a"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="6f608755-1172-4431-bf76-a3b78cc25d81" x="362" y="412" width="133" height="20"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sesssionYear}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="0996ed37-959d-42f2-984d-b4724a006913" x="52" y="483" width="137" height="28"/>
+				<textElement>
+					<font size="13"/>
+				</textElement>
+				<text><![CDATA[I wish every success in ]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="a3d1f277-742c-4917-8160-1a3196259e8a" x="189" y="483" width="20" height="28"/>
+				<textElement>
+					<font size="13" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{hisOrHer}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="0996ed37-959d-42f2-984d-b4724a006913" x="209" y="483" width="224" height="28"/>
+				<textElement>
+					<font size="13"/>
+				</textElement>
+				<text><![CDATA[future endeavor]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="d6f07dd5-efa2-4007-8bbf-d66cc08ab71d" x="472" y="153" width="100" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{grNo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="41eb925e-5320-473f-90ac-b701ace0e20a" x="52" y="453" width="494" height="20"/>
+				<textElement>
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{heshe}+" bears a good moral character."]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

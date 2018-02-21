@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="820" columnWidth="475" leftMargin="40" rightMargin="80" topMargin="10" bottomMargin="0" uuid="a7b1e6d3-b586-4e4e-a4cc-2df02a1a5962">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="1123"/>
+	<parameter name="months" class="java.lang.String"/>
+	<field name="name" class="java.lang.String"/>
+	<field name="father" class="java.lang.String"/>
+	<field name="post" class="java.lang.String"/>
+	<field name="gender" class="java.lang.String"/>
+	<field name="refLetter" class="java.lang.String"/>
+	<field name="nic" class="java.lang.String"/>
+	<variable name="sirMadam" class="java.lang.String">
+		<variableExpression><![CDATA[$F{gender}.startsWith("M")? "Sir" : "Madam"]]></variableExpression>
+	</variable>
+	<variable name="today" class="java.lang.String">
+		<variableExpression><![CDATA[new java.text.SimpleDateFormat("dd-MMMMM-YYYY").format(new java.util.Date())]]></variableExpression>
+	</variable>
+	<variable name="sodo" class="java.lang.String">
+		<variableExpression><![CDATA[$F{gender}.startsWith("M")? "S/O" : "D/O"]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="800" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="48608c55-3ec5-452b-9bef-d1304a14d2b4" mode="Opaque" x="160" y="197" width="136" height="21" forecolor="#FFFFFF" backcolor="#000000"/>
+				<textElement>
+					<font size="14" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Appointment Letter]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0aa3d093-966c-4113-9191-0e7932f92664" x="5" y="259" width="121" height="20"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Date:______________]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="cec8bf77-4f1b-4c56-8c0f-a21d8577244b" x="5" y="282" width="280" height="20"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Dear_________________________"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="3ed2885b-43c8-455c-853d-2df954f60f49" x="29" y="279" width="204" height="20"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" "+$F{name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="20524744-c659-4628-a889-2bdf6d8bbc35" x="5" y="299" width="470" height="163"/>
+				<textElement textAlignment="Justified" markup="html">
+					<font size="10"/>
+					<paragraph lineSpacing="1_1_2"/>
+				</textElement>
+				<textFieldExpression><![CDATA["With reference to your job application dated _____________<u>"+$F{refLetter}+"</u>_ and subsequent interview with us, we are pleased to appoint you as <u>"+$F{post}+"</u>, in our organization, <b>The Guardian </b><style background-color='#000000'>School of Excellence</style> on the following <u>terms and conditions</u>."
++"<br/>"+"<b>Date of Joining:</b> your employment shall commence <b>from the date you report</b> to management."
++"<br/>"+"<b>Probationary / Confirmation: </b>For <u> "+$P{months}+" </u>month you will be on <u>job skill training</u> (<b>JST</b>)."
++"<br/>"+"Please <b>read</b> the <b>organization policy and code book</b> (carefully) and the sign."
++"<br/>"+"<b>Submit copy </b>(signed on original) of this letter to the receptionist, once read, accepted the offered job."
++"<br/>"+"If you donot comply by this letter <u>within 24 hours</u>, <b>It will be considered as</b> you are not intrested in the job."
++"<br/>"+"With best wishes."]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement uuid="830a751c-b5eb-4095-b786-8121eebfeedf" x="0" y="462" width="475" height="338"/>
+				<imageExpression><![CDATA[getClass().getResource("/pictures/appointment.jpg").openStream()]]></imageExpression>
+			</image>
+		</band>
+		<band height="810">
+			<image>
+				<reportElement uuid="2d0fb2f1-9c3e-42d8-8781-d6319c6666b1" x="5" y="176" width="475" height="433"/>
+				<imageExpression><![CDATA[getClass().getResource("/pictures/appointment-next.jpg").openStream()]]></imageExpression>
+			</image>
+			<rectangle>
+				<reportElement uuid="8c7e46bc-9d66-495a-8753-dab693cbadc2" x="0" y="468" width="475" height="203"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="48608c55-3ec5-452b-9bef-d1304a14d2b4" mode="Opaque" x="194" y="460" width="75" height="18" forecolor="#FFFFFF" backcolor="#000000"/>
+				<textElement>
+					<font size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Declaration]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0d9fda06-3888-467b-a8cd-679a03303ceb" x="0" y="0" width="475" height="176"/>
+				<textElement/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8bda3b90-e749-4bb7-89c2-587791e1cfef" x="367" y="441" width="108" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Shamim Ahmed]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8bda3b90-e749-4bb7-89c2-587791e1cfef" x="367" y="427" width="108" height="14"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Director and Principal ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="7562ebb6-3dcb-4fac-ad7e-f80d5d3feb0e" x="9" y="483" width="459" height="246"/>
+				<textElement textAlignment="Justified" markup="styled">
+					<font size="9" isBold="true"/>
+					<paragraph lineSpacing="1_1_2"/>
+				</textElement>
+				<text><![CDATA[I ______________________________________<u>S/O D/O</u>_________________________________
+have read and do accept all the above mentioned terms and conditions. I assure, I shall comply with all the rules and regulations and or any sort of change in future regarding to terms and condition, by the academy management.
+	I also vow that I shall perform my duties honestly and sincerely. I shall not also discuss / share / pass over any official matter (as well as notes, tests papers....) to any one regarding to
+this school.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e3ad6ef3-5c7c-4555-856e-93d954de002a" x="5" y="609" width="189" height="20"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NAME:  _______________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e3ad6ef3-5c7c-4555-856e-93d954de002a" x="4" y="638" width="203" height="20"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NIC#:   _________________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e3ad6ef3-5c7c-4555-856e-93d954de002a" x="269" y="609" width="214" height="20"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Signature:  _______________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e3ad6ef3-5c7c-4555-856e-93d954de002a" x="269" y="638" width="214" height="20"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dated:        _________________]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>

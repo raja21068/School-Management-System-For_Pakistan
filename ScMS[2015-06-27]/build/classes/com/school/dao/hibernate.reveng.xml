@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd">
+<hibernate-reverse-engineering>
+  <schema-selection match-catalog="tg_school"/>
+  <table-filter match-name="tg_user"/>
+  <table-filter match-name="emp_certificate_issue"/>
+  <table-filter match-name="sms_history"/>
+  <table-filter match-name="emp_account_category"/>
+  <table-filter match-name="fees"/>
+  <table-filter match-name="user_privilege"/>
+  <table-filter match-name="grade"/>
+  <table-filter match-name="module"/>
+  <table-filter match-name="awards"/>
+  <table-filter match-name="emp_accounts"/>
+  <table-filter match-name="attendence"/>
+  <table-filter match-name="fees_structure"/>
+  <table-filter match-name="months"/>
+  <table-filter match-name="exam_type"/>
+  <table-filter match-name="designation"/>
+  <table-filter match-name="student_certificate_issue"/>
+  <table-filter match-name="fees_discount"/>
+  <table-filter match-name="event"/>
+  <table-filter match-name="campus"/>
+  <table-filter match-name="school_config"/>
+  <table-filter match-name="years"/>
+  <table-filter match-name="subjects"/>
+  <table-filter match-name="classes"/>
+  <table-filter match-name="student"/>
+  <table-filter match-name="login_detail"/>
+  <table-filter match-name="student_attachment"/>
+  <table-filter match-name="student_class_reg"/>
+  <table-filter match-name="salary"/>
+  <table-filter match-name="exam_result"/>
+  <table-filter match-name="section"/>
+  <table-filter match-name="emp_account_attachment"/>
+</hibernate-reverse-engineering>

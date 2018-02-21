@@ -1,0 +1,31 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.school.constant;
+
+/**
+ * @author JAY KUMAR
+ */
+
+/**  These months are automatically inserted when a year is 
+ * inserted.
+ * 
+ */
+public interface Year {
+    public static String[] months = {
+        "JANUARY",
+        "FEBRUARY",
+        "MARCH",
+        "APRIL",
+        "MAY",
+        "JUNE",
+        "JULY",
+        "AUGUST",
+        "SEPTEMBER",
+        "OCTOBER",
+        "NOVEMBER",
+        "DECEMBER"
+    };
+    
+}

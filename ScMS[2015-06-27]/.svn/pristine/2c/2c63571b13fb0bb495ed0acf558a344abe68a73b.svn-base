@@ -1,0 +1,29 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.school.utils;
+
+import com.school.model.TgUser;
+import com.school.model.UserPrivilege;
+import com.school.dao.DatabaseQueryExecuter;
+import java.util.List;
+
+/**
+ *
+ * @author JAY KUMAR
+ */
+public class PrivilegeHelper {
+
+    public static UserPrivilege getPrivilege(TgUser user, String className){
+        List<UserPrivilege> privileges =  DatabaseQueryExecuter.getPrivileges(user);
+        for(int i=0;i<privileges.size();i++){
+            UserPrivilege object = privileges.get(i);
+            if(className.contains(object.getModule().getName())){
+                return object;
+            }
+        }
+        return null;
+    }
+    
+}

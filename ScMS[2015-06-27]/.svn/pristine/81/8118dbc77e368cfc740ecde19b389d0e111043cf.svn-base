@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Defaulter Students" pageWidth="595" pageHeight="842" columnWidth="575" leftMargin="10" rightMargin="10" topMargin="10" bottomMargin="10" uuid="be9416a7-5dd9-49d5-b364-9d1fa3221711">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="60"/>
+	<property name="ireport.y" value="0"/>
+	<field name="student" class="java.lang.Object"/>
+	<field name="classes" class="java.lang.Object"/>
+	<variable name="name" class="java.lang.String">
+		<variableExpression><![CDATA[((bean.Student) $F{student}).getStudentName()]]></variableExpression>
+	</variable>
+	<variable name="father" class="java.lang.String">
+		<variableExpression><![CDATA[((bean.Student) $F{student}).getFatherName()]]></variableExpression>
+	</variable>
+	<variable name="grNo" class="java.lang.Integer">
+		<variableExpression><![CDATA[((bean.Student) $F{student}).getGrNo()]]></variableExpression>
+	</variable>
+	<variable name="sno" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$V{sno}+1]]></variableExpression>
+		<initialValueExpression><![CDATA[1]]></initialValueExpression>
+	</variable>
+	<variable name="contact" class="java.lang.String">
+		<variableExpression><![CDATA[((bean.Student) $F{student}).getContactNo()]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="21" splitType="Stretch">
+			<rectangle>
+				<reportElement uuid="68f25b1e-f8da-4578-99ef-c5500ebe5b2c" x="47" y="0" width="490" height="20" backcolor="#666666"/>
+				<graphicElement>
+					<pen lineWidth="2.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="e38dd310-83b3-45ba-9cd0-f49053cdf095" x="132" y="0" width="121" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NAME]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e38dd310-83b3-45ba-9cd0-f49053cdf095" x="253" y="0" width="121" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FATHER]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="19d6be10-4f70-4f05-a66a-8f1033867850" x="90" y="0" width="42" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[GR#]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="19d6be10-4f70-4f05-a66a-8f1033867850" x="48" y="1" width="42" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[S#]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e38dd310-83b3-45ba-9cd0-f49053cdf095" x="374" y="0" width="82" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CLASS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e38dd310-83b3-45ba-9cd0-f49053cdf095" x="456" y="1" width="81" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CONTACT]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<rectangle>
+				<reportElement uuid="26e6ddce-25ac-405f-83bd-30dfbe8dfd32" x="89" y="0" width="42" height="30"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="a47f8c6d-6ef2-4688-af5b-1886ff97945b" x="253" y="0" width="121" height="30"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="a47f8c6d-6ef2-4688-af5b-1886ff97945b" x="374" y="0" width="82" height="30"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="a47f8c6d-6ef2-4688-af5b-1886ff97945b" x="456" y="0" width="81" height="30"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="fe736256-8924-4c76-93cc-2f6dbef29f49" x="131" y="0" width="122" height="30"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="26e6ddce-25ac-405f-83bd-30dfbe8dfd32" x="47" y="0" width="42" height="30"/>
+			</rectangle>
+			<textField>
+				<reportElement uuid="3fcf625f-9d1b-4798-9a65-424846ede78c" x="132" y="0" width="121" height="30"/>
+				<textElement>
+					<paragraph leftIndent="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="dae63a0a-0d6d-4589-a10d-0da8cff750a4" x="253" y="0" width="121" height="30"/>
+				<textElement>
+					<paragraph leftIndent="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{father}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="ef5064c7-be58-4f7c-ab39-a0c921b45a96" x="90" y="0" width="41" height="30"/>
+				<textElement>
+					<paragraph leftIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{grNo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="80c6654c-6d56-4204-83ea-a65c96653f77" x="47" y="0" width="43" height="30"/>
+				<textElement>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sno}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="83e8dc35-368e-4920-9dc6-690b7a576961" x="456" y="0" width="81" height="30"/>
+				<textElement>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{contact}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="06e18914-a417-4400-99fe-26d1d4f6e02d" x="374" y="0" width="82" height="30"/>
+				<textElement>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""+$F{classes}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

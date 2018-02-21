@@ -1,0 +1,22 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.school.constant;
+
+import java.awt.Component;
+import javax.swing.JOptionPane;
+
+/**
+ *
+ * @author JAY
+ */
+public class AppDialog {
+    public static void error(Component c, String message){
+        JOptionPane.showMessageDialog(c, message, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+    
+    public static void message(Component c, String message){
+        JOptionPane.showMessageDialog(c, message);
+    }
+}

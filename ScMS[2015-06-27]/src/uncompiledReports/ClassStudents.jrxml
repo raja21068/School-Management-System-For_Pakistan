@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="25" bottomMargin="10" uuid="7263c4a0-3700-4816-a25a-6f72583aea9e">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["D:\\THE GUARDIAN SCHOOL\\TheGuardianSchool\\src\\report\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="today" class="java.lang.String"/>
+	<parameter name="SUB_REPORT" class="java.lang.String"/>
+	<parameter name="REPORT_TYPE" class="java.lang.String"/>
+	<field name="students" class="java.util.List"/>
+	<field name="className" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="66">
+			<rectangle>
+				<reportElement uuid="30a5e758-a60e-4a44-8ed2-088eb815c304" x="1" y="40" width="552" height="20"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="86bc7e30-9b68-4697-80dd-923bd799f861" x="185" y="10" width="268" height="28"/>
+				<textElement textAlignment="Left" rotation="None">
+					<font fontName="Penguin" size="18" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[The Guardian ]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="1d398717-8614-4f98-b304-49597980c8f8" x="91" y="45" width="130" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Bhurgari Road, Hirabad, Hyd."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="1d398717-8614-4f98-b304-49597980c8f8" x="310" y="45" width="244" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["B-12, Block C, Behind Qamar Arcade Unit # 06 Latifabad, Hyd."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="648395b1-762a-4c23-9462-b1fba07f31b5" mode="Opaque" x="234" y="45" width="75" height="12" forecolor="#FFFFFF" backcolor="#000000"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Latifabad Campus:"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="2328fef0-8d7d-4b6b-af34-228b9cfe645f" mode="Opaque" x="288" y="16" width="105" height="13" forecolor="#FFFFFF" backcolor="#000000"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[School of Excellence]]></text>
+			</staticText>
+			<image>
+				<reportElement uuid="6bbc0d86-a1ac-441b-ac1d-b74f52f4ead1" x="1" y="0" width="172" height="40"/>
+				<imageExpression><![CDATA["TGS 2014 Logo.jpg"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement uuid="648395b1-762a-4c23-9462-b1fba07f31b5" mode="Opaque" x="11" y="45" width="80" height="12" forecolor="#FFFFFF" backcolor="#000000"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Boys/Girls Campus:"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="77" splitType="Stretch">
+			<printWhenExpression><![CDATA[$F{students}.size()>0]]></printWhenExpression>
+			<subreport>
+				<reportElement uuid="db94b809-d775-46be-bb10-5ef6ecc9d7a8" x="0" y="25" width="555" height="44"/>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{students})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[getClass().getResource($P{SUB_REPORT}).openStream()]]></subreportExpression>
+			</subreport>
+			<textField>
+				<reportElement uuid="be21eb16-32bd-45b3-9150-3c4867e68bdc" x="0" y="0" width="555" height="25"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{className}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement uuid="6e442bad-eedc-4f34-8d85-7d834c0ca0dc" x="456" y="0" width="100" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="9b7d2823-895a-488d-95d3-0f1d0bf560be" x="1" y="0" width="100" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{today}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

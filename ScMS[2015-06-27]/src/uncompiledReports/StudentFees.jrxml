@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="25" bottomMargin="20" uuid="25bce4be-c353-4213-bae8-7f13ae07c8d6">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="student" class="java.lang.Object"/>
+	<field name="year" class="java.lang.Integer"/>
+	<field name="Month" class="java.lang.Object"/>
+	<field name="Paid" class="java.lang.Integer"/>
+	<field name="Date Of Paid" class="java.util.Date"/>
+	<variable name="today" class="java.lang.String">
+		<variableExpression><![CDATA[new java.text.SimpleDateFormat("dd-MM-YYYY").format(new java.util.Date())]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="111">
+			<textField>
+				<reportElement uuid="70000507-af73-4d8d-8f75-610032082421" x="103" y="91" width="358" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="13" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""+$P{student}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement uuid="30a5e758-a60e-4a44-8ed2-088eb815c304" x="0" y="40" width="552" height="20"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="86bc7e30-9b68-4697-80dd-923bd799f861" x="184" y="10" width="268" height="28"/>
+				<textElement textAlignment="Left" rotation="None">
+					<font fontName="Penguin" size="18" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[The Guardian ]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="1d398717-8614-4f98-b304-49597980c8f8" x="90" y="45" width="130" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Bhurgari Road, Hirabad, Hyd."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="1d398717-8614-4f98-b304-49597980c8f8" x="309" y="45" width="244" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["B-12, Block C, Behind Qamar Arcade Unit # 06 Latifabad, Hyd."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="648395b1-762a-4c23-9462-b1fba07f31b5" mode="Opaque" x="233" y="45" width="75" height="12" forecolor="#FFFFFF" backcolor="#000000"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Latifabad Campus:"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="2328fef0-8d7d-4b6b-af34-228b9cfe645f" mode="Opaque" x="287" y="16" width="105" height="13" forecolor="#FFFFFF" backcolor="#000000"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[School of Excellence]]></text>
+			</staticText>
+			<image>
+				<reportElement uuid="6bbc0d86-a1ac-441b-ac1d-b74f52f4ead1" x="0" y="0" width="172" height="40"/>
+				<imageExpression><![CDATA["TGS 2014 Logo.jpg"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement uuid="648395b1-762a-4c23-9462-b1fba07f31b5" mode="Opaque" x="10" y="45" width="80" height="12" forecolor="#FFFFFF" backcolor="#000000"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Boys/Girls Campus:"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="13243dd0-d7e7-430d-9afb-82c98479cdbb" x="117" y="67" width="335" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="13" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Student's Monthly Fee Paid Record]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<rectangle>
+				<reportElement uuid="9957c20b-c7e3-4dae-a7a3-9a6fab03bef7" x="35" y="0" width="481" height="20"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="4ffa861a-8958-4cd4-9faa-4e5aa2217527" x="36" y="0" width="92" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Year]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="4ffa861a-8958-4cd4-9faa-4e5aa2217527" x="128" y="0" width="111" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Month]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="4ffa861a-8958-4cd4-9faa-4e5aa2217527" x="239" y="0" width="111" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Paid Amount]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="4ffa861a-8958-4cd4-9faa-4e5aa2217527" x="350" y="0" width="111" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Date Of Paid]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="2320804f-2c9a-4e7b-91db-7ec9a7f258df" x="350" y="0" width="1" height="20"/>
+			</line>
+			<line>
+				<reportElement uuid="2320804f-2c9a-4e7b-91db-7ec9a7f258df" x="238" y="0" width="1" height="20"/>
+			</line>
+			<line>
+				<reportElement uuid="2320804f-2c9a-4e7b-91db-7ec9a7f258df" x="128" y="0" width="1" height="20"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<rectangle>
+				<reportElement uuid="4edded94-5ed8-4ec2-a707-70a7cd5d4ad9" x="35" y="0" width="481" height="20"/>
+			</rectangle>
+			<textField>
+				<reportElement uuid="2bf1b682-0103-458e-a2bd-5dca1140d8d6" x="37" y="0" width="92" height="20"/>
+				<textElement>
+					<font size="12"/>
+					<paragraph leftIndent="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{year}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="2320804f-2c9a-4e7b-91db-7ec9a7f258df" x="128" y="0" width="1" height="20"/>
+			</line>
+			<line>
+				<reportElement uuid="2320804f-2c9a-4e7b-91db-7ec9a7f258df" x="238" y="0" width="1" height="20"/>
+			</line>
+			<line>
+				<reportElement uuid="2320804f-2c9a-4e7b-91db-7ec9a7f258df" x="350" y="0" width="1" height="20"/>
+			</line>
+			<textField>
+				<reportElement uuid="8c7cc889-1167-4992-b06c-f593d45ac55c" x="128" y="0" width="111" height="20"/>
+				<textElement>
+					<font size="12"/>
+					<paragraph leftIndent="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""+$F{Month}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="b5f0a529-5a7c-491e-987d-1d6321498d82" x="239" y="0" width="111" height="20"/>
+				<textElement>
+					<font size="12"/>
+					<paragraph leftIndent="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Paid}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="5e273b30-5d52-42ab-bb60-5f5e02baecff" x="350" y="0" width="111" height="20"/>
+				<textElement>
+					<font size="12"/>
+					<paragraph leftIndent="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd-MM-YYYY").format($F{Date Of Paid})]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="20">
+			<textField>
+				<reportElement uuid="9bd0826b-20fc-4a57-a21b-c860f1904712" x="3" y="0" width="140" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$V{today}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

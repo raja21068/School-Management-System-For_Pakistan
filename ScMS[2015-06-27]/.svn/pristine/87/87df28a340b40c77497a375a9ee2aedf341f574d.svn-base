@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="25" bottomMargin="20" uuid="2f87a669-a5ae-483c-8556-3e5756df54c0">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="10"/>
+	<import value="constant.*"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="SUB_REPORT_SALARY_STREAM" class="java.io.InputStream"/>
+	<parameter name="SUB_REPORT_DESIGNATION_STREAM" class="java.io.InputStream"/>
+	<field name="name" class="java.lang.String"/>
+	<field name="father" class="java.lang.String"/>
+	<field name="surname" class="java.lang.String"/>
+	<field name="contact" class="java.lang.String"/>
+	<field name="address" class="java.lang.String"/>
+	<field name="post" class="java.lang.String"/>
+	<field name="joiningDate" class="java.util.Date"/>
+	<field name="birthDate" class="java.util.Date"/>
+	<field name="gender" class="java.lang.String"/>
+	<field name="basicSalary" class="java.lang.Integer"/>
+	<field name="leavingDate" class="java.util.Date"/>
+	<field name="travelingAllowance" class="java.lang.Integer"/>
+	<field name="otherAllowance" class="java.lang.Integer"/>
+	<field name="nic" class="java.lang.String"/>
+	<field name="designations" class="java.util.Collection"/>
+	<field name="empAccountsId" class="java.lang.Integer"/>
+	<field name="campus" class="java.lang.String"/>
+	<field name="staffId" class="java.lang.String"/>
+	<field name="basicSalaryList" class="java.util.List"/>
+	<field name="travellingAllowanceList" class="java.util.List"/>
+	<variable name="joining" class="java.lang.String">
+		<variableExpression><![CDATA[new java.text.SimpleDateFormat("dd-MM-YYYY").format($F{joiningDate})]]></variableExpression>
+	</variable>
+	<variable name="today" class="java.lang.String">
+		<variableExpression><![CDATA[new java.text.SimpleDateFormat("dd-MM-YYYY").format(new java.util.Date())]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="92">
+			<staticText>
+				<reportElement uuid="8de05708-3ed0-4a00-a4b0-34cd32768326" x="189" y="61" width="202" height="20"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[EMPLOYEE INFORMATION]]></text>
+			</staticText>
+			<image>
+				<reportElement uuid="6bbc0d86-a1ac-441b-ac1d-b74f52f4ead1" x="3" y="-10" width="172" height="40"/>
+				<imageExpression><![CDATA["TGS 2014 Logo.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement uuid="86bc7e30-9b68-4697-80dd-923bd799f861" x="187" y="0" width="268" height="28"/>
+				<textElement textAlignment="Left" rotation="None">
+					<font fontName="Penguin" size="18" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[The Guardian ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2328fef0-8d7d-4b6b-af34-228b9cfe645f" mode="Opaque" x="290" y="6" width="105" height="13" forecolor="#FFFFFF" backcolor="#000000"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[School of Excellence]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="30a5e758-a60e-4a44-8ed2-088eb815c304" x="3" y="30" width="552" height="20"/>
+			</rectangle>
+			<textField>
+				<reportElement uuid="648395b1-762a-4c23-9462-b1fba07f31b5" mode="Opaque" x="13" y="35" width="80" height="12" forecolor="#FFFFFF" backcolor="#000000"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Boys/Girls Campus:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="1d398717-8614-4f98-b304-49597980c8f8" x="93" y="35" width="130" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Bhurgari Road, Hirabad, Hyd."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="1d398717-8614-4f98-b304-49597980c8f8" x="312" y="35" width="244" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["B-12, Block C, Behind Qamar Arcade Unit # 06 Latifabad, Hyd."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="648395b1-762a-4c23-9462-b1fba07f31b5" mode="Opaque" x="236" y="35" width="75" height="12" forecolor="#FFFFFF" backcolor="#000000"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Latifabad Campus:"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="705" splitType="Stretch">
+			<textField>
+				<reportElement uuid="ad08ee5b-8e3b-4e6f-93e1-a479b8a3f990" x="143" y="0" width="301" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="10415b9f-2e00-4b9e-af37-1a3d7aa29b7e" x="0" y="59" width="63" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[FATHER:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="35633c3b-0442-49cd-976b-b1d960153251" x="75" y="59" width="193" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{father}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="76c197d8-a58b-4f5e-8ac4-25b5e8ac0944" x="0" y="79" width="63" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[SURNAME:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="3cc8cb8d-ee71-4a89-ba39-e04e7e1b0d0f" x="75" y="79" width="193" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{surname}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="8a626476-86f0-410e-81aa-d04752b81271" x="0" y="194" width="63" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CONTACT]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="a292d4ab-443c-4f54-a9f5-d5407ccebdc7" x="75" y="194" width="193" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{contact}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="0ab3db51-90e2-40e3-a664-da1bd1ffb3ef" x="0" y="139" width="63" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ADDRESS]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="b5820dc1-ff97-408a-978e-d23cf8baf6cb" stretchType="RelativeToBandHeight" x="75" y="139" width="215" height="45"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{address}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="fb1743d0-cd20-455e-9db4-456ecf06d1a4" x="0" y="99" width="63" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[NIC#]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="3a05d957-eff7-4d71-9d9d-9c4630770be2" x="75" y="99" width="193" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{nic}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="a6f5c071-73bf-4b1b-a913-cf731351bd2a" x="0" y="214" width="87" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[JOINING DATE:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="cb953720-8b67-4ae2-85e1-ec0703cfe92c" x="0" y="119" width="87" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[BIRTH DATE:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="a8b4c5c2-c269-4a9a-b491-4f8da988726f" x="75" y="119" width="181" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd-MM-YYYY").format($F{birthDate})]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="556ad458-1a99-4b82-8154-9b12b1f7f3ff" x="0" y="234" width="63" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[GENDER]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="31e33f43-d20d-4ce6-a0a5-f2760cbf1d26" x="75" y="234" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{gender}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement uuid="d60ac277-1bc3-4c99-b46b-995151e2ae91" x="0" y="279" width="555" height="167"/>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{designations})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUB_REPORT_DESIGNATION_STREAM}]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement uuid="d5e1e5b2-f6a9-4265-9aae-c49484ee425b" x="367" y="34" width="188" height="175"/>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{basicSalaryList})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUB_REPORT_SALARY_STREAM}]]></subreportExpression>
+			</subreport>
+			<textField>
+				<reportElement uuid="278e6226-7a33-474b-89ce-bc253e24348d" x="75" y="214" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$V{joining}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="10415b9f-2e00-4b9e-af37-1a3d7aa29b7e" x="0" y="39" width="63" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[STAFF ID]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="c44a6296-2112-47e8-901b-e7bb8bfd4121" x="75" y="39" width="161" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{staffId}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="c8e95a66-286b-437b-b02e-ffe9b26394b7" x="3" y="254" width="60" height="20"/>
+				<textElement/>
+				<text><![CDATA[CAMPUS]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="9aa0cd1c-3eb7-49af-bc0c-37ac88bd9c9a" x="75" y="254" width="281" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[""+$F{campus}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="ec3b36b9-74ec-4b60-97c6-951c3eb09293" x="0" y="685" width="140" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$V{today}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

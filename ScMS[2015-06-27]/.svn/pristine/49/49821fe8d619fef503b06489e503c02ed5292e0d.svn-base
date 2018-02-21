@@ -1,0 +1,39 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.school.constant;
+
+/**
+ *
+ * @author JAY KUMAR
+ */
+
+/**
+ * This forms is stored in database that will help the 
+ * user for permissions and pervileges.
+ */
+public class Forms {
+
+    public static String[] forms = {
+        com.school.view.CampusJFrame.class.getSimpleName(),
+        com.school.view.ClassShiftingJFrame.class.getSimpleName(),
+        com.school.view.ConfigJFrame.class.getSimpleName(),
+        com.school.view.EmployeeCategoryJFrame.class.getSimpleName(),
+        com.school.view.EmployeesJFrame.class.getSimpleName(),
+        com.school.view.EventsJFrame.class.getSimpleName(),
+        com.school.view.ExamJFrame.class.getSimpleName(),
+        com.school.view.ExamTypeJFrame.class.getSimpleName(),
+        com.school.view.FeeJFrame.class.getSimpleName(),
+        com.school.view.FeeStructureJFrame.class.getSimpleName(),
+        com.school.view.ReportsJFrame.class.getSimpleName(),
+        com.school.view.SMSJFrame.class.getSimpleName(),
+        com.school.view.SalaryManagementJFrame.class.getSimpleName(),
+        com.school.view.SectionJFrame.class.getSimpleName(),
+        com.school.view.StudentAttendenceJFrame.class.getSimpleName(),
+        com.school.view.StudentChartJFrame.class.getSimpleName(),
+        com.school.view.StudentJFrame.class.getSimpleName(),
+        com.school.view.UserJFrame.class.getSimpleName(),
+        com.school.view.YearJFrame.class.getSimpleName()
+    };
+}

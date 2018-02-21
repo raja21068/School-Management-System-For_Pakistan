@@ -1,0 +1,25 @@
+
+import com.school.model.Module;
+import com.school.model.UserPrivilege;
+import com.school.view.UserJFrame;
+import static javax.swing.JFrame.EXIT_ON_CLOSE;
+
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+/**
+ *
+ * @author JAY KUMAR
+ */
+public class ImportExtra {
+
+    public static void main(String arg[]) throws Exception {
+        try{
+            com.school.dao.Handler.importModules();
+        }catch(Exception ex){ex.printStackTrace();}
+        UserJFrame frame = new UserJFrame(new UserPrivilege(null, null, new Module(UserJFrame.class.getName()), true, true, true, true, ""));
+        frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        frame.setVisible(true);
+    }
+}

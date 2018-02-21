@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dbupdate>
+    <update version="1" type="sql">
+        <![CDATA[ALTER TABLE `emp_accounts` ADD COLUMN `staff_id` VARCHAR(45) AFTER `five_year_allowance`,
+        ADD COLUMN `order_no` INT(11) AFTER `staff_id`, ADD COLUMN `bank_account_no` VARCHAR(45) AFTER `five_year_allowance`;]]>
+    </update>
+    <update version="2" type="sql">
+        <![CDATA[ALTER TABLE `emp_accounts` ADD COLUMN `deleted` BOOLEAN NOT NULL DEFAULT FALSE AFTER `order_no`;]]>
+    </update>
+    <update version="3" type="sql">
+        <![CDATA[ALTER TABLE emp_account_attachment DROP FOREIGN KEY `fk_emp_account_attachment_emp_accounts1`;]]>
+    </update>    
+    <update version="4" type="sql">
+        <![CDATA[ALTER TABLE emp_account_attachment ADD CONSTRAINT `fk_emp_account_attachment_emp_accounts1` FOREIGN KEY `fk_emp_account_attachment_emp_accounts1` (`emp_accounts_id`) REFERENCES `emp_accounts` (`emp_accounts_id`) ON DELETE CASCADE ON UPDATE NO ACTION;]]>
+    </update>
+    <update version="5" type="sql">
+        <![CDATA[ALTER TABLE `emp_certificate_issue` DROP FOREIGN KEY `fk_emp_certificate_issue_emp_accounts1`;]]>
+    </update>
+    <update version="6" type="sql">
+        <![CDATA[ALTER TABLE `emp_certificate_issue` ADD CONSTRAINT `fk_emp_certificate_issue_emp_accounts1` FOREIGN KEY `fk_emp_certificate_issue_emp_accounts1` (`emp_accounts_emp_accounts_id`) REFERENCES `emp_accounts` (`emp_accounts_id`) ON DELETE CASCADE ON UPDATE NO ACTION;]]>
+    </update>
+    <update version="7" type="sql">
+        <![CDATA[ALTER TABLE `salary` DROP FOREIGN KEY `fk_salary_emp_accounts1`;]]>
+    </update>
+    <update version="8" type="sql">
+        <![CDATA[ALTER TABLE `salary` ADD CONSTRAINT `fk_salary_emp_accounts1` FOREIGN KEY `fk_salary_emp_accounts1` (`emp_accounts_id`) REFERENCES `emp_accounts` (`emp_accounts_id`) ON DELETE CASCADE ON UPDATE NO ACTION; ]]>
+    </update>
+
+</dbupdate>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->

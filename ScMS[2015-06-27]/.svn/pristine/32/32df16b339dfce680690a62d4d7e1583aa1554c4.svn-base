@@ -1,0 +1,137 @@
+order-by="month_id"              => years.hbm.xml
+order-by="student_class_reg_id"  => student.hbm.xml
+order-by="sequence_no"         (Classes)  => Section.hbm.xml
+order-by="sequence_no"           => classes.hbm.xml
+order-by="exam_result_id"        => studentClasReg.hbm.xml
+order-by="id"                 (Designation)   => empAccounts.hbm.xml
+-----------ATTENDENCE ----------- 
+@Override
+    public String toString() {
+        return ""+presentDays; //To change body of generated methods, choose Tools | Templates.
+    }
+
+-----------AWARD ----------- 
+@Override
+    public String toString() {
+        return postion; //To change body of generated methods, choose Tools | Templates.
+    }
+
+ -----------CAMPUS -----------
+  @Override
+    public String toString() {
+        return name; //To change body of generated methods, choose Tools | Templates.
+    }
+
+ ----------- CLASSES-----------
+  @Override
+    public String toString() {
+        return className; //To change body of generated methods, choose Tools | Templates.
+    }
+
+----------- DESIGNATION----------- 
+@Override
+    public String toString() {
+        return name; //To change body of generated methods, choose Tools | Templates.
+    }
+ 
+----------- EMPACCOUNTATTACHEMENT-----------
+    @Override
+    public String toString() {
+        return remarks; //To change body of generated methods, choose Tools | Templates.
+    }
+
+ -----------EMPACCOUNTCATEGORY -----------
+@Override
+    public String toString() {
+        return name; //To change body of generated methods, choose Tools | Templates.
+    }
+ -----------EMPACCOUNT -----------
+@Override
+    public String toString() {
+        return name; //To change body of generated methods, choose Tools | Templates.
+    }
+
+-----------EMPCERTIFICATEISSUE -----------
+    @Override
+    public String toString() {
+        return certificateName; //To change body of generated methods, choose Tools | Templates.
+    }
+-----------EXAMRESULT -----------
+@Override
+    public String toString() {
+        return constant.Subject.getMarksStatus(obtainMarks); //To change body of generated methods, choose Tools | Templates.
+    }
+-----------EXAMTYPE -----------
+  @Override
+    public String toString() {
+        return examName; //To change body of generated methods, choose Tools | Templates.
+    }
+ 
+
+ -----------FEES-----------
+ @Override
+    public String toString() {
+        return ""+remaining; //To change body of generated methods, choose Tools | Templates.
+    }
+ -----------MODULE -----------
+ @Override
+    public String toString() {
+        return name; //To change body of generated methods, choose Tools | Templates.
+    }
+ -----------MONTHS -----------
+   @Override
+    public String toString() {
+        return monthName; //To change body of generated methods, choose Tools | Templates.
+    }
+
+ -----------SECTION -----------
+ @Override
+    public String toString() {
+        return name; //To change body of generated methods, choose Tools | Templates.
+    }
+
+
+----------- STUDENT-----------
+ @Override
+    public String toString() {
+        return studentName; //To change body of generated methods, choose Tools | Templates.
+    }
+
+----------- StudentAttachment-----------
+    @Override
+    public String toString() {
+        return remarks; //To change body of generated methods, choose Tools | Templates.
+    }
+
+ ----------- STUDENTCLASSREG-----------
+  @Override
+    public String toString() {
+        return classes.getClassName(); //To change body of generated methods, choose Tools | Templates.
+    }
+
+ 
+
+ -----------SUBJECTS -----------
+@Override
+    public String toString() {
+        return subjectName; //To change body of generated methods, choose Tools | Templates.
+    }
+
+
+ -----------TG_USER -----------
+@Override
+    public String toString() {
+        return name; //To change body of generated methods, choose Tools | Templates.
+    }
+
+ ----------- USER PRIVILEGE-----------
+    @Override
+    public String toString() {
+        return module.getName(); //To change body of generated methods, choose Tools | Templates.
+    }
+
+-----------YEARS -----------
+ @Override
+    public String toString() {
+        return showName? ""+yearName: remarks; //To change body of generated methods, choose Tools | Templates.
+    }

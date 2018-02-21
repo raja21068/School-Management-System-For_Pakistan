@@ -1,0 +1,58 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.school.report.bean;
+
+/**
+ *
+ * @author JAY KUMAR
+ */
+public class AttendenceReportBean {
+
+    public int grNo;
+
+    public int getGrNo() {
+        return grNo;
+    }
+
+    public void setGrNo(int grNo) {
+        this.grNo = grNo;
+    }
+    public String studentName;
+    public String fatherName;
+    private int totalDays;
+    private int presentDays;
+
+    public void setStudentName(String s) {
+        studentName = s;
+    }
+
+    public void setFatherName(String s) {
+        fatherName = s;
+    }
+
+    public void setTotalDays(int totalDays) {
+        this.totalDays = totalDays;
+    }
+
+    public void setPresentDays(int presentDays) {
+        this.presentDays = presentDays;
+    }
+
+    public String getStudentName() {
+        return studentName;
+    }
+
+    public String getFatherName() {
+        return fatherName;
+    }
+
+    public int getPresentDays() {
+        return this.presentDays;
+    }
+
+    public int getTotalDays() {
+        return this.totalDays;
+    }
+}

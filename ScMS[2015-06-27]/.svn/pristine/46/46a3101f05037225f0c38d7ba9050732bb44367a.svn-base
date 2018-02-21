@@ -1,0 +1,302 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.school.utils;
+
+import com.school.model.Campus;
+import com.school.model.Section;
+import com.school.model.Years;
+import com.school.dao.DatabaseManager;
+import com.school.dao.DatabaseQueryExecuter;
+import com.school.model.Classes;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.InputMap;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JViewport;
+import javax.swing.KeyStroke;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableModel;
+import org.hibernate.criterion.Order;
+
+/**
+ *
+ * @author JAY KUMAR
+ */
+public class ComponentHandler {
+
+    static Class[] classes;
+    static boolean[] canEdit;
+    
+    public synchronized static void emptyTable(JTable table){
+        int rows = table.getRowCount();
+        DefaultTableModel model = (DefaultTableModel)table.getModel();
+        for(int i=0;i<rows;i++){
+            model.removeRow(0);
+        }
+    }
+    
+    // For empty table
+//    public synchronized static void emptyTable(JTable table){
+//        int rows = table.getRowCount();
+//        if(rows<1)return;
+//        AbstractTableModel model = (AbstractTableModel)table.getModel();
+//        int columns = model.getColumnCount();
+//        classes = new Class[columns];
+//        canEdit = new boolean[columns];
+//        String[] names = new String[columns];
+//        
+//        for(int i=0;i<columns;i++){
+//            classes[i]=model.getColumnClass(i);
+//            canEdit[i] = model.isCellEditable(0, i);
+//            names[i] = model.getColumnName(i);
+//        }
+//        table.setModel(getDefaultTableModel(names));
+//    }
+    
+//    public static DefaultTableModel getDefaultTableModel(String[] columns){
+//        
+//        return new DefaultTableModel( new Object [][] {},columns) 
+//        {
+//            public Class getColumnClass(int columnIndex) {
+//                return classes [columnIndex];
+//            }
+//
+//            public boolean isCellEditable(int rowIndex, int columnIndex) {
+//                return canEdit [columnIndex];
+//            }
+//        };
+//    }
+    
+    // For JTable, to show total number of rows
+    public static void setModelListener(JTable t) {
+        DefaultTableModel model = (DefaultTableModel) t.getModel();
+        model.addTableModelListener(new MyModelListener(t));
+    }
+
+    // For full screen the frame
+    public static void setFullScreen(JFrame frame) {
+        try {
+            frame.setSize(Toolkit.getDefaultToolkit().getScreenSize());
+        } catch (Exception ex) {
+            ex.printStackTrace(System.err);
+        }
+    }
+
+    // For seting all CAMPUS in combobox
+    // created because same type of coding is repeated in every next frame
+    public static void setCampus(JComboBox comboBoxCampus) {
+        try {
+            comboBoxCampus.setModel(new DefaultComboBoxModel(DatabaseManager.getData(Campus.class).toArray()));
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error Occured..!\n" + ex.getMessage());
+            ex.printStackTrace(System.err);
+        }
+    }
+
+    // For seting all <SECTION> in combobox
+    // created because same type of coding is repeated in every next frame
+    public static void setSection(JComboBox comboBoxSection) {
+        try {
+            comboBoxSection.setModel(new DefaultComboBoxModel(DatabaseManager.getData(Section.class).toArray()));
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error Occured..!\n" + ex.getMessage());
+            ex.printStackTrace(System.err);
+        }
+    }
+
+    // For table, if any CHECKBOX in JTABLE in SELECTED then
+    // BUTTON will be enabled
+    // COLUMN means AT WHICH POSITION CHECKBOX IS PLACED
+    public static void setModelListenerForButton(JTable table, JButton but, int column) {
+        table.getModel().addTableModelListener(new MyTableModelListener(table, new JButton[]{but}, column));
+    }
+
+    public static void setModelListenerForButton(JTable table, JButton[] but, int column) {
+        table.getModel().addTableModelListener(new MyTableModelListener(table, but, column));
+    }
+
+    public static boolean isAnyCheckBoxSelect(JTable table, int column) {
+        int totalRows = table.getRowCount();
+        for (int i = 0; i < totalRows; i++) {
+            if ((boolean) table.getValueAt(i, column)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static void setClasses(JComboBox comboBoxSection,JComboBox comboBoxClasses) {
+       Section sec = (Section) comboBoxSection.getSelectedItem();
+       if (sec == null) {
+            return;
+        }
+       List<Classes>  list = DatabaseQueryExecuter.getClasses(sec);
+       comboBoxClasses.setModel(new DefaultComboBoxModel(list.toArray()));
+    }
+
+    private static class MyModelListener implements TableModelListener {
+
+        JTable table;
+
+        MyModelListener(JTable t) {
+            table = t;
+        }
+
+        @Override
+        public void tableChanged(TableModelEvent e) {
+            JScrollPane pane = ((JScrollPane) ((JViewport) table.getParent()).getParent());
+            pane.setViewportBorder(javax.swing.BorderFactory.createTitledBorder(null, table.getRowCount() + " rows ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.BELOW_BOTTOM, new java.awt.Font("Lucida Console", 0, 10)));
+            pane.setBounds(pane.getX() - 1, pane.getY(), pane.getWidth(), pane.getHeight());
+            pane.setBounds(pane.getX() + 1, pane.getY(), pane.getWidth(), pane.getHeight());
+        }
+    }
+
+    private static class MyTableModelListener implements TableModelListener {
+
+        JTable table;
+        int column;
+        JButton[] button;
+
+        MyTableModelListener(JTable t, JButton[] but, int col) {
+            table = t;
+            column = col;
+            button = but;
+        }
+
+        @Override
+        public void tableChanged(TableModelEvent e) {
+            boolean enable = false;
+            if (isAnyCheckBoxSelect(table, column)) {
+                enable = true;
+            } else {
+                enable = false;
+            }
+            for (int i = 0; i < button.length; i++) {
+                button[i].setEnabled(enable);
+            }
+        }
+    }
+
+    public static void setJFrameCenterPostion(JComponent f) {
+        try {
+            int w = f.getWidth() / 2;
+            int h = f.getHeight() / 2;
+            Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+            int centerX = d.width / 2;
+            int centerY = d.height / 2;
+            f.setBounds(centerX - w, centerY - h, f.getWidth(), f.getHeight());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+    }
+
+        public static void setJFrameCenterPostion(JFrame f) {
+        try {
+            int w = f.getWidth() / 2;
+            int h = f.getHeight() / 2;
+            Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+            int centerX = d.width / 2;
+            int centerY = d.height / 2;
+            f.setBounds(centerX - w, centerY - h, f.getWidth(), f.getHeight());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+    }
+
+    
+    public static void setBatch(JComboBox comboBoxBatch) {
+        try {
+            Object[] list = DatabaseManager.getData(Years.class).toArray();
+            ArrayList copy = new ArrayList();
+            for (Object ob : list) {
+                Years year = (Years) ob;
+                copy.add(new MyYear(year));
+            }
+            comboBoxBatch.setModel(new DefaultComboBoxModel(copy.toArray()));
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error Occured..!\n" + ex.getMessage());
+            ex.printStackTrace(System.err);
+        }
+    }
+
+    public static void setYear(JComboBox comboBox) {
+        try {
+            Object[] list = DatabaseManager.getData(Years.class,Order.desc("yearName")).toArray();
+            comboBox.setModel(new DefaultComboBoxModel(list));
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error Occured..!\n" + ex.getMessage());
+            ex.printStackTrace(System.err);
+        }
+    }
+
+    public static void setMonth(JComboBox comboBoxYear, JComboBox comboBoxMonth) {
+        Years y = (Years) comboBoxYear.getSelectedItem();
+        if (y == null) {
+            return;
+        }
+        comboBoxMonth.setModel(new DefaultComboBoxModel(y.getMonthses().toArray()));
+    }
+    
+    
+    public static void setCurrentMonth(javax.swing.JComboBox comboBoxMonth){
+        String str = new  SimpleDateFormat("MMM").format(new java.util.Date());
+        int items = comboBoxMonth.getItemCount();
+        for(int i=0;i<items;i++){
+            Object ob = comboBoxMonth.getItemAt(i);
+            if(ob !=null){
+                if(ob.toString().toLowerCase().contains(str.toLowerCase())){
+                    comboBoxMonth.setSelectedIndex(i);
+                }
+            }
+        }
+    }
+    
+     public static void hideOnEscape(Object ob) {
+        if (ob instanceof JComponent) {
+            final JComponent comp = (JComponent) ob;
+            InputMap inputMap = comp.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+            ActionMap actionMap = comp.getRootPane().getActionMap();
+
+            inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), actionMap);
+            actionMap.put(actionMap, new AbstractAction() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    comp.setVisible(false);
+                }
+            });
+        } else if (ob instanceof JDialog) {
+            final JDialog dialog = (JDialog) ob;
+            InputMap inputMap = dialog.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+            ActionMap actionMap = dialog.getRootPane().getActionMap();
+
+            inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), actionMap);
+            actionMap.put(actionMap, new AbstractAction() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    dialog.dispose();
+                }
+            });
+        }
+
+    }
+}

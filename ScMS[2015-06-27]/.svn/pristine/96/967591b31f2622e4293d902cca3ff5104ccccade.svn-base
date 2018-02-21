@@ -1,0 +1,734 @@
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+
+CREATE SCHEMA IF NOT EXISTS `tg_school` DEFAULT CHARACTER SET latin1 ;
+USE `tg_school` ;
+
+-- -----------------------------------------------------
+-- Table `tg_school`.`years`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `tg_school`.`years` (
+  `year_id` INT(11) NOT NULL AUTO_INCREMENT ,
+  `year_name` INT(11) NOT NULL ,
+  `remarks` VARCHAR(100) NULL DEFAULT NULL ,
+  PRIMARY KEY (`year_id`) ,
+  UNIQUE INDEX `year_name_UNIQUE` (`year_name` ASC) )
+ENGINE = InnoDB
+AUTO_INCREMENT = 3
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `tg_school`.`months`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `tg_school`.`months` (
+  `year_id` INT(11) NOT NULL ,
+  `month_id` INT(11) NOT NULL AUTO_INCREMENT ,
+  `month_name` VARCHAR(11) NOT NULL ,
+  `month_date` DATE NULL DEFAULT NULL ,
+  `remarks` VARCHAR(50) NULL DEFAULT NULL ,
+  PRIMARY KEY (`month_id`) ,
+  INDEX `fk_months_years_idx` (`year_id` ASC) ,
+  CONSTRAINT `fk_months_years`
+    FOREIGN KEY (`year_id` )
+    REFERENCES `tg_school`.`years` (`year_id` ))
+ENGINE = InnoDB
+AUTO_INCREMENT = 25
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `tg_school`.`campus`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `tg_school`.`campus` (
+  `campus_id` INT(11) NOT NULL AUTO_INCREMENT ,
+  `name` VARCHAR(200) NOT NULL ,
+  `location` VARCHAR(500) NULL DEFAULT NULL ,
+  `remarks` VARCHAR(100) NULL DEFAULT NULL ,
+  PRIMARY KEY (`campus_id`) )
+ENGINE = InnoDB
+AUTO_INCREMENT = 5
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `tg_school`.`section`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `tg_school`.`section` (
+  `section_id` INT(11) NOT NULL AUTO_INCREMENT ,
+  `name` VARCHAR(100) NOT NULL ,
+  `remarks` VARCHAR(200) NULL DEFAULT NULL ,
+  PRIMARY KEY (`section_id`) )
+ENGINE = InnoDB
+AUTO_INCREMENT = 4
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `tg_school`.`classes`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `tg_school`.`classes` (
+  `class_id` INT(11) NOT NULL AUTO_INCREMENT ,
+  `section_id` INT(11) NOT NULL ,
+  `class_name` VARCHAR(100) NOT NULL ,
+  `sequence_no` INT(11) NULL DEFAULT NULL ,
+  `remarks` VARCHAR(200) NULL DEFAULT NULL ,
+  PRIMARY KEY (`class_id`) ,
+  INDEX `fk_classes_section1_idx` (`section_id` ASC) ,
+  CONSTRAINT `fk_classes_section1`
+    FOREIGN KEY (`section_id` )
+    REFERENCES `tg_school`.`section` (`section_id` ))
+ENGINE = InnoDB
+AUTO_INCREMENT = 14
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `tg_school`.`student`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `tg_school`.`student` (
+  `student_id` INT(11) NOT NULL AUTO_INCREMENT ,
+  `gr_no` INT(11) NOT NULL ,
+  `student_name` VARCHAR(100) NOT NULL ,
+  `father_name` VARCHAR(100) NOT NULL ,
+  `surname` VARCHAR(40) NOT NULL ,
+  `religion` VARCHAR(30) NULL DEFAULT NULL ,
+  `date_of_birth` DATE NULL DEFAULT NULL ,
+  `place_of_birth` VARCHAR(100) NULL DEFAULT NULL ,
+  `date_of_addmission` DATE NULL DEFAULT NULL ,
+  `date_of_leaving` DATE NULL DEFAULT NULL ,
+  `last_school` VARCHAR(100) NULL DEFAULT NULL ,
+  `remarks` VARCHAR(100) NULL DEFAULT NULL ,
+  `contact_no` VARCHAR(20) NOT NULL ,
+  `father_contact_no` VARCHAR(30) NULL DEFAULT NULL ,
+  `address` VARCHAR(200) NULL DEFAULT NULL ,
+  `occupation` VARCHAR(200) NULL DEFAULT NULL ,
+  `nic` VARCHAR(20) NULL DEFAULT NULL ,
+  `gender` VARCHAR(10) NOT NULL ,
+  `perminant_address` VARCHAR(200) NULL DEFAULT NULL ,
+  `father_qualification` VARCHAR(200) NULL DEFAULT NULL ,
+  `mother_name` VARCHAR(100) NULL DEFAULT NULL ,
+  `mother_qualification` VARCHAR(100) NULL DEFAULT NULL ,
+  `mother_occupation` VARCHAR(100) NULL DEFAULT NULL ,
+  `form_no` VARCHAR(100) NULL DEFAULT NULL ,
+  `tel_no` VARCHAR(100) NULL DEFAULT NULL ,
+  `one_month` TINYINT(1) NULL DEFAULT NULL ,
+  `progress` VARCHAR(100) NULL DEFAULT NULL ,
+  `cond` VARCHAR(100) NULL DEFAULT NULL ,
+  PRIMARY KEY (`student_id`) ,
+  UNIQUE INDEX `gr_no_UNIQUE` (`gr_no` ASC) )
+ENGINE = InnoDB
+AUTO_INCREMENT = 800
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `tg_school`.`student_class_reg`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `tg_school`.`student_class_reg` (
+  `year_id` INT(11) NOT NULL ,
+  `student_class_reg_id` INT(11) NOT NULL AUTO_INCREMENT ,
+  `student_id` INT(11) NOT NULL ,
+  `class_id` INT(11) NOT NULL ,
+  `is_leaved` INT(1) NOT NULL DEFAULT '0' ,
+  `remarks` VARCHAR(50) NOT NULL ,
+  `campus_id` INT(11) NOT NULL ,
+  PRIMARY KEY (`student_class_reg_id`) ,
+  INDEX `fk_student_class_reg_student1_idx` (`student_id` ASC) ,
+  INDEX `fk_student_class_reg_years1_idx` (`year_id` ASC) ,
+  INDEX `fk_student_class_reg_classes1_idx` (`class_id` ASC) ,
+  INDEX `fk_student_class_reg_campus1_idx` (`campus_id` ASC) ,
+  CONSTRAINT `fk_student_class_reg_campus1`
+    FOREIGN KEY (`campus_id` )
+    REFERENCES `tg_school`.`campus` (`campus_id` ),
+  CONSTRAINT `fk_student_class_reg_classes1`
+    FOREIGN KEY (`class_id` )
+    REFERENCES `tg_school`.`classes` (`class_id` ),
+  CONSTRAINT `fk_student_class_reg_student1`
+    FOREIGN KEY (`student_id` )
+    REFERENCES `tg_school`.`student` (`student_id` ),
+  CONSTRAINT `fk_student_class_reg_years1`
+    FOREIGN KEY (`year_id` )
+    REFERENCES `tg_school`.`years` (`year_id` ))
+ENGINE = InnoDB
+AUTO_INCREMENT = 884
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `tg_school`.`attendence`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `tg_school`.`attendence` (
+  `attendence_id` INT(11) NOT NULL AUTO_INCREMENT ,
+  `month_id` INT(11) NOT NULL ,
+  `student_class_reg_id` INT(11) NOT NULL ,
+  `total_days` INT(11) NOT NULL ,
+  `present_days` INT(11) NOT NULL DEFAULT '0' ,
+  `remarks` VARCHAR(100) NULL DEFAULT NULL ,
+  PRIMARY KEY (`attendence_id`) ,
+  INDEX `fk_attendence_months1_idx` (`month_id` ASC) ,
+  INDEX `fk_attendence_student_class_reg1_idx` (`student_class_reg_id` ASC) ,
+  CONSTRAINT `fk_attendence_months1`
+    FOREIGN KEY (`month_id` )
+    REFERENCES `tg_school`.`months` (`month_id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_attendence_student_class_reg1`
+    FOREIGN KEY (`student_class_reg_id` )
+    REFERENCES `tg_school`.`student_class_reg` (`student_class_reg_id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `tg_school`.`event`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `tg_school`.`event` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT ,
+  `desciption` VARCHAR(200) NULL DEFAULT NULL ,
+  `day` DATE NULL DEFAULT NULL ,
+  `year_id` INT(11) NOT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `fk_event_years1_idx` (`year_id` ASC) ,
+  CONSTRAINT `fk_event_years1`
+    FOREIGN KEY (`year_id` )
+    REFERENCES `tg_school`.`years` (`year_id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 2
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `tg_school`.`awards`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `tg_school`.`awards` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT ,
+  `awards_name` VARCHAR(100) NULL DEFAULT NULL ,
+  `postion` VARCHAR(100) NULL DEFAULT NULL ,
+  `remarks` VARCHAR(100) NULL DEFAULT NULL ,
+  `student_student_id` INT(11) NOT NULL ,
+  `event_id` INT(11) NOT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `fk_awards_student1_idx` (`student_student_id` ASC) ,
+  INDEX `fk_awards_event1_idx` (`event_id` ASC) ,
+  CONSTRAINT `fk_awards_event1`
+    FOREIGN KEY (`event_id` )
+    REFERENCES `tg_school`.`event` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_awards_student1`
+    FOREIGN KEY (`student_student_id` )
+    REFERENCES `tg_school`.`student` (`student_id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 2
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `tg_school`.`db_update`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `tg_school`.`db_update` (
+  `ID` INT(11) NOT NULL AUTO_INCREMENT ,
+  `VERSION` INT(11) NOT NULL ,
+  `MODIFIED_DATE` BIGINT(20) NOT NULL ,
+  `REMARKS` VARCHAR(200) NOT NULL ,
+  PRIMARY KEY (`ID`) )
+ENGINE = InnoDB
+AUTO_INCREMENT = 9
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `tg_school`.`emp_account_category`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `tg_school`.`emp_account_category` (
+  `emp_account_category_id` INT(11) NOT NULL AUTO_INCREMENT ,
+  `name` VARCHAR(100) NOT NULL ,
+  `remarks` VARCHAR(100) NULL DEFAULT NULL ,
+  PRIMARY KEY (`emp_account_category_id`) )
+ENGINE = InnoDB
+AUTO_INCREMENT = 6
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `tg_school`.`emp_accounts`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `tg_school`.`emp_accounts` (
+  `emp_accounts_id` INT(11) NOT NULL AUTO_INCREMENT ,
+  `emp_account_category_id` INT(11) NOT NULL ,
+  `campus_id` INT(11) NOT NULL ,
+  `name` VARCHAR(100) NOT NULL ,
+  `father` VARCHAR(100) NOT NULL ,
+  `surname` VARCHAR(100) NULL DEFAULT NULL ,
+  `contact` VARCHAR(50) NULL DEFAULT NULL ,
+  `address` VARCHAR(200) NULL DEFAULT NULL ,
+  `post` VARCHAR(100) NULL DEFAULT NULL ,
+  `joining_date` DATE NULL DEFAULT NULL ,
+  `birth_date` DATE NULL DEFAULT NULL ,
+  `gender` VARCHAR(10) NULL DEFAULT NULL ,
+  `basic_salary` INT(11) NULL DEFAULT '0' ,
+  `leaving_date` DATE NULL DEFAULT NULL ,
+  `remarks` VARCHAR(100) NULL DEFAULT NULL ,
+  `traveling_allowance` INT(11) NULL DEFAULT NULL ,
+  `other_allowance` INT(11) NULL DEFAULT NULL ,
+  `total_amount` INT(11) NULL DEFAULT NULL ,
+  `nic` VARCHAR(45) NULL DEFAULT NULL ,
+  `ref_letter` VARCHAR(100) NULL DEFAULT NULL ,
+  `head_allowance` INT(11) NULL DEFAULT '0' ,
+  `coordinate_allowace` INT(11) NULL DEFAULT '0' ,
+  `ct_allowance` INT(11) NULL DEFAULT '0' ,
+  `medical_allowance` INT(11) NULL DEFAULT '0' ,
+  `five_year_allowance` INT(11) NULL DEFAULT '0' ,
+  `bank_account_no` VARCHAR(45) NULL DEFAULT NULL ,
+  `staff_id` VARCHAR(45) NULL DEFAULT NULL ,
+  `order_no` INT(11) NULL DEFAULT NULL ,
+  `deleted` TINYINT(1) NOT NULL DEFAULT '0' ,
+  PRIMARY KEY (`emp_accounts_id`) ,
+  INDEX `fk_employee_employee_category1_idx` (`emp_account_category_id` ASC) ,
+  INDEX `fk_employee_campus1_idx` (`campus_id` ASC) ,
+  CONSTRAINT `fk_employee_campus1`
+    FOREIGN KEY (`campus_id` )
+    REFERENCES `tg_school`.`campus` (`campus_id` )
+    ON DELETE NO ACTION,
+  CONSTRAINT `fk_employee_employee_category1`
+    FOREIGN KEY (`emp_account_category_id` )
+    REFERENCES `tg_school`.`emp_account_category` (`emp_account_category_id` )
+    ON DELETE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 104
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `tg_school`.`designation`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `tg_school`.`designation` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT ,
+  `name` VARCHAR(100) NULL DEFAULT NULL ,
+  `assign_date` DATE NULL DEFAULT NULL ,
+  `leave_date` DATE NULL DEFAULT NULL ,
+  `remarks` VARCHAR(100) NULL DEFAULT NULL ,
+  `emp_accounts_id` INT(11) NOT NULL ,
+  `section_id` INT(11) NOT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `fk_designation_emp_accounts1_idx` (`emp_accounts_id` ASC) ,
+  INDEX `fk_designation_section1_idx` (`section_id` ASC) ,
+  CONSTRAINT `fk_designation_emp_accounts1`
+    FOREIGN KEY (`emp_accounts_id` )
+    REFERENCES `tg_school`.`emp_accounts` (`emp_accounts_id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_designation_section1`
+    FOREIGN KEY (`section_id` )
+    REFERENCES `tg_school`.`section` (`section_id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 106
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `tg_school`.`emp_account_attachment`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `tg_school`.`emp_account_attachment` (
+  `emp_account_attachment_id` INT(11) NOT NULL AUTO_INCREMENT ,
+  `emp_accounts_id` INT(11) NOT NULL ,
+  `attach_name` VARCHAR(100) NULL DEFAULT NULL ,
+  `attachement` MEDIUMBLOB NULL DEFAULT NULL ,
+  `remarks` VARCHAR(100) NULL DEFAULT NULL ,
+  PRIMARY KEY (`emp_account_attachment_id`) ,
+  INDEX `fk_emp_account_attachment_emp_accounts1_idx` (`emp_accounts_id` ASC) ,
+  CONSTRAINT `fk_emp_account_attachment_emp_accounts1`
+    FOREIGN KEY (`emp_accounts_id` )
+    REFERENCES `tg_school`.`emp_accounts` (`emp_accounts_id` )
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 104
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `tg_school`.`emp_certificate_issue`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `tg_school`.`emp_certificate_issue` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT ,
+  `certificate_name` VARCHAR(100) NULL DEFAULT NULL ,
+  `issue_date` DATE NULL DEFAULT NULL ,
+  `remarks` VARCHAR(100) NULL DEFAULT NULL ,
+  `emp_accounts_emp_accounts_id` INT(11) NOT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `fk_emp_certificate_issue_emp_accounts1_idx` (`emp_accounts_emp_accounts_id` ASC) ,
+  CONSTRAINT `fk_emp_certificate_issue_emp_accounts1`
+    FOREIGN KEY (`emp_accounts_emp_accounts_id` )
+    REFERENCES `tg_school`.`emp_accounts` (`emp_accounts_id` )
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 149
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `tg_school`.`exam_type`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `tg_school`.`exam_type` (
+  `exam_type_id` INT(11) NOT NULL AUTO_INCREMENT ,
+  `exam_name` VARCHAR(100) NOT NULL ,
+  `sequence_no` INT(2) NULL DEFAULT NULL ,
+  `remarks` VARCHAR(200) NULL DEFAULT NULL ,
+  PRIMARY KEY (`exam_type_id`) )
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `tg_school`.`subjects`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `tg_school`.`subjects` (
+  `class_id` INT(11) NOT NULL ,
+  `subject_id` INT(11) NOT NULL AUTO_INCREMENT ,
+  `subject_name` VARCHAR(100) NOT NULL ,
+  `total_marks` INT(40) NOT NULL ,
+  `passing_marks` INT(40) NOT NULL ,
+  `is_old` INT(1) NOT NULL DEFAULT '0' ,
+  `sequence_no` INT(3) NULL DEFAULT NULL ,
+  `remarks` VARCHAR(100) NOT NULL ,
+  PRIMARY KEY (`subject_id`) ,
+  INDEX `fk_subjects_classes1_idx` (`class_id` ASC) ,
+  CONSTRAINT `fk_subjects_classes1`
+    FOREIGN KEY (`class_id` )
+    REFERENCES `tg_school`.`classes` (`class_id` ))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `tg_school`.`exam_result`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `tg_school`.`exam_result` (
+  `exam_result_id` INT(11) NOT NULL AUTO_INCREMENT ,
+  `student_class_reg_id` INT(11) NOT NULL ,
+  `exam_type_id` INT(11) NOT NULL ,
+  `subject_id` INT(11) NOT NULL ,
+  `obtain_marks` INT(11) NOT NULL ,
+  `exam_date` DATE NULL DEFAULT NULL ,
+  `remarks` VARCHAR(100) NULL DEFAULT NULL ,
+  PRIMARY KEY (`exam_result_id`) ,
+  INDEX `student_class_reg_id` (`student_class_reg_id` ASC) ,
+  INDEX `fk_exam_result_exam_type1_idx` (`exam_type_id` ASC) ,
+  INDEX `fk_exam_result_subjects1_idx` (`subject_id` ASC) ,
+  CONSTRAINT `fk_exam_result_exam_type1`
+    FOREIGN KEY (`exam_type_id` )
+    REFERENCES `tg_school`.`exam_type` (`exam_type_id` )
+    ON DELETE NO ACTION,
+  CONSTRAINT `fk_exam_result_student_class_reg1`
+    FOREIGN KEY (`student_class_reg_id` )
+    REFERENCES `tg_school`.`student_class_reg` (`student_class_reg_id` )
+    ON DELETE NO ACTION,
+  CONSTRAINT `fk_exam_result_subjects1`
+    FOREIGN KEY (`subject_id` )
+    REFERENCES `tg_school`.`subjects` (`subject_id` )
+    ON DELETE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `tg_school`.`fees`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `tg_school`.`fees` (
+  `fees_id` INT(11) NOT NULL AUTO_INCREMENT ,
+  `month_id` INT(11) NOT NULL ,
+  `student_class_reg_id` INT(11) NOT NULL ,
+  `addmission_fee` INT(11) NULL DEFAULT '0' ,
+  `tution_fee` INT(11) NULL DEFAULT '0' ,
+  `exam_fee` INT(11) NULL DEFAULT '0' ,
+  `card_fee` INT(11) NULL DEFAULT '0' ,
+  `monthly_fee` INT(11) NULL DEFAULT '0' ,
+  `other_fee` INT(11) NULL DEFAULT '0' ,
+  `late_fee` INT(11) NULL DEFAULT '0' ,
+  `paid_fee` INT(11) NULL DEFAULT '0' ,
+  `due_date` DATE NULL DEFAULT NULL ,
+  `remaining` INT(11) NOT NULL DEFAULT '0' ,
+  `paid_date` DATE NULL DEFAULT NULL ,
+  `remarks` VARCHAR(100) NULL DEFAULT NULL ,
+  PRIMARY KEY (`fees_id`) ,
+  INDEX `fk_fees_months1_idx` (`month_id` ASC) ,
+  INDEX `fk_fees_student_class_reg1_idx` (`student_class_reg_id` ASC) ,
+  CONSTRAINT `fk_fees_months1`
+    FOREIGN KEY (`month_id` )
+    REFERENCES `tg_school`.`months` (`month_id` ),
+  CONSTRAINT `fk_fees_student_class_reg1`
+    FOREIGN KEY (`student_class_reg_id` )
+    REFERENCES `tg_school`.`student_class_reg` (`student_class_reg_id` ))
+ENGINE = InnoDB
+AUTO_INCREMENT = 4468
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `tg_school`.`fees_discount`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `tg_school`.`fees_discount` (
+  `fees_discount_id` INT(11) NOT NULL AUTO_INCREMENT ,
+  `student_id` INT(11) NOT NULL ,
+  `is_fixed` INT(1) NULL DEFAULT '0' ,
+  `fixed_amount` INT(10) NULL DEFAULT NULL ,
+  `discount_amount` INT(11) NULL DEFAULT NULL ,
+  `remarks` VARCHAR(100) NULL DEFAULT NULL ,
+  PRIMARY KEY (`fees_discount_id`) ,
+  INDEX `fk_fees_discount_student1_idx` (`student_id` ASC) ,
+  CONSTRAINT `fk_fees_discount_student1`
+    FOREIGN KEY (`student_id` )
+    REFERENCES `tg_school`.`student` (`student_id` )
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+AUTO_INCREMENT = 643
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `tg_school`.`fees_structure`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `tg_school`.`fees_structure` (
+  `fees_structure_id` INT(11) NOT NULL AUTO_INCREMENT ,
+  `class_id` INT(11) NOT NULL ,
+  `campus_id` INT(11) NOT NULL ,
+  `amount` INT(11) NOT NULL ,
+  `remarks` VARCHAR(200) NULL DEFAULT NULL ,
+  PRIMARY KEY (`fees_structure_id`) ,
+  INDEX `fk_fees_structure_campus1_idx` (`campus_id` ASC) ,
+  INDEX `fk_fees_structure_classes1_idx` (`class_id` ASC) ,
+  CONSTRAINT `fk_fees_structure_campus1`
+    FOREIGN KEY (`campus_id` )
+    REFERENCES `tg_school`.`campus` (`campus_id` ),
+  CONSTRAINT `fk_fees_structure_classes1`
+    FOREIGN KEY (`class_id` )
+    REFERENCES `tg_school`.`classes` (`class_id` ))
+ENGINE = InnoDB
+AUTO_INCREMENT = 53
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `tg_school`.`grade`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `tg_school`.`grade` (
+  `grade_id` INT(11) NOT NULL AUTO_INCREMENT ,
+  `name` VARCHAR(10) NOT NULL ,
+  `perc_min` FLOAT NOT NULL ,
+  `perc_max` FLOAT NOT NULL ,
+  `remarks` VARCHAR(100) NULL DEFAULT NULL ,
+  PRIMARY KEY (`grade_id`) )
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `tg_school`.`login_detail`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `tg_school`.`login_detail` (
+  `login_detail_id` INT(11) NOT NULL AUTO_INCREMENT ,
+  `login_date` DATE NOT NULL ,
+  `action` VARCHAR(50) NOT NULL ,
+  `user_id` INT(11) NOT NULL ,
+  `login_time` TIME NOT NULL ,
+  PRIMARY KEY (`login_detail_id`) )
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `tg_school`.`module`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `tg_school`.`module` (
+  `name` VARCHAR(100) NOT NULL ,
+  `remarks` VARCHAR(100) NULL DEFAULT NULL ,
+  PRIMARY KEY (`name`) )
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `tg_school`.`salary`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `tg_school`.`salary` (
+  `salary_id` INT(11) NOT NULL AUTO_INCREMENT ,
+  `emp_accounts_id` INT(11) NOT NULL ,
+  `month_id` INT(11) NOT NULL ,
+  `amount` INT(11) NULL DEFAULT '0' ,
+  `remarks` VARCHAR(100) NULL DEFAULT NULL ,
+  `deposit` INT(11) NULL DEFAULT NULL ,
+  `casual_leave` INT(11) NULL DEFAULT NULL ,
+  `warning` INT(11) NULL DEFAULT NULL ,
+  `late` INT(11) NULL DEFAULT NULL ,
+  `went_early` INT(11) NULL DEFAULT NULL ,
+  `other` INT(11) NULL DEFAULT NULL ,
+  `bonus` INT(11) NULL DEFAULT NULL ,
+  `deposit_remarls` VARCHAR(100) NULL DEFAULT NULL ,
+  `casual_leave_remarks` VARCHAR(100) NULL DEFAULT NULL ,
+  `warning_remarks` VARCHAR(100) NULL DEFAULT NULL ,
+  `late_remarks` VARCHAR(100) NULL DEFAULT NULL ,
+  `went_early_remarks` VARCHAR(100) NULL DEFAULT NULL ,
+  `other_remarks` VARCHAR(100) NULL DEFAULT NULL ,
+  `bonus_remarks` VARCHAR(100) NULL DEFAULT NULL ,
+  `basic_salary` INT(11) NULL DEFAULT NULL ,
+  `travelling_allowance` INT(11) NULL DEFAULT NULL ,
+  `other_allowance` INT(11) NULL DEFAULT NULL ,
+  `coordinate_allowace` INT(11) NULL DEFAULT '0' ,
+  `five_year_allowance` INT(11) NULL DEFAULT '0' ,
+  `medical_allowance` INT(11) NULL DEFAULT '0' ,
+  `ct_allowance` INT(11) NULL DEFAULT '0' ,
+  `head_allowance` INT(11) NULL DEFAULT '0' ,
+  `working_days` INT(11) NULL DEFAULT '0' ,
+  PRIMARY KEY (`salary_id`) ,
+  INDEX `fk_salary_emp_accounts1_idx` (`emp_accounts_id` ASC) ,
+  INDEX `fk_salary_months1_idx` (`month_id` ASC) ,
+  CONSTRAINT `fk_salary_emp_accounts1`
+    FOREIGN KEY (`emp_accounts_id` )
+    REFERENCES `tg_school`.`emp_accounts` (`emp_accounts_id` )
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_salary_months1`
+    FOREIGN KEY (`month_id` )
+    REFERENCES `tg_school`.`months` (`month_id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 11
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `tg_school`.`school_config`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `tg_school`.`school_config` (
+  `key_name` VARCHAR(200) NOT NULL ,
+  `value_name` VARCHAR(500) NOT NULL ,
+  `remarks` VARCHAR(200) NULL DEFAULT NULL ,
+  PRIMARY KEY (`key_name`) )
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `tg_school`.`sms_history`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `tg_school`.`sms_history` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT ,
+  `message` VARCHAR(500) NULL DEFAULT NULL ,
+  `send_date` DATETIME NULL DEFAULT NULL ,
+  `remarks` VARCHAR(200) NULL DEFAULT NULL ,
+  `student_id` INT(11) NOT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `fk_sms_history_student1_idx` (`student_id` ASC) ,
+  CONSTRAINT `fk_sms_history_student1`
+    FOREIGN KEY (`student_id` )
+    REFERENCES `tg_school`.`student` (`student_id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `tg_school`.`student_attachment`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `tg_school`.`student_attachment` (
+  `student_attachment_id` INT(11) NOT NULL AUTO_INCREMENT ,
+  `student_id` INT(11) NOT NULL ,
+  `attachement_name` VARCHAR(100) NULL DEFAULT NULL ,
+  `attachment` MEDIUMBLOB NULL DEFAULT NULL ,
+  `remarks` VARCHAR(100) NULL DEFAULT NULL ,
+  PRIMARY KEY (`student_attachment_id`) ,
+  INDEX `fk_student_attachment_student1_idx` (`student_id` ASC) ,
+  CONSTRAINT `fk_student_attachment_student1`
+    FOREIGN KEY (`student_id` )
+    REFERENCES `tg_school`.`student` (`student_id` )
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+AUTO_INCREMENT = 763
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `tg_school`.`student_certificate_issue`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `tg_school`.`student_certificate_issue` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT ,
+  `certificate_name` VARCHAR(100) NULL DEFAULT NULL ,
+  `issue_date` DATE NULL DEFAULT NULL ,
+  `remarks` VARCHAR(100) NULL DEFAULT NULL ,
+  `student_student_id` INT(11) NOT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `fk_student_certificate_issue_student1_idx` (`student_student_id` ASC) ,
+  CONSTRAINT `fk_student_certificate_issue_student1`
+    FOREIGN KEY (`student_student_id` )
+    REFERENCES `tg_school`.`student` (`student_id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 5
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `tg_school`.`tg_user`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `tg_school`.`tg_user` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT ,
+  `name` VARCHAR(200) NOT NULL ,
+  `password` VARCHAR(200) CHARACTER SET 'latin1' COLLATE 'latin1_bin' NOT NULL ,
+  `is_deleted` TINYINT(1) NULL DEFAULT NULL ,
+  `remarks` VARCHAR(200) NULL DEFAULT NULL ,
+  PRIMARY KEY (`id`) ,
+  UNIQUE INDEX `name_UNIQUE` (`name` ASC) )
+ENGINE = InnoDB
+AUTO_INCREMENT = 6
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `tg_school`.`user_privilege`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `tg_school`.`user_privilege` (
+  `module_name` VARCHAR(100) NOT NULL ,
+  `is_active` TINYINT(1) NULL DEFAULT '0' ,
+  `is_add` TINYINT(1) NULL DEFAULT '0' ,
+  `is_delete` TINYINT(1) NULL DEFAULT '0' ,
+  `is_update` TINYINT(1) NULL DEFAULT '0' ,
+  `remarks` VARCHAR(100) NULL DEFAULT NULL ,
+  `tg_user_id` INT(11) NOT NULL ,
+  PRIMARY KEY (`module_name`, `tg_user_id`) ,
+  INDEX `fk_user_privilege_tg_user1_idx` (`tg_user_id` ASC) ,
+  CONSTRAINT `fk_privilege_module1`
+    FOREIGN KEY (`module_name` )
+    REFERENCES `tg_school`.`module` (`name` )
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_user_privilege_tg_user1`
+    FOREIGN KEY (`tg_user_id` )
+    REFERENCES `tg_school`.`tg_user` (`id` )
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+USE `tg_school` ;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

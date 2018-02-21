@@ -1,0 +1,25 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.school.constant;
+
+/**
+ * @author JAY KUMAR
+ */
+
+/**
+ * These are keys which is helpful to store their
+ * values in database.
+ * These are shown in Configuration JFrame.
+ */
+
+public interface Configuration {
+
+    public final String SCHOOL = "school";
+    public final String CONTACT = "contact";
+    public final String LOGO = "logo";
+    public final String EMAIL = "email";
+    public final String PRINCIPAL = "principal";
+    public final String DEVELOPER = "developer";
+}

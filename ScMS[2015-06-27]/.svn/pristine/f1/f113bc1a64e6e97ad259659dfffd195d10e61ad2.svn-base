@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="25" bottomMargin="20" uuid="1e239449-fa2c-46d3-80d7-9a000e64b6d0">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="monthName" class="java.lang.String"/>
+	<parameter name="yearName" class="java.lang.String"/>
+	<field name="employeeName" class="java.lang.String"/>
+	<field name="father" class="java.lang.String"/>
+	<field name="paid" class="java.lang.Integer"/>
+	<variable name="today" class="java.lang.String">
+		<variableExpression><![CDATA[new java.text.SimpleDateFormat("dd-MM-YYYY").format(new java.util.Date())]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="97" splitType="Stretch">
+			<textField>
+				<reportElement uuid="71a8d32a-31f3-4658-a0bf-831009c4b157" x="215" y="77" width="100" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{monthName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="7c2c3fbc-1881-4b46-b3fe-4e2e409cc3e7" x="451" y="77" width="100" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{yearName}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement uuid="30a5e758-a60e-4a44-8ed2-088eb815c304" x="1" y="30" width="552" height="20"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="86bc7e30-9b68-4697-80dd-923bd799f861" x="185" y="0" width="268" height="28"/>
+				<textElement textAlignment="Left" rotation="None">
+					<font fontName="Penguin" size="18" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[The Guardian ]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="1d398717-8614-4f98-b304-49597980c8f8" x="91" y="35" width="130" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Bhurgari Road, Hirabad, Hyd."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="1d398717-8614-4f98-b304-49597980c8f8" x="309" y="35" width="244" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["B-12, Block C, Behind Qamar Arcade Unit # 06 Latifabad, Hyd."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="648395b1-762a-4c23-9462-b1fba07f31b5" mode="Opaque" x="234" y="35" width="75" height="12" forecolor="#FFFFFF" backcolor="#000000"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Latifabad Campus:"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="2328fef0-8d7d-4b6b-af34-228b9cfe645f" mode="Opaque" x="288" y="6" width="105" height="13" forecolor="#FFFFFF" backcolor="#000000"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[School of Excellence]]></text>
+			</staticText>
+			<image>
+				<reportElement uuid="6bbc0d86-a1ac-441b-ac1d-b74f52f4ead1" x="1" y="-10" width="172" height="40"/>
+				<imageExpression><![CDATA["TGS 2014 Logo.jpg"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement uuid="648395b1-762a-4c23-9462-b1fba07f31b5" mode="Opaque" x="11" y="35" width="80" height="12" forecolor="#FFFFFF" backcolor="#000000"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Boys/Girls Campus:"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="25" splitType="Stretch">
+			<rectangle radius="2">
+				<reportElement uuid="4c386646-b1e8-4e77-9399-fb88798a30ef" x="0" y="0" width="555" height="25"/>
+				<graphicElement>
+					<pen lineWidth="2.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="4d48e37d-b8b9-476c-8db2-094110a06a7d" x="0" y="0" width="131" height="25"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NAME]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="31f30696-9acb-4889-8584-017b0fddc918" x="131" y="0" width="134" height="25"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FATHER]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="80b615ca-ab75-44f6-bcff-9c47f4deedf6" x="265" y="0" width="111" height="25"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[PAID AMOUNT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="80b615ca-ab75-44f6-bcff-9c47f4deedf6" x="376" y="0" width="179" height="25"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[SIGNATURE]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="ff16af72-58d8-4559-908d-171ad8862a2a" x="376" y="0" width="1" height="25"/>
+			</line>
+			<line>
+				<reportElement uuid="ff16af72-58d8-4559-908d-171ad8862a2a" x="265" y="0" width="1" height="25"/>
+			</line>
+			<line>
+				<reportElement uuid="ff16af72-58d8-4559-908d-171ad8862a2a" x="131" y="0" width="1" height="25"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="31" splitType="Stretch">
+			<textField>
+				<reportElement uuid="7ef828ed-e985-49aa-8162-9cf2a534f1a7" x="0" y="0" width="131" height="30"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{employeeName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="aa795580-76a3-4b41-b3e2-88c4f6ade463" x="131" y="0" width="134" height="25"/>
+				<textElement verticalAlignment="Middle">
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{father}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="3ff7eca0-7d45-4608-86a6-00bb94ebdfb3" x="265" y="0" width="111" height="25"/>
+				<textElement verticalAlignment="Middle">
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{paid}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="5723facc-8e0b-4ed4-8717-06582e2e77fa" x="0" y="30" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="ff16af72-58d8-4559-908d-171ad8862a2a" x="376" y="0" width="1" height="30"/>
+			</line>
+			<line>
+				<reportElement uuid="ff16af72-58d8-4559-908d-171ad8862a2a" x="265" y="0" width="1" height="30"/>
+			</line>
+			<line>
+				<reportElement uuid="ff16af72-58d8-4559-908d-171ad8862a2a" x="131" y="0" width="1" height="30"/>
+			</line>
+			<line>
+				<reportElement uuid="ff16af72-58d8-4559-908d-171ad8862a2a" x="555" y="0" width="1" height="30"/>
+			</line>
+			<line>
+				<reportElement uuid="ff16af72-58d8-4559-908d-171ad8862a2a" x="0" y="0" width="1" height="30"/>
+			</line>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="b0eec7f9-9d78-47ab-b188-4967ddf6ab85" x="203" y="0" width="196" height="20"/>
+				<textElement>
+					<font size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[The Guradian School Of Excellence]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="ef32de4f-48f4-4fae-8ac1-d4cfd3bc2e4e" x="1" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$V{today}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

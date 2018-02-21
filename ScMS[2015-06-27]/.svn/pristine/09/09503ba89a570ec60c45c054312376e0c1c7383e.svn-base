@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="575" leftMargin="0" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7db5d064-e6aa-4d42-b845-6acad183c854">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<field name="studentName" class="java.lang.String"/>
+	<field name="fatherName" class="java.lang.String"/>
+	<field name="totalDays" class="java.lang.Integer"/>
+	<field name="presentDays" class="java.lang.Integer"/>
+	<field name="grNo" class="java.lang.Integer"/>
+	<variable name="sno" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$V{sno}+1]]></variableExpression>
+		<initialValueExpression><![CDATA[1]]></initialValueExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="20">
+			<rectangle>
+				<reportElement uuid="68f25b1e-f8da-4578-99ef-c5500ebe5b2c" x="0" y="0" width="551" height="20" backcolor="#666666"/>
+				<graphicElement>
+					<pen lineWidth="2.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="e38dd310-83b3-45ba-9cd0-f49053cdf095" x="87" y="0" width="130" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NAME]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e38dd310-83b3-45ba-9cd0-f49053cdf095" x="217" y="0" width="150" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FATHER]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e38dd310-83b3-45ba-9cd0-f49053cdf095" x="367" y="0" width="95" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL DAYS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e38dd310-83b3-45ba-9cd0-f49053cdf095" x="462" y="0" width="93" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PRESENT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e38dd310-83b3-45ba-9cd0-f49053cdf095" x="0" y="0" width="40" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[S#]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e38dd310-83b3-45ba-9cd0-f49053cdf095" x="40" y="0" width="47" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[GR#]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="30">
+			<rectangle>
+				<reportElement uuid="26e6ddce-25ac-405f-83bd-30dfbe8dfd32" x="87" y="0" width="130" height="30"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="cf0fec70-249e-49fc-a725-58fbaf73f8eb" x="462" y="0" width="89" height="30"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="a47f8c6d-6ef2-4688-af5b-1886ff97945b" x="346" y="0" width="116" height="30"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="fe736256-8924-4c76-93cc-2f6dbef29f49" x="217" y="0" width="150" height="30"/>
+			</rectangle>
+			<textField>
+				<reportElement uuid="02d5768a-c063-4a19-aa05-4ac3e9f95eae" x="87" y="0" width="130" height="30"/>
+				<textElement>
+					<paragraph leftIndent="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{studentName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="5b5c5c0a-7a00-4877-a4a7-d5debbddf743" x="217" y="0" width="150" height="30"/>
+				<textElement>
+					<paragraph leftIndent="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fatherName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="a2166e09-4bbb-4efa-ad07-d398da40f499" x="367" y="0" width="95" height="30"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{totalDays}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="3b56b548-03e2-4e43-80fe-804ea3cb11d6" x="462" y="0" width="82" height="30"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{presentDays}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement uuid="5267eb36-b559-4935-af46-04afed01a035" x="0" y="0" width="40" height="30"/>
+			</rectangle>
+			<textField>
+				<reportElement uuid="288739d7-198a-4fa5-88eb-fe796d295267" x="0" y="0" width="40" height="30"/>
+				<textElement>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sno}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement uuid="5267eb36-b559-4935-af46-04afed01a035" x="40" y="0" width="47" height="30"/>
+			</rectangle>
+			<textField>
+				<reportElement uuid="17625e21-c5a9-4fa0-ba06-87417128f113" x="40" y="0" width="47" height="30"/>
+				<textElement>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{grNo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

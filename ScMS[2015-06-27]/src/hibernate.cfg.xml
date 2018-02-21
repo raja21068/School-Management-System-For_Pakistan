@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <session-factory>
+    <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+    <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/tg_school?createDatabaseIfNotExist=true</property>
+    <property name="hibernate.connection.username">root</property>
+    <property name="hibernate.connection.password">root</property>
+    <property name="hibernate.current_session_context_class">thread</property>
+    <property name="hibernate.hbm2ddl.auto">update</property>
+    <mapping class="com.school.model.Months"/>
+    <mapping class="com.school.model.Attendence"/>
+    <mapping class="com.school.model.ExamType"/>
+    <mapping class="com.school.model.Section"/>
+    <mapping class="com.school.model.Subjects"/>
+    <mapping class="com.school.model.Fees"/>
+    <mapping class="com.school.model.StudentClassReg"/>
+    <mapping class="com.school.model.Event"/>
+    <mapping class="com.school.model.ExamResult"/>
+    <mapping class="com.school.model.Student"/>
+    <mapping class="com.school.model.SchoolConfig"/>
+    <mapping class="com.school.model.FeesDiscount"/>
+    <mapping class="com.school.model.Campus"/>
+    <mapping class="com.school.model.EmpAccountAttachment"/>
+    <mapping class="com.school.model.EmpCertificateIssue"/>
+    <mapping class="com.school.model.Designation"/>
+    <mapping class="com.school.model.Awards"/>
+    <mapping class="com.school.model.Module"/>
+    <mapping class="com.school.model.EmpAccounts"/>
+    <mapping class="com.school.model.LoginDetail"/>
+    <mapping class="com.school.model.FeesStructure"/>
+    <mapping class="com.school.model.SmsHistory"/>
+    <mapping class="com.school.model.Classes"/>
+    <mapping class="com.school.model.Grade"/>
+    <mapping class="com.school.model.UserPrivilegeId"/>
+    <mapping class="com.school.model.EmpAccountCategory"/>
+    <mapping class="com.school.model.StudentAttachment"/>
+    <mapping class="com.school.model.UserPrivilege"/>
+    <mapping class="com.school.model.StudentCertificateIssue"/>
+    <mapping class="com.school.model.Salary"/>
+    <mapping class="com.school.model.TgUser"/>
+    <mapping class="com.school.model.Years"/>
+  </session-factory>
+</hibernate-configuration>

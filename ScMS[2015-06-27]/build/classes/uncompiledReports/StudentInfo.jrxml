@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Defaulter Students" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="25" bottomMargin="10" uuid="be9416a7-5dd9-49d5-b364-9d1fa3221711">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="177"/>
+	<property name="ireport.y" value="0"/>
+	<field name="studentName" class="java.lang.String"/>
+	<field name="fatherName" class="java.lang.String"/>
+	<field name="grNo" class="java.lang.Integer"/>
+	<field name="surname" class="java.lang.String"/>
+	<field name="remarks" class="java.lang.String"/>
+	<variable name="today" class="java.lang.String">
+		<variableExpression><![CDATA[new java.text.SimpleDateFormat("dd-MM-YYYY").format(new java.util.Date())]]></variableExpression>
+	</variable>
+	<variable name="sno" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$V{sno}+1]]></variableExpression>
+		<initialValueExpression><![CDATA[1]]></initialValueExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="91" splitType="Stretch">
+			<rectangle>
+				<reportElement uuid="68f25b1e-f8da-4578-99ef-c5500ebe5b2c" x="0" y="71" width="555" height="20" backcolor="#666666"/>
+				<graphicElement>
+					<pen lineWidth="2.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="e38dd310-83b3-45ba-9cd0-f49053cdf095" x="123" y="71" width="121" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NAME]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e38dd310-83b3-45ba-9cd0-f49053cdf095" x="244" y="71" width="110" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FATHER]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="19d6be10-4f70-4f05-a66a-8f1033867850" x="44" y="71" width="79" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[GR#]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e38dd310-83b3-45ba-9cd0-f49053cdf095" x="354" y="71" width="110" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SURNAME]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="30a5e758-a60e-4a44-8ed2-088eb815c304" x="11" y="40" width="552" height="20"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="86bc7e30-9b68-4697-80dd-923bd799f861" x="195" y="10" width="268" height="28"/>
+				<textElement textAlignment="Left" rotation="None">
+					<font fontName="Penguin" size="18" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[The Guardian ]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="1d398717-8614-4f98-b304-49597980c8f8" x="101" y="45" width="130" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Bhurgari Road, Hirabad, Hyd."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="1d398717-8614-4f98-b304-49597980c8f8" x="321" y="45" width="244" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["B-12, Block C, Behind Qamar Arcade Unit # 06 Latifabad, Hyd."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="648395b1-762a-4c23-9462-b1fba07f31b5" mode="Opaque" x="244" y="45" width="75" height="12" forecolor="#FFFFFF" backcolor="#000000"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Latifabad Campus:"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="2328fef0-8d7d-4b6b-af34-228b9cfe645f" mode="Opaque" x="298" y="16" width="105" height="13" forecolor="#FFFFFF" backcolor="#000000"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[School of Excellence]]></text>
+			</staticText>
+			<image>
+				<reportElement uuid="6bbc0d86-a1ac-441b-ac1d-b74f52f4ead1" x="11" y="0" width="172" height="40"/>
+				<imageExpression><![CDATA["TGS 2014 Logo.jpg"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement uuid="648395b1-762a-4c23-9462-b1fba07f31b5" mode="Opaque" x="21" y="45" width="80" height="12" forecolor="#FFFFFF" backcolor="#000000"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Boys/Girls Campus:"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="19d6be10-4f70-4f05-a66a-8f1033867850" x="0" y="71" width="44" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[S#]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e38dd310-83b3-45ba-9cd0-f49053cdf095" x="464" y="71" width="91" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[REMARKS]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<rectangle>
+				<reportElement uuid="26e6ddce-25ac-405f-83bd-30dfbe8dfd32" x="44" y="0" width="79" height="30"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="cf0fec70-249e-49fc-a725-58fbaf73f8eb" x="123" y="0" width="121" height="30"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="a47f8c6d-6ef2-4688-af5b-1886ff97945b" x="354" y="0" width="110" height="30"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="fe736256-8924-4c76-93cc-2f6dbef29f49" x="244" y="0" width="110" height="30"/>
+			</rectangle>
+			<textField>
+				<reportElement uuid="0e78b56b-49b0-4b78-91e7-49bff6871921" x="123" y="0" width="121" height="30"/>
+				<textElement textAlignment="Left">
+					<paragraph leftIndent="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{studentName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="2fabbd32-59e2-444c-9226-b80c65f97861" x="44" y="0" width="79" height="30"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{grNo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="d92b7c79-b816-4edb-995d-6091c80434eb" x="244" y="0" width="110" height="30"/>
+				<textElement textAlignment="Left">
+					<paragraph leftIndent="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fatherName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="312e6d12-9bba-4507-a5a1-a20f2e9c74ca" x="354" y="0" width="110" height="30"/>
+				<textElement textAlignment="Left">
+					<paragraph leftIndent="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{surname}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement uuid="26e6ddce-25ac-405f-83bd-30dfbe8dfd32" x="0" y="0" width="44" height="30"/>
+			</rectangle>
+			<textField>
+				<reportElement uuid="a9eab186-aee3-44e4-9c5d-cc417d0f8e2e" x="0" y="0" width="44" height="30"/>
+				<textElement>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sno}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement uuid="a47f8c6d-6ef2-4688-af5b-1886ff97945b" x="464" y="0" width="91" height="30"/>
+			</rectangle>
+			<textField>
+				<reportElement uuid="96218aa0-71b0-4bd3-9f70-3ccfaf88255b" x="465" y="0" width="90" height="30"/>
+				<textElement>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{remarks}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="19">
+			<textField>
+				<reportElement uuid="2736c274-5ab1-41a9-8c2e-be87a7efcd9f" x="11" y="2" width="100" height="17"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$V{today}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="6055a393-a9b0-4a78-9dc8-05c8bdcf4981" x="142" y="0" width="180" height="18"/>
+				<textElement/>
+				<text><![CDATA[The Guardian School Of Excellence]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>

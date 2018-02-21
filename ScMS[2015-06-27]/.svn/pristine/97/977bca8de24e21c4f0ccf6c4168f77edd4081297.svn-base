@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Defaulter Students" pageWidth="555" pageHeight="842" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="be9416a7-5dd9-49d5-b364-9d1fa3221711">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<field name="studentName" class="java.lang.String"/>
+	<field name="fatherName" class="java.lang.String"/>
+	<field name="grNo" class="java.lang.String"/>
+	<field name="surname" class="java.lang.String"/>
+	<field name="dateOfAddmission" class="java.util.Date"/>
+	<field name="dateOfLeaving" class="java.util.Date"/>
+	<field name="remarks" class="java.lang.String"/>
+	<variable name="admDate" class="java.lang.String">
+		<variableExpression><![CDATA[new java.text.SimpleDateFormat("dd-MM-YYYY").format($F{dateOfAddmission})]]></variableExpression>
+	</variable>
+	<variable name="leavingDate" class="java.lang.String">
+		<variableExpression><![CDATA[new java.text.SimpleDateFormat("dd-MM-YYYY").format($F{dateOfLeaving})]]></variableExpression>
+	</variable>
+	<variable name="sno" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$V{sno}+1]]></variableExpression>
+		<initialValueExpression><![CDATA[1]]></initialValueExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="17" splitType="Stretch">
+			<rectangle>
+				<reportElement uuid="68f25b1e-f8da-4578-99ef-c5500ebe5b2c" x="0" y="0" width="555" height="17" backcolor="#666666"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="e38dd310-83b3-45ba-9cd0-f49053cdf095" x="74" y="0" width="121" height="17" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NAME]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e38dd310-83b3-45ba-9cd0-f49053cdf095" x="195" y="0" width="110" height="17" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FATHER]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="19d6be10-4f70-4f05-a66a-8f1033867850" x="32" y="0" width="42" height="17" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[GR#]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e38dd310-83b3-45ba-9cd0-f49053cdf095" x="305" y="0" width="74" height="17" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ADM. DATE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="19d6be10-4f70-4f05-a66a-8f1033867850" x="1" y="0" width="31" height="17" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[S#]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e38dd310-83b3-45ba-9cd0-f49053cdf095" x="380" y="0" width="74" height="17" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[LEAVING]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e38dd310-83b3-45ba-9cd0-f49053cdf095" x="454" y="0" width="90" height="17" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[REMARKS]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<rectangle>
+				<reportElement uuid="fe736256-8924-4c76-93cc-2f6dbef29f49" x="195" y="0" width="110" height="30"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="325089f3-1f63-4229-adfe-a3efd106e7e1" x="0" y="0" width="30" height="30"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="26e6ddce-25ac-405f-83bd-30dfbe8dfd32" x="32" y="0" width="42" height="30"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="cf0fec70-249e-49fc-a725-58fbaf73f8eb" x="74" y="0" width="121" height="30"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="a47f8c6d-6ef2-4688-af5b-1886ff97945b" x="305" y="0" width="74" height="30"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="a47f8c6d-6ef2-4688-af5b-1886ff97945b" x="454" y="0" width="101" height="30"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="a47f8c6d-6ef2-4688-af5b-1886ff97945b" x="379" y="0" width="75" height="30"/>
+			</rectangle>
+			<textField>
+				<reportElement uuid="d92b7c79-b816-4edb-995d-6091c80434eb" x="195" y="0" width="110" height="30"/>
+				<textElement textAlignment="Left">
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fatherName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="01117c86-6e8b-46e0-bf91-c085e7228098" x="454" y="0" width="101" height="30"/>
+				<textElement>
+					<font isBold="true"/>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{remarks}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="2fabbd32-59e2-444c-9226-b80c65f97861" x="32" y="0" width="42" height="30"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{grNo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="6d70ccd7-35ad-47f6-8f15-83f25093eaa9" x="305" y="0" width="74" height="30"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$V{admDate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="0e78b56b-49b0-4b78-91e7-49bff6871921" x="74" y="0" width="121" height="30"/>
+				<textElement textAlignment="Left">
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{studentName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="70ab8629-723a-4492-af04-ea1d35b4fe9a" x="0" y="0" width="31" height="30"/>
+				<textElement>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sno}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="dafa1894-9cc9-4e5a-9f60-11d09927c439" x="380" y="0" width="74" height="30"/>
+				<textElement>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{leavingDate}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

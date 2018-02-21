@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="575" leftMargin="10" rightMargin="10" topMargin="0" bottomMargin="0" uuid="191f5caa-5fa1-4e6c-94ba-7d9ec1daa82f">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<field name="student" class="java.lang.Object"/>
+	<field name="awardsName" class="java.lang.String"/>
+	<field name="postion" class="java.lang.String"/>
+	<variable name="fatherName" class="java.lang.String">
+		<variableExpression><![CDATA[((bean.Student)$F{student}).getFatherName()]]></variableExpression>
+	</variable>
+	<variable name="grNo" class="java.lang.Integer">
+		<variableExpression><![CDATA[((bean.Student)$F{student}).getStudentId()]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<rectangle>
+				<reportElement uuid="68f25b1e-f8da-4578-99ef-c5500ebe5b2c" x="0" y="0" width="575" height="20" backcolor="#666666"/>
+				<graphicElement>
+					<pen lineWidth="2.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="e38dd310-83b3-45ba-9cd0-f49053cdf095" x="79" y="0" width="144" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NAME]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="19d6be10-4f70-4f05-a66a-8f1033867850" x="0" y="0" width="79" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[GR#]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e38dd310-83b3-45ba-9cd0-f49053cdf095" mode="Transparent" x="223" y="0" width="137" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FATHER]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ffb1d699-e371-4e69-b235-5a6b930c98fc" x="360" y="0" width="100" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[POSITION]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ffb1d699-e371-4e69-b235-5a6b930c98fc" x="460" y="0" width="115" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[AWARD]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<rectangle>
+				<reportElement uuid="26e6ddce-25ac-405f-83bd-30dfbe8dfd32" x="0" y="0" width="79" height="30"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="26e6ddce-25ac-405f-83bd-30dfbe8dfd32" x="79" y="0" width="144" height="30"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="26e6ddce-25ac-405f-83bd-30dfbe8dfd32" x="223" y="0" width="137" height="30"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="26e6ddce-25ac-405f-83bd-30dfbe8dfd32" x="360" y="0" width="100" height="30"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="26e6ddce-25ac-405f-83bd-30dfbe8dfd32" x="458" y="0" width="117" height="30"/>
+			</rectangle>
+			<textField>
+				<reportElement uuid="b92c01c9-e567-4a46-a1c0-bb237c67a340" x="460" y="0" width="115" height="30"/>
+				<textElement>
+					<font size="9"/>
+					<paragraph leftIndent="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{awardsName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="acc98fc2-c926-48e6-b79a-b436c68fa986" x="360" y="0" width="100" height="30"/>
+				<textElement>
+					<font size="9"/>
+					<paragraph leftIndent="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{postion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="fb051711-2b41-49a6-9f4d-f9c01b70e20a" x="79" y="0" width="144" height="30"/>
+				<textElement>
+					<font size="9"/>
+					<paragraph leftIndent="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""+$F{student}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="cbe8614c-755e-46b4-89d4-ef0c40ae6a2c" x="223" y="0" width="137" height="30"/>
+				<textElement>
+					<font size="9"/>
+					<paragraph leftIndent="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{fatherName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="177ad30a-9cc0-4a77-be07-c32820ba4ddb" x="0" y="0" width="79" height="30"/>
+				<textElement>
+					<paragraph leftIndent="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{grNo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

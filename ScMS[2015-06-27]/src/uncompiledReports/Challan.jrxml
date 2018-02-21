@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="f64a8da7-6e5e-454d-8f7e-89bfc975c48b">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="143"/>
+	<property name="ireport.y" value="29"/>
+	<field name="studentName" class="java.lang.String"/>
+	<field name="fatherName" class="java.lang.String"/>
+	<field name="className" class="java.lang.String"/>
+	<field name="months" class="java.lang.String"/>
+	<field name="dueDate" class="java.lang.String"/>
+	<field name="issueDate" class="java.lang.String"/>
+	<field name="addmission" class="java.lang.Integer"/>
+	<field name="tution" class="java.lang.Integer"/>
+	<field name="exam" class="java.lang.Integer"/>
+	<field name="late" class="java.lang.Integer"/>
+	<field name="other" class="java.lang.Integer"/>
+	<field name="laboratory" class="java.lang.Integer"/>
+	<variable name="paymentBefore" class="java.lang.Integer">
+		<variableExpression><![CDATA[$F{addmission}+$F{tution}+$F{exam}+$F{other}+$F{laboratory}]]></variableExpression>
+	</variable>
+	<variable name="paymentAfter" class="java.lang.Integer">
+		<variableExpression><![CDATA[$F{addmission}+$F{tution}+$F{exam}+$F{late}+$F{other}+$F{laboratory}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="595" splitType="Stretch">
+			<textField>
+				<reportElement uuid="0e7769ed-7836-4ccc-8c3c-e59fd097ad1d" x="194" y="388" width="100" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{late}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="8f17f386-d573-4864-8d5c-a230dc7dfe44" x="62" y="199" width="227" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{fatherName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f648e4ca-44a1-49a4-ab23-a0617d322042" x="194" y="338" width="100" height="15"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{exam}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="648afdbc-5231-4aa3-85a6-bf9cc3627280" x="143" y="250" width="146" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{months}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="720faba9-1185-419f-a7c4-ffbee368432a" x="62" y="177" width="227" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{studentName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="c64cfbc5-39eb-406e-bbc9-373be3b4e0a4" x="194" y="413" width="100" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{other}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="111dc7b7-7e28-4ab5-a1e2-d1db496c4300" x="62" y="222" width="227" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{className}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="5ba2c771-7275-4548-8d66-524f27f5f2f4" x="207" y="118" width="100" height="14"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{issueDate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="14c53575-465b-4fa6-9471-c184986ad111" x="194" y="318" width="100" height="16"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{tution}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="5b1a1a75-0ac4-4ec4-b724-1182e21832e0" x="194" y="365" width="100" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{laboratory}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="6b32d13c-db7b-4ed3-878e-7194671ce539" x="207" y="142" width="100" height="15"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{dueDate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="a3307f37-a092-44ae-8f14-6b9313f43c4e" x="194" y="291" width="100" height="16"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{addmission}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="08068f8d-b644-4b31-a221-2de51d64e3a3" x="194" y="438" width="102" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$V{paymentBefore}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="cbc0a794-18ae-410b-b8e5-467f5704d419" x="194" y="465" width="100" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$V{paymentAfter}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="08068f8d-b644-4b31-a221-2de51d64e3a3" x="502" y="438" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$V{paymentBefore}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="648afdbc-5231-4aa3-85a6-bf9cc3627280" x="432" y="250" width="146" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{months}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f648e4ca-44a1-49a4-ab23-a0617d322042" x="502" y="338" width="100" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{exam}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="14c53575-465b-4fa6-9471-c184986ad111" x="502" y="314" width="100" height="16"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{tution}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="111dc7b7-7e28-4ab5-a1e2-d1db496c4300" x="351" y="222" width="227" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{className}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="6b32d13c-db7b-4ed3-878e-7194671ce539" x="478" y="142" width="100" height="15"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{dueDate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="5ba2c771-7275-4548-8d66-524f27f5f2f4" x="478" y="118" width="100" height="14"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{issueDate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="0e7769ed-7836-4ccc-8c3c-e59fd097ad1d" x="502" y="388" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{late}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="c64cfbc5-39eb-406e-bbc9-373be3b4e0a4" x="502" y="413" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{other}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="cbc0a794-18ae-410b-b8e5-467f5704d419" x="502" y="465" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$V{paymentAfter}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="a3307f37-a092-44ae-8f14-6b9313f43c4e" x="502" y="291" width="100" height="16"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{addmission}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="720faba9-1185-419f-a7c4-ffbee368432a" x="351" y="177" width="227" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{studentName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="5b1a1a75-0ac4-4ec4-b724-1182e21832e0" x="502" y="365" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{laboratory}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="8f17f386-d573-4864-8d5c-a230dc7dfe44" x="351" y="199" width="227" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{fatherName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="08068f8d-b644-4b31-a221-2de51d64e3a3" x="735" y="438" width="100" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$V{paymentBefore}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="648afdbc-5231-4aa3-85a6-bf9cc3627280" x="694" y="250" width="146" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{months}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f648e4ca-44a1-49a4-ab23-a0617d322042" x="735" y="338" width="100" height="15"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{exam}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="14c53575-465b-4fa6-9471-c184986ad111" x="735" y="314" width="100" height="16"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{tution}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="111dc7b7-7e28-4ab5-a1e2-d1db496c4300" x="613" y="222" width="227" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{className}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="6b32d13c-db7b-4ed3-878e-7194671ce539" x="740" y="142" width="100" height="15"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{dueDate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="5ba2c771-7275-4548-8d66-524f27f5f2f4" x="740" y="118" width="100" height="14"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{issueDate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="0e7769ed-7836-4ccc-8c3c-e59fd097ad1d" x="735" y="388" width="100" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{late}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="c64cfbc5-39eb-406e-bbc9-373be3b4e0a4" x="735" y="413" width="100" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{other}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="cbc0a794-18ae-410b-b8e5-467f5704d419" x="735" y="462" width="100" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$V{paymentAfter}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="a3307f37-a092-44ae-8f14-6b9313f43c4e" x="735" y="291" width="100" height="16"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{addmission}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="720faba9-1185-419f-a7c4-ffbee368432a" x="613" y="177" width="227" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{studentName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="5b1a1a75-0ac4-4ec4-b724-1182e21832e0" x="735" y="365" width="100" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{laboratory}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="8f17f386-d573-4864-8d5c-a230dc7dfe44" x="613" y="199" width="227" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{fatherName}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

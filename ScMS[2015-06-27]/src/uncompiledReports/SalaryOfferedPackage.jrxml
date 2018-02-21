@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="afa130a5-cb64-496e-87a5-714c3ec889e2">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<field name="name" class="java.lang.String"/>
+	<field name="father" class="java.lang.String"/>
+	<field name="post" class="java.lang.String"/>
+	<field name="gender" class="java.lang.String"/>
+	<field name="basicSalary" class="java.lang.Integer"/>
+	<field name="travelingAllowance" class="java.lang.Integer"/>
+	<field name="otherAllowance" class="java.lang.Integer"/>
+	<field name="totalAmount" class="java.lang.Integer"/>
+	<field name="headAllowance" class="java.lang.Integer"/>
+	<field name="coordinateAllowace" class="java.lang.Integer"/>
+	<field name="ctAllowance" class="java.lang.Integer"/>
+	<field name="medicalAllowance" class="java.lang.Integer"/>
+	<variable name="today" class="java.lang.String">
+		<variableExpression><![CDATA[new java.text.SimpleDateFormat("dd-MMMMM-YYYY").format(new java.util.Date())]]></variableExpression>
+	</variable>
+	<variable name="mrMiss" class="java.lang.String">
+		<variableExpression><![CDATA[$F{gender}.startsWith("M")? "Mr." : "Miss"]]></variableExpression>
+	</variable>
+	<variable name="sodo" class="java.lang.String">
+		<variableExpression><![CDATA[$F{gender}.startsWith("M")? "S/O" : "D/O"]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="410" splitType="Stretch">
+			<rectangle>
+				<reportElement uuid="73ddc4e2-b3af-4948-8309-f2e43c269d97" x="0" y="3" width="555" height="397" backcolor="#FFFFFF"/>
+				<graphicElement>
+					<pen lineWidth="8.0" lineStyle="Double"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="3da29170-6f49-4321-a31e-59eb7fc3cf11" x="76" y="3" width="138" height="35"/>
+				<textElement>
+					<font fontName="Serif" size="22" isBold="true"/>
+				</textElement>
+				<text><![CDATA[The Guardian]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="250a8daf-97d7-4598-9fc6-8dd64951b06e" mode="Opaque" x="214" y="15" width="123" height="18" forecolor="#FFFFFF" backcolor="#000000"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[School of Excellence]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="57054b44-2182-4f36-8ef5-9bf519234e42" x="189" y="85" width="220" height="28"/>
+				<textElement>
+					<font fontName="Serif" size="18" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Offered Salary Package]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="71fe0dde-1691-4960-bec1-c59005954cb6" x="23" y="144" width="511" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[You are being informed that you are appointed as a________________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="71fe0dde-1691-4960-bec1-c59005954cb6" x="23" y="170" width="511" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[and your salary package is described as;]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e38fe72a-f591-4cbc-931f-4c77dbe8bdf9" x="23" y="202" width="308" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Basic Pay                         Rs. ___________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e38fe72a-f591-4cbc-931f-4c77dbe8bdf9" x="23" y="232" width="308" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Travelling Allowance      Rs.___________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e38fe72a-f591-4cbc-931f-4c77dbe8bdf9" x="276" y="263" width="305" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Any Other                        Rs. __________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e38fe72a-f591-4cbc-931f-4c77dbe8bdf9" x="276" y="293" width="308" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Salary                     Rs.__________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9d1304bc-3e7f-438a-920c-8bb0c8003fa2" x="342" y="10" width="67" height="15"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Prep Section]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="11cca346-5374-446b-9bd5-2cd88d83b5be" x="409" y="10" width="24" height="17"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="11cca346-5374-446b-9bd5-2cd88d83b5be" x="523" y="10" width="24" height="17"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="9d1304bc-3e7f-438a-920c-8bb0c8003fa2" x="442" y="10" width="67" height="15"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Girls Section]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9d1304bc-3e7f-438a-920c-8bb0c8003fa2" x="342" y="33" width="67" height="17"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Boys Section]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="11cca346-5374-446b-9bd5-2cd88d83b5be" x="409" y="33" width="24" height="17"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="9d1304bc-3e7f-438a-920c-8bb0c8003fa2" x="436" y="33" width="87" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Latifabad Campus]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="11cca346-5374-446b-9bd5-2cd88d83b5be" x="523" y="33" width="24" height="17"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="f75ecffe-4045-489d-b71f-32fc91a45f26" x="23" y="325" width="308" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Hoping for great cooperation for our organization.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f75ecffe-4045-489d-b71f-32fc91a45f26" x="23" y="345" width="308" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[We wish you all best of luck.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f3b6f866-6487-4a05-b5d5-7b95a9c6c11d" x="23" y="380" width="124" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Date:____________]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="705a5d88-b398-4321-8563-ba9945dc9946" x="58" y="376" width="100" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{today}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="dad0ec46-ee11-47fd-8420-05ac5bbb7152" x="50" y="118" width="220" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="57f25d2c-3e41-4209-89a8-b7e15f1271c3" x="177" y="202" width="72" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{basicSalary}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e82707e0-df51-4288-9475-b8dec5292dc0" x="177" y="232" width="72" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{travelingAllowance}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f89cffe3-d3d5-4308-add2-fb3d5258b6b1" x="436" y="263" width="76" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{otherAllowance}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="5d31193b-dfd4-4242-a2eb-80786abcd09e" x="23" y="118" width="35" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{mrMiss}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="749d97fe-0f56-4fef-a5dc-43b7f26094ba" x="50" y="133" width="226" height="1"/>
+			</line>
+			<textField>
+				<reportElement uuid="c4c17b06-f90a-48db-b3ba-58f2f845fcc5" x="436" y="293" width="76" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{totalAmount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="b3f056dd-26df-4882-b301-b0fdd86dc2d1" x="270" y="118" width="33" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sodo}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="250961f6-8b98-4d9a-8250-fd40b9abcdab" x="295" y="133" width="239" height="1"/>
+			</line>
+			<textField>
+				<reportElement uuid="b1dffdc0-a8e0-4c5c-b9c3-f19abbcc88d4" x="331" y="118" width="192" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{father}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="f75ecffe-4045-489d-b71f-32fc91a45f26" x="334" y="325" width="200" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[( With effect from____________ )]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f3b6f866-6487-4a05-b5d5-7b95a9c6c11d" x="422" y="376" width="124" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Accountant]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e38fe72a-f591-4cbc-931f-4c77dbe8bdf9" x="23" y="293" width="308" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Coordinate Allowance    Rs.___________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e38fe72a-f591-4cbc-931f-4c77dbe8bdf9" x="23" y="263" width="311" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Head Allowance              Rs. ___________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e38fe72a-f591-4cbc-931f-4c77dbe8bdf9" x="276" y="202" width="305" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Medical Allowance          Rs. __________]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="79c8b89a-e380-45d4-8480-6957cf8ce0a4" x="177" y="263" width="72" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{headAllowance}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="77c60689-7987-494b-a26d-a03e4b019be6" x="177" y="293" width="72" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{coordinateAllowace}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="a698fef0-51bc-41e7-8d45-379546704d07" x="436" y="202" width="76" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{medicalAllowance}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="e38fe72a-f591-4cbc-931f-4c77dbe8bdf9" x="276" y="232" width="308" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CT Allowance                  Rs. __________]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="48a22174-fef0-4bac-8196-7001da1150e9" x="436" y="232" width="76" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ctAllowance}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e06482d2-9ec0-417d-8126-60a8ddab1223" x="334" y="143" width="200" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{post}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement uuid="6bbc0d86-a1ac-441b-ac1d-b74f52f4ead1" x="12" y="10" width="66" height="28"/>
+				<imageExpression><![CDATA["TGS 2014 Logo.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</detail>
+</jasperReport>

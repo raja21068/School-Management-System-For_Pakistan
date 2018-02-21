@@ -1,0 +1,15 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.school.constant;
+
+/**
+ *
+ * @author JAY
+ */
+public class DialogMessage {
+    
+    public static final String NO_SELECTION = "Please Select From List";
+    
+}

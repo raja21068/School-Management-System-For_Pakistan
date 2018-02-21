@@ -1,0 +1,2826 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.school.view;
+
+import com.school.model.Campus;
+import com.school.model.Designation;
+import com.school.model.EmpAccountAttachment;
+import com.school.model.EmpAccountCategory;
+import com.school.model.EmpAccounts;
+import com.school.model.Salary;
+import com.school.model.Section;
+import com.school.model.UserPrivilege;
+import com.school.constant.Gender;
+import com.school.dao.DatabaseManager;
+import com.school.dao.DatabaseQueryExecuter;
+import com.school.model.EmpCertificateIssue;
+import java.awt.Image;
+import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.imageio.ImageIO;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.text.JTextComponent;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.view.JasperViewer;
+import org.hibernate.HibernateException;
+import org.hibernate.exception.ConstraintViolationException;
+import com.school.report.bean.AccountSummaryReportBean;
+import com.school.report.bean.DesignationReportBean;
+import com.school.report.bean.EmployeeExperienceReportBean;
+import com.school.report.bean.EmployeeInformationReportBean;
+import com.school.utils.ComponentHandler;
+import java.io.InputStream;
+import javax.swing.JFrame;
+
+/**
+ * This frame related with Employee or Account. Actually account or employee is
+ * added on the bases of category. Shows all information about employee or
+ * account :
+ * <ul>
+ * <li>Biodata</li>
+ * <li>Attachements</li>
+ * <li>Salary Records</li>
+ * <ul>Reports
+ * <li>Appointment Letter</li>
+ * <li>Salary Offered Package</li>
+ * <li>Experience Certificate</li>
+ * <li>Detailed Information</li>
+ * </ul>
+ * </ul>
+ *
+ * @author JAY KUMAR
+ */
+public class EmployeesJFrame extends javax.swing.JFrame {
+
+    /**
+     * Creates new form EmployeesJFrame
+     */
+    private int rowNo = 0;
+    UserPrivilege empPriv;
+    private JFileChooser fileChooser;
+    private JFileChooser fileChooserAttachement;
+    final int EMPLOYEE_BEAN_COLUMN = 0;
+    final int SALARY_BEAN_COLUMN = 10;
+    private final int startTab = 2;
+    private final int endTab = 6;
+    private List<EmpAccounts> empList;
+
+    /**
+     * User Privilege is derived from bean.User when a user in logged in.
+     *
+     * @param privilege - bean.UserPrivilege
+     */
+    public EmployeesJFrame(UserPrivilege empPriv) {
+        initComponents();
+        ComponentHandler.setFullScreen((JFrame)this);
+        ComponentHandler.setJFrameCenterPostion((JFrame)this);
+        this.empPriv = empPriv;
+        setSearchOptions();
+        fileChooserAttachement = new JFileChooser("../");
+        fileChooserAttachement.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fileChooser = new JFileChooser("../");
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        FileFilter imageFilter = new FileNameExtensionFilter("Image files", ImageIO.getReaderFileSuffixes());
+        fileChooser.addChoosableFileFilter(imageFilter);
+        fileChooser.setAcceptAllFileFilterUsed(false);
+        setGenders();
+        ComponentHandler.setModelListener(tableSalaries);
+        ComponentHandler.setModelListener(tableEmployees);
+        setSelectionEventOnModel();
+        eventDateChooser();
+    }
+
+    /**
+     * refresh the data and check privileges
+     *
+     * @param b
+     */
+    @Override
+    public void setVisible(boolean b) {
+        super.setVisible(b); //To change body of generated methods, choose Tools | Templates.
+        if (!b) {
+            return;
+        }
+        if (empPriv.getIsAdd() == null || (!empPriv.getIsAdd())) {
+            buttonAdd.setVisible(false);
+        }
+        if (empPriv.getIsDelete() == null || (!empPriv.getIsDelete())) {
+            buttonDelete.setVisible(false);
+        }
+        if (empPriv.getIsUpdate() == null || (!empPriv.getIsUpdate())) {
+            buttonUpdate.setVisible(false);
+        }
+        new Thread() {
+            @Override
+            public void run() {
+                ComponentHandler.setCampus(comboBoxCampus);
+                ComponentHandler.setSection(comboBoxSection);
+                setCategories();
+                refreshEmployees();
+
+            }
+
+            
+        }.start();
+
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        buttonGroup1 = new javax.swing.ButtonGroup();
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tableEmployees = new javax.swing.JTable();
+        jPanel9 = new javax.swing.JPanel();
+        textFieldFather = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        dateChooserJoining = new com.toedter.calendar.JDateChooser();
+        dateChooserBirth = new com.toedter.calendar.JDateChooser();
+        textFieldName = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        dateChooserLeaving = new com.toedter.calendar.JDateChooser();
+        jLabel13 = new javax.swing.JLabel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        textAreaAddress = new javax.swing.JTextArea();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel27 = new javax.swing.JLabel();
+        comboBoxSection = new javax.swing.JComboBox();
+        comboBoxCampus = new javax.swing.JComboBox();
+        textFieldSurname = new javax.swing.JTextField();
+        jLabel22 = new javax.swing.JLabel();
+        textFieldContact = new javax.swing.JTextField();
+        comboBoxEmplyeeCategory = new javax.swing.JComboBox();
+        jLabel28 = new javax.swing.JLabel();
+        textFieldDesignation = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        tabbedPaneEmployees = new javax.swing.JTabbedPane();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel20 = new javax.swing.JLabel();
+        textFieldPictureBrowse = new javax.swing.JTextField();
+        buttonStudentPic = new javax.swing.JButton();
+        labelPic = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        textFieldReferenceJob = new javax.swing.JTextField();
+        jPanel7 = new javax.swing.JPanel();
+        jLabel15 = new javax.swing.JLabel();
+        textFieldSalary = new javax.swing.JTextField();
+        jLabel18 = new javax.swing.JLabel();
+        textFieldTravelingAllowance = new javax.swing.JTextField();
+        jLabel19 = new javax.swing.JLabel();
+        textFieldOtherAllowance = new javax.swing.JTextField();
+        jLabel21 = new javax.swing.JLabel();
+        textFieldTotalAmount = new javax.swing.JTextField();
+        jLabel30 = new javax.swing.JLabel();
+        jLabel29 = new javax.swing.JLabel();
+        jLabel31 = new javax.swing.JLabel();
+        textFieldHeadAllowance = new javax.swing.JTextField();
+        textFieldCoordinateAllowance = new javax.swing.JTextField();
+        textFieldCTAllowance = new javax.swing.JTextField();
+        jLabel32 = new javax.swing.JLabel();
+        jLabel33 = new javax.swing.JLabel();
+        textField5YearAllowance = new javax.swing.JTextField();
+        jLabel34 = new javax.swing.JLabel();
+        textFieldMedical = new javax.swing.JTextField();
+        jPanel1 = new javax.swing.JPanel();
+        textFieldAttachmentBrowse = new javax.swing.JTextField();
+        buttonBrowseAttachemnt = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        listAttachement = new javax.swing.JList();
+        textFieldAttachementName = new javax.swing.JTextField();
+        jLabel16 = new javax.swing.JLabel();
+        buttonAddAttachment = new javax.swing.JButton();
+        buttonDeleteAttachment = new javax.swing.JButton();
+        buttonSaveAttachement = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tableSalaries = new javax.swing.JTable();
+        button = new javax.swing.JButton();
+        buttonClearDepost = new javax.swing.JButton();
+        buttonSalaryDelete = new javax.swing.JButton();
+        jPanel5 = new javax.swing.JPanel();
+        buttonPrintPayOffer = new javax.swing.JButton();
+        buttonPrintAppointmentLetter = new javax.swing.JButton();
+        buttonPrintInformation = new javax.swing.JButton();
+        spinFieldProbationarymonths = new com.toedter.components.JSpinField();
+        jLabel5 = new javax.swing.JLabel();
+        jPanel6 = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tableDesignation = new javax.swing.JTable();
+        jLabel23 = new javax.swing.JLabel();
+        textFieldDesignationPromote = new javax.swing.JTextField();
+        dateChooserJoiningPromote = new com.toedter.calendar.JDateChooser();
+        jLabel24 = new javax.swing.JLabel();
+        jLabel25 = new javax.swing.JLabel();
+        dateChooserLeavingPromote = new com.toedter.calendar.JDateChooser();
+        jLabel26 = new javax.swing.JLabel();
+        textFieldRemarksPromote = new javax.swing.JTextField();
+        buttonPromote = new javax.swing.JButton();
+        buttonUpdateDesignation = new javax.swing.JButton();
+        buttonPrintExperienceCertificate = new javax.swing.JButton();
+        radioButtonExperienceNormal = new javax.swing.JRadioButton();
+        radioButtonExperienceSenior = new javax.swing.JRadioButton();
+        jPanel8 = new javax.swing.JPanel();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        tableCertificates = new javax.swing.JTable();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        buttonAdd = new javax.swing.JButton();
+        buttonUpdate = new javax.swing.JButton();
+        buttonDelete = new javax.swing.JButton();
+        buttonClear = new javax.swing.JButton();
+        comboBoxGender = new javax.swing.JComboBox();
+        jLabel14 = new javax.swing.JLabel();
+        textFieldRemarks = new javax.swing.JTextField();
+        jLabel35 = new javax.swing.JLabel();
+        textFieldBankAccountNo = new javax.swing.JTextField();
+        jLabel36 = new javax.swing.JLabel();
+        textFieldStaffId = new javax.swing.JTextField();
+        checkBoxSortByCategory = new javax.swing.JCheckBox();
+        textFieldNIC = new javax.swing.JFormattedTextField();
+        jPanel10 = new javax.swing.JPanel();
+        textFieldSearch = new javax.swing.JTextField();
+        buttonSearch = new javax.swing.JButton();
+        comboBoxSearch = new javax.swing.JComboBox();
+        buttonPrintAllEmployees = new javax.swing.JButton();
+        buttonPrintAllEmpContact = new javax.swing.JButton();
+        checkBoxLeftEmployees = new javax.swing.JCheckBox();
+        buttonSort = new javax.swing.JButton();
+
+        setTitle("EMPLOYEE / ACCOUNTS REGISTRATION");
+        setIconImage((new javax.swing.ImageIcon(getClass().getResource("/pictures/menu_employee.png"))).getImage());
+
+        jLabel1.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("EMPLOYEE / ACCOUNT MANAGEMENT");
+
+        jScrollPane1.setMinimumSize(new java.awt.Dimension(452, 402));
+
+        tableEmployees.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Name", "Father", "Surname", "Campus"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tableEmployees.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(tableEmployees);
+
+        jPanel9.setBorder(javax.swing.BorderFactory.createTitledBorder("Entry"));
+
+        textFieldFather.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        textFieldFather.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                textFieldFatherKeyPressed(evt);
+            }
+        });
+
+        jLabel12.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel12.setText("Birth Date");
+
+        jLabel11.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel11.setText("Leaving");
+
+        jLabel17.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel17.setText("Designation");
+
+        dateChooserJoining.setDateFormatString("dd-MM-yyyy");
+
+        dateChooserBirth.setDateFormatString("dd-MM-yyyy");
+
+        textFieldName.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        textFieldName.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                textFieldNameKeyPressed(evt);
+            }
+        });
+
+        jLabel9.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel9.setText("Address");
+
+        dateChooserLeaving.setDateFormatString("dd-MM-yyyy");
+
+        jLabel13.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel13.setText("Joining");
+
+        jScrollPane5.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
+        textAreaAddress.setColumns(20);
+        textAreaAddress.setRows(5);
+        textAreaAddress.setPreferredSize(new java.awt.Dimension(164, 98));
+        textAreaAddress.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                textAreaAddressKeyPressed(evt);
+            }
+        });
+        jScrollPane5.setViewportView(textAreaAddress);
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel4.setText("Campus");
+
+        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel10.setText("Contact");
+
+        jLabel27.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel27.setText("NIC#");
+
+        comboBoxSection.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                comboBoxSectionKeyPressed(evt);
+            }
+        });
+
+        comboBoxCampus.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        comboBoxCampus.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                comboBoxCampusItemStateChanged(evt);
+            }
+        });
+
+        textFieldSurname.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        textFieldSurname.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                textFieldSurnameKeyPressed(evt);
+            }
+        });
+
+        jLabel22.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel22.setText("Account No");
+
+        textFieldContact.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        textFieldContact.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                textFieldContactKeyPressed(evt);
+            }
+        });
+
+        comboBoxEmplyeeCategory.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        comboBoxEmplyeeCategory.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                comboBoxEmplyeeCategoryItemStateChanged(evt);
+            }
+        });
+
+        jLabel28.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel28.setText("Section");
+
+        textFieldDesignation.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        textFieldDesignation.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                textFieldDesignationKeyPressed(evt);
+            }
+        });
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel2.setText("Category");
+
+        jLabel20.setText("Picture");
+
+        textFieldPictureBrowse.setEditable(false);
+
+        buttonStudentPic.setText("browse");
+        buttonStudentPic.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonStudentPicActionPerformed(evt);
+            }
+        });
+
+        labelPic.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        jLabel3.setText("Ref Job Application");
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(labelPic, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel4Layout.createSequentialGroup()
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(textFieldReferenceJob, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(textFieldPictureBrowse))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(buttonStudentPic, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(164, 164, 164))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addGap(6, 6, 6)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labelPic, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(textFieldReferenceJob, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(textFieldPictureBrowse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(buttonStudentPic))))
+                .addGap(81, 81, 81))
+        );
+
+        tabbedPaneEmployees.addTab("Other", jPanel4);
+
+        jLabel15.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel15.setText("Basic Salary");
+
+        textFieldSalary.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        textFieldSalary.setText("0");
+        textFieldSalary.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                textFieldSalaryKeyReleased(evt);
+            }
+        });
+
+        jLabel18.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel18.setText("Traveling");
+
+        textFieldTravelingAllowance.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        textFieldTravelingAllowance.setText("0");
+        textFieldTravelingAllowance.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                textFieldTravelingAllowanceKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                textFieldTravelingAllowanceKeyReleased(evt);
+            }
+        });
+
+        jLabel19.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel19.setText("Other");
+
+        textFieldOtherAllowance.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        textFieldOtherAllowance.setText("0");
+        textFieldOtherAllowance.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                textFieldOtherAllowanceKeyReleased(evt);
+            }
+        });
+
+        jLabel21.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel21.setText("Total");
+
+        textFieldTotalAmount.setEditable(false);
+        textFieldTotalAmount.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        textFieldTotalAmount.setText("0");
+
+        jLabel30.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel30.setText("Cordinate");
+
+        jLabel29.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel29.setText("Head");
+
+        jLabel31.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel31.setText("CT");
+
+        textFieldHeadAllowance.setText("0");
+        textFieldHeadAllowance.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                textFieldHeadAllowanceKeyReleased(evt);
+            }
+        });
+
+        textFieldCoordinateAllowance.setText("0");
+        textFieldCoordinateAllowance.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                textFieldCoordinateAllowanceKeyReleased(evt);
+            }
+        });
+
+        textFieldCTAllowance.setText("0");
+        textFieldCTAllowance.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                textFieldCTAllowanceKeyReleased(evt);
+            }
+        });
+
+        jLabel32.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel32.setText("ALLOWANCE");
+
+        jLabel33.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel33.setText("5 years");
+
+        textField5YearAllowance.setText("0");
+        textField5YearAllowance.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                textField5YearAllowanceKeyReleased(evt);
+            }
+        });
+
+        jLabel34.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel34.setText("Medical");
+
+        textFieldMedical.setText("0");
+        textFieldMedical.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                textFieldMedicalKeyReleased(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jLabel30, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel19, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE)
+                    .addComponent(jLabel32, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel29, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel31, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(textFieldCTAllowance)
+                    .addComponent(textFieldHeadAllowance)
+                    .addComponent(textFieldSalary, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
+                    .addComponent(textFieldTravelingAllowance)
+                    .addComponent(textFieldOtherAllowance)
+                    .addComponent(textFieldCoordinateAllowance))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel7Layout.createSequentialGroup()
+                            .addComponent(jLabel33, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(textField5YearAllowance, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel7Layout.createSequentialGroup()
+                            .addComponent(jLabel34, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(textFieldMedical)))
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(textFieldTotalAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel15)
+                            .addComponent(textFieldSalary, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel32, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(85, 85, 85)
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel30)
+                            .addComponent(textFieldCoordinateAllowance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel31)
+                            .addComponent(textFieldCTAllowance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addGap(45, 45, 45)
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel33)
+                                .addComponent(textField5YearAllowance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel18)
+                                .addComponent(textFieldTravelingAllowance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel19)
+                            .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(textFieldOtherAllowance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel34)
+                                .addComponent(textFieldMedical, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel29)
+                                .addComponent(textFieldHeadAllowance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel21)
+                                .addComponent(textFieldTotalAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap())
+        );
+
+        tabbedPaneEmployees.addTab("Salary", jPanel7);
+
+        buttonBrowseAttachemnt.setText("browse");
+        buttonBrowseAttachemnt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonBrowseAttachemntActionPerformed(evt);
+            }
+        });
+
+        listAttachement.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                listAttachementValueChanged(evt);
+            }
+        });
+        jScrollPane2.setViewportView(listAttachement);
+
+        jLabel16.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel16.setText("Name");
+
+        buttonAddAttachment.setText("Add");
+        buttonAddAttachment.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonAddAttachmentActionPerformed(evt);
+            }
+        });
+
+        buttonDeleteAttachment.setText("Delete");
+        buttonDeleteAttachment.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonDeleteAttachmentActionPerformed(evt);
+            }
+        });
+
+        buttonSaveAttachement.setText("Save");
+        buttonSaveAttachement.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonSaveAttachementActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(textFieldAttachementName))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(buttonDeleteAttachment, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(textFieldAttachmentBrowse, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(buttonAddAttachment, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(buttonBrowseAttachemnt, javax.swing.GroupLayout.DEFAULT_SIZE, 92, Short.MAX_VALUE)
+                            .addComponent(buttonSaveAttachement, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(textFieldAttachementName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel16))
+                        .addGap(16, 16, 16)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(textFieldAttachmentBrowse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(buttonBrowseAttachemnt, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(buttonDeleteAttachment, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
+                                .addComponent(buttonSaveAttachement, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(buttonAddAttachment, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGap(41, 41, 41))
+        );
+
+        tabbedPaneEmployees.addTab("Attachment", jPanel1);
+
+        tableSalaries.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Year", "Month", "Paid ", "Leave", "Warning", "Late", "Went ", "other", "bonus", "deposit", ""
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tableSalaries.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        jScrollPane3.setViewportView(tableSalaries);
+        tableSalaries.getColumnModel().getColumn(1).setPreferredWidth(100);
+        tableSalaries.getColumnModel().getColumn(7).setPreferredWidth(80);
+        tableSalaries.getColumnModel().getColumn(10).setMinWidth(10);
+        tableSalaries.getColumnModel().getColumn(10).setPreferredWidth(10);
+        tableSalaries.getColumnModel().getColumn(10).setMaxWidth(10);
+
+        button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pictures/print-icon2.png"))); // NOI18N
+        button.setText("Print");
+        button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonActionPerformed(evt);
+            }
+        });
+
+        buttonClearDepost.setText("CLEAR DEPOSIT");
+        buttonClearDepost.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonClearDepostActionPerformed(evt);
+            }
+        });
+
+        buttonSalaryDelete.setText("Delete");
+        buttonSalaryDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonSalaryDeleteActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 412, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(button, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buttonClearDepost, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buttonSalaryDelete)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(button, javax.swing.GroupLayout.DEFAULT_SIZE, 47, Short.MAX_VALUE)
+                    .addComponent(buttonClearDepost, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(buttonSalaryDelete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+
+        tabbedPaneEmployees.addTab("Salary history", jPanel2);
+
+        buttonPrintPayOffer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pictures/Bank-Check-icon.png"))); // NOI18N
+        buttonPrintPayOffer.setText("Pay Offer");
+        buttonPrintPayOffer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonPrintPayOfferActionPerformed(evt);
+            }
+        });
+
+        buttonPrintAppointmentLetter.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pictures/menu_attend.png"))); // NOI18N
+        buttonPrintAppointmentLetter.setText("Appointment Letter");
+        buttonPrintAppointmentLetter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonPrintAppointmentLetterActionPerformed(evt);
+            }
+        });
+
+        buttonPrintInformation.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pictures/menu_reciept.png"))); // NOI18N
+        buttonPrintInformation.setText("Information");
+        buttonPrintInformation.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonPrintInformationActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setText("Job Probationary months");
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(spinFieldProbationarymonths, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE))
+                    .addComponent(buttonPrintPayOffer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(buttonPrintAppointmentLetter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buttonPrintInformation, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(70, Short.MAX_VALUE))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(buttonPrintPayOffer, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buttonPrintInformation, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buttonPrintAppointmentLetter, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5)
+                    .addComponent(spinFieldProbationarymonths, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(93, Short.MAX_VALUE))
+        );
+
+        tabbedPaneEmployees.addTab("Reports", jPanel5);
+
+        tableDesignation.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Designation", "Join Date", "Leave Date", "Remarks", "Section"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tableDesignation.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        tableDesignation.getTableHeader().setReorderingAllowed(false);
+        jScrollPane4.setViewportView(tableDesignation);
+        tableDesignation.getColumnModel().getColumn(0).setPreferredWidth(100);
+        tableDesignation.getColumnModel().getColumn(1).setPreferredWidth(100);
+        tableDesignation.getColumnModel().getColumn(2).setPreferredWidth(200);
+        tableDesignation.getColumnModel().getColumn(3).setPreferredWidth(100);
+        tableDesignation.getColumnModel().getColumn(3).setHeaderValue("Remarks");
+        tableDesignation.getColumnModel().getColumn(4).setPreferredWidth(100);
+        tableDesignation.getColumnModel().getColumn(4).setHeaderValue("Section");
+
+        jLabel23.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel23.setText("Designation");
+
+        jLabel24.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel24.setText("Joining");
+
+        jLabel25.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel25.setText("Leaving");
+
+        jLabel26.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel26.setText("Remarks");
+
+        buttonPromote.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pictures/medal-silver-1-icon.png"))); // NOI18N
+        buttonPromote.setText("Promote");
+        buttonPromote.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonPromoteActionPerformed(evt);
+            }
+        });
+
+        buttonUpdateDesignation.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pictures/arrow-up-icon.png"))); // NOI18N
+        buttonUpdateDesignation.setText("<html>Update<br/>Designation</html>");
+        buttonUpdateDesignation.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonUpdateDesignationActionPerformed(evt);
+            }
+        });
+
+        buttonPrintExperienceCertificate.setText("Experience");
+        buttonPrintExperienceCertificate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonPrintExperienceCertificateActionPerformed(evt);
+            }
+        });
+
+        buttonGroup1.add(radioButtonExperienceNormal);
+        radioButtonExperienceNormal.setSelected(true);
+        radioButtonExperienceNormal.setText("N");
+
+        buttonGroup1.add(radioButtonExperienceSenior);
+        radioButtonExperienceSenior.setText("Senior");
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(buttonPromote)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(buttonUpdateDesignation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(buttonPrintExperienceCertificate, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(radioButtonExperienceSenior, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(radioButtonExperienceNormal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel6Layout.createSequentialGroup()
+                                    .addComponent(jLabel23)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(textFieldDesignationPromote, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(dateChooserJoiningPromote, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel6Layout.createSequentialGroup()
+                                    .addComponent(jLabel26, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(textFieldRemarksPromote, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(dateChooserLeavingPromote, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(0, 18, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap(15, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel23)
+                        .addComponent(textFieldDesignationPromote, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel24))
+                    .addComponent(dateChooserJoiningPromote, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel25)
+                        .addComponent(jLabel26)
+                        .addComponent(textFieldRemarksPromote, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(dateChooserLeavingPromote, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(buttonPromote, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
+                    .addComponent(buttonPrintExperienceCertificate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(buttonUpdateDesignation)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(radioButtonExperienceNormal, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(radioButtonExperienceSenior)))
+                .addContainerGap(16, Short.MAX_VALUE))
+        );
+
+        jPanel6Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {buttonPrintExperienceCertificate, buttonPromote, buttonUpdateDesignation});
+
+        tabbedPaneEmployees.addTab("Designation", jPanel6);
+
+        tableCertificates.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "Name", "Issue Date", "Remarks"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tableCertificates.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        tableCertificates.getTableHeader().setReorderingAllowed(false);
+        jScrollPane7.setViewportView(tableCertificates);
+        tableCertificates.getColumnModel().getColumn(0).setPreferredWidth(100);
+        tableCertificates.getColumnModel().getColumn(1).setPreferredWidth(100);
+        tableCertificates.getColumnModel().getColumn(2).setPreferredWidth(200);
+
+        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
+        jPanel8.setLayout(jPanel8Layout);
+        jPanel8Layout.setHorizontalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 402, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel8Layout.setVerticalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        tabbedPaneEmployees.addTab("Certificate", jPanel8);
+
+        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel8.setText("Surname");
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel6.setText("Name");
+
+        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel7.setText("Father");
+
+        buttonAdd.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        buttonAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pictures/database-add-icon.png"))); // NOI18N
+        buttonAdd.setText("Add  ");
+        buttonAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonAddActionPerformed(evt);
+            }
+        });
+        jPanel3.add(buttonAdd);
+
+        buttonUpdate.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        buttonUpdate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pictures/document-arrow-up-icon.png"))); // NOI18N
+        buttonUpdate.setText("Update");
+        buttonUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonUpdateActionPerformed(evt);
+            }
+        });
+        jPanel3.add(buttonUpdate);
+
+        buttonDelete.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        buttonDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pictures/database-delete-icon.png"))); // NOI18N
+        buttonDelete.setText("Delete");
+        buttonDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonDeleteActionPerformed(evt);
+            }
+        });
+        jPanel3.add(buttonDelete);
+
+        buttonClear.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        buttonClear.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pictures/empty-icon.png"))); // NOI18N
+        buttonClear.setText("Clear");
+        buttonClear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonClearActionPerformed(evt);
+            }
+        });
+        jPanel3.add(buttonClear);
+
+        comboBoxGender.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboBoxGender.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                comboBoxGenderKeyPressed(evt);
+            }
+        });
+
+        jLabel14.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel14.setText("Gender");
+
+        jLabel35.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel35.setText("Remarks");
+
+        jLabel36.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel36.setText("STAFF ID");
+
+        checkBoxSortByCategory.setText("Sort By Category");
+        checkBoxSortByCategory.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        checkBoxSortByCategory.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                checkBoxSortByCategoryActionPerformed(evt);
+            }
+        });
+
+        try {
+            textFieldNIC.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("#####-#######-#")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+
+        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
+        jPanel9.setLayout(jPanel9Layout);
+        jPanel9Layout.setHorizontalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(tabbedPaneEmployees, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel12)
+                            .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel9Layout.createSequentialGroup()
+                                .addComponent(dateChooserBirth, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(jPanel9Layout.createSequentialGroup()
+                                .addComponent(textFieldContact)
+                                .addContainerGap())))
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel17, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel9Layout.createSequentialGroup()
+                                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(textFieldDesignation)
+                                    .addComponent(textFieldFather, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 61, Short.MAX_VALUE)
+                                    .addComponent(jLabel28, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(comboBoxSection, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(textFieldSurname)))
+                            .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE)
+                            .addComponent(textFieldName)))
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel9Layout.createSequentialGroup()
+                                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, 61, Short.MAX_VALUE)
+                                    .addComponent(jLabel27, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel9Layout.createSequentialGroup()
+                                        .addComponent(dateChooserJoining, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
+                                            .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(comboBoxGender, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(dateChooserLeaving, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                    .addComponent(textFieldNIC)))
+                            .addGroup(jPanel9Layout.createSequentialGroup()
+                                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel9Layout.createSequentialGroup()
+                                        .addComponent(comboBoxEmplyeeCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(checkBoxSortByCategory, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(comboBoxCampus, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 417, Short.MAX_VALUE)
+                            .addGroup(jPanel9Layout.createSequentialGroup()
+                                .addComponent(jLabel35, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel9Layout.createSequentialGroup()
+                                        .addComponent(textFieldBankAccountNo, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel36)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(textFieldStaffId))
+                                    .addComponent(textFieldRemarks))))
+                        .addContainerGap())))
+        );
+
+        jPanel9Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jLabel10, jLabel12, jLabel13, jLabel17, jLabel2, jLabel22, jLabel27, jLabel35, jLabel4, jLabel6, jLabel7, jLabel9});
+
+        jPanel9Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jLabel11, jLabel14});
+
+        jPanel9Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {dateChooserBirth, dateChooserJoining});
+
+        jPanel9Layout.setVerticalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(comboBoxCampus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(comboBoxEmplyeeCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(checkBoxSortByCategory))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(textFieldName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(textFieldFather, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel8)
+                        .addComponent(textFieldSurname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(comboBoxSection, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(textFieldDesignation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel17)
+                        .addComponent(jLabel28)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(textFieldContact, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel12)
+                    .addComponent(dateChooserBirth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(dateChooserLeaving, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel14)
+                        .addComponent(comboBoxGender, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel13)
+                    .addComponent(dateChooserJoining, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel27, javax.swing.GroupLayout.DEFAULT_SIZE, 20, Short.MAX_VALUE)
+                    .addComponent(textFieldNIC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel22)
+                    .addComponent(textFieldBankAccountNo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel36)
+                    .addComponent(textFieldStaffId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel35)
+                    .addComponent(textFieldRemarks, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, 0)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tabbedPaneEmployees, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0))
+        );
+
+        jPanel9Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jLabel2, jLabel4, jLabel6, textFieldName});
+
+        jPanel9Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jLabel7, textFieldFather});
+
+        jPanel9Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jLabel8, textFieldSurname});
+
+        jPanel9Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {comboBoxSection, jLabel17, jLabel28, textFieldDesignation});
+
+        jPanel9Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jLabel9, jScrollPane5});
+
+        jPanel9Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jLabel10, textFieldContact});
+
+        jPanel9Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {dateChooserBirth, dateChooserLeaving, jLabel11, jLabel12});
+
+        jPanel9Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {comboBoxGender, dateChooserJoining, jLabel13, jLabel14, textFieldNIC});
+
+        jPanel9Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jLabel22, jLabel36, textFieldBankAccountNo, textFieldStaffId});
+
+        textFieldSearch.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        textFieldSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textFieldSearchActionPerformed(evt);
+            }
+        });
+
+        buttonSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pictures/Zoom-icon.png"))); // NOI18N
+        buttonSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonSearchActionPerformed(evt);
+            }
+        });
+
+        comboBoxSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboBoxSearchActionPerformed(evt);
+            }
+        });
+
+        buttonPrintAllEmployees.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        buttonPrintAllEmployees.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pictures/print-icon2.png"))); // NOI18N
+        buttonPrintAllEmployees.setText("Print");
+        buttonPrintAllEmployees.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonPrintAllEmployeesActionPerformed(evt);
+            }
+        });
+
+        buttonPrintAllEmpContact.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        buttonPrintAllEmpContact.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pictures/print-icon2.png"))); // NOI18N
+        buttonPrintAllEmpContact.setText("Contact");
+        buttonPrintAllEmpContact.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonPrintAllEmpContactActionPerformed(evt);
+            }
+        });
+
+        checkBoxLeftEmployees.setText("Left");
+        checkBoxLeftEmployees.setBorderPainted(true);
+        checkBoxLeftEmployees.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                checkBoxLeftEmployeesActionPerformed(evt);
+            }
+        });
+
+        buttonSort.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pictures/Actions-view-sort-ascending-icon.png"))); // NOI18N
+        buttonSort.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonSortActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
+        jPanel10.setLayout(jPanel10Layout);
+        jPanel10Layout.setHorizontalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addComponent(checkBoxLeftEmployees, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buttonPrintAllEmployees, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buttonPrintAllEmpContact, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(comboBoxSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(2, 2, 2)
+                .addComponent(textFieldSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buttonSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buttonSort, javax.swing.GroupLayout.PREFERRED_SIZE, 42, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel10Layout.setVerticalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(textFieldSearch)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(checkBoxLeftEmployees)
+                                .addComponent(comboBoxSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(buttonSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(buttonPrintAllEmployees)
+                                .addComponent(buttonPrintAllEmpContact))
+                            .addComponent(buttonSort, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(0, 0, 0))
+        );
+
+        jPanel10Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {buttonPrintAllEmpContact, buttonSearch, buttonSort, comboBoxSearch});
+
+        jPanel10Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {buttonPrintAllEmployees, checkBoxLeftEmployees});
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(1, 1, 1)
+                        .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void buttonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonUpdateActionPerformed
+        if (tableEmployees.getSelectedRow() < 0) {
+            return;
+        }
+        Campus camp = (Campus) comboBoxCampus.getSelectedItem();
+        EmpAccountCategory cat = (EmpAccountCategory) comboBoxEmplyeeCategory.getSelectedItem();
+        if (camp == null || cat == null) {
+            return;
+        }
+        try {
+            int row = tableEmployees.getSelectedRow();
+            EmpAccounts emp = (EmpAccounts) tableEmployees.getValueAt(row, EMPLOYEE_BEAN_COLUMN);
+            emp.setCampus(camp);
+            emp.setEmpAccountCategory(cat);
+            if (!isSetInEmployee(emp)) {
+                return;
+            }
+            DatabaseManager.updateData(emp);
+            String str = textFieldPictureBrowse.getText();
+            if (str != null && !str.isEmpty()) {
+                EmpAccountAttachment attach = (EmpAccountAttachment) emp.getEmpAccountAttachments().toArray()[0];
+                File f = new File(textFieldPictureBrowse.getText().trim());
+                byte[] b = new byte[0];
+                if (f.exists()) {
+                    FileInputStream in = new FileInputStream(f);
+                    b = new byte[(int) f.length()];
+                    in.read(b);
+                    in.close();
+                }
+                attach.setAttachement(b);
+                DatabaseManager.updateData(attach);
+            }
+            JOptionPane.showMessageDialog(this, "Employee successfully updated..");
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error Occured.. \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace(System.err);
+        }
+    }//GEN-LAST:event_buttonUpdateActionPerformed
+
+    private void buttonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAddActionPerformed
+        try {
+            Campus camp = (Campus) comboBoxCampus.getSelectedItem();
+            Section section = (Section) comboBoxSection.getSelectedItem();
+            EmpAccountCategory cat = (EmpAccountCategory) comboBoxEmplyeeCategory.getSelectedItem();
+            if (camp == null || cat == null || section == null) {
+                JOptionPane.showMessageDialog(this, "CAMPUS, SECTION AND CATEGORY IS REQUIRED\nPlease add from form");
+                return;
+            }
+            EmpAccounts emp = new EmpAccounts(camp, cat, null, null);
+            emp.setDeleted(false);
+            if (!isSetInEmployee(emp)) {
+                return;
+            }
+            Integer id = (Integer) DatabaseManager.addData(emp);
+
+            emp.setEmpAccountsId(id);
+            byte[] b = new byte[0];
+            String fileName = "";
+            if (!textFieldPictureBrowse.getText().trim().isEmpty()) {
+                try {
+                    File f = new File(textFieldPictureBrowse.getText().trim());
+                    if (f.exists()) {
+                        FileInputStream in = new FileInputStream(f);
+                        b = new byte[(int) f.length()];
+                        in.read(b);
+                        in.close();
+                        fileName = f.getName();
+                        System.out.println(">>> Image attached...");
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace(System.err);
+                }
+            }
+
+            EmpAccountAttachment attach = new EmpAccountAttachment(emp, fileName, b, "displaypic");
+            DatabaseManager.addData(attach);
+
+            Designation desig = new Designation(emp, section, textFieldDesignation.getText(), dateChooserJoining.getDate(), null, textFieldRemarks.getText());
+            DatabaseManager.addData(desig);
+            JOptionPane.showMessageDialog(this, "Employee Successfully added..!");
+            refreshEmployees();
+            buttonClearActionPerformed(null);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error Occured.. \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace(System.err);
+        }
+    }//GEN-LAST:event_buttonAddActionPerformed
+
+    private void buttonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDeleteActionPerformed
+        if (tableEmployees.getSelectedRow() < 0) {
+            return;
+        }
+        int option = JOptionPane.showConfirmDialog(this, "Do you want to deleted?", "Deleted Employee?", JOptionPane.YES_NO_OPTION);
+        if (option == JOptionPane.NO_OPTION) {
+            return;
+        }
+        try {
+            int row = tableEmployees.getSelectedRow();
+            EmpAccounts emp = (EmpAccounts) tableEmployees.getValueAt(row, EMPLOYEE_BEAN_COLUMN);
+//            emp.setSalaries(null);
+//            emp.setDeleted(true);
+//            DatabaseManager.updateData(emp);
+            DatabaseManager.deleteData(emp);
+
+            buttonClearActionPerformed(evt);
+            refreshEmployees();
+        } catch (ConstraintViolationException ex) {
+            JOptionPane.showMessageDialog(null, "Error Occured..!\n If you want to delete student, first delete"
+                    + "\n1. ALL RELATED RECORD  "
+                    + "'\n " + ex.getMessage());
+            ex.printStackTrace(System.err);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error Occured.. \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace(System.err);
+        }
+    }//GEN-LAST:event_buttonDeleteActionPerformed
+
+    private void checkBoxLeftEmployeesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkBoxLeftEmployeesActionPerformed
+        refreshEmployees();
+    }//GEN-LAST:event_checkBoxLeftEmployeesActionPerformed
+
+    private void comboBoxSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxSearchActionPerformed
+        search();
+    }//GEN-LAST:event_comboBoxSearchActionPerformed
+
+    private void textFieldSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldSearchActionPerformed
+        search();
+    }//GEN-LAST:event_textFieldSearchActionPerformed
+
+    private void buttonSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSearchActionPerformed
+        search();
+    }//GEN-LAST:event_buttonSearchActionPerformed
+
+    private void comboBoxEmplyeeCategoryItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboBoxEmplyeeCategoryItemStateChanged
+        if (checkBoxSortByCategory.isSelected()) {
+            refreshEmployees();
+        }
+    }//GEN-LAST:event_comboBoxEmplyeeCategoryItemStateChanged
+
+    private void buttonStudentPicActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonStudentPicActionPerformed
+        fileChooser.showOpenDialog(this);
+        if (fileChooser.getSelectedFile() != null) {
+            textFieldPictureBrowse.setText(fileChooser.getSelectedFile().getAbsolutePath());
+            try {
+                BufferedImage img = ImageIO.read(fileChooser.getSelectedFile());
+                labelPic.setIcon(new ImageIcon(img.getScaledInstance(labelPic.getWidth(), labelPic.getHeight(), Image.SCALE_SMOOTH)));
+            } catch (IOException e) {
+                e.printStackTrace(System.err);
+            }
+        }
+    }//GEN-LAST:event_buttonStudentPicActionPerformed
+
+    private void listAttachementValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listAttachementValueChanged
+        buttonSaveAttachement.setEnabled(true);
+        buttonDeleteAttachment.setEnabled(true);
+    }//GEN-LAST:event_listAttachementValueChanged
+
+    private void buttonSaveAttachementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSaveAttachementActionPerformed
+        EmpAccountAttachment attachement = (EmpAccountAttachment) listAttachement.getSelectedValue();
+        if (attachement == null) {
+            return;
+        }
+        File f = new File(attachement.getAttachName());
+        fileChooserAttachement.setSelectedFile(f);
+        int interval = fileChooserAttachement.showSaveDialog(this);
+        if (interval == fileChooserAttachement.getApproveButtonMnemonic()) {
+            f = fileChooserAttachement.getSelectedFile();
+            try {
+                FileOutputStream out = new FileOutputStream(f);
+                out.write(attachement.getAttachement());
+                out.close();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Error Occured.. \n" + ex.getMessage());
+                ex.printStackTrace(System.err);
+            }
+        }
+    }//GEN-LAST:event_buttonSaveAttachementActionPerformed
+
+    private void buttonDeleteAttachmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDeleteAttachmentActionPerformed
+        EmpAccountAttachment attach = (EmpAccountAttachment) listAttachement.getSelectedValue();
+        if (attach == null) {
+            return;
+        }
+        try {
+            DatabaseManager.deleteData(attach);
+            refreshAttachements((EmpAccounts) tableEmployees.getValueAt(tableEmployees.getSelectedRow(), EMPLOYEE_BEAN_COLUMN));
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error Occured.. \n" + ex.getMessage());
+            ex.printStackTrace(System.err);
+        }
+    }//GEN-LAST:event_buttonDeleteAttachmentActionPerformed
+
+    private void buttonBrowseAttachemntActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBrowseAttachemntActionPerformed
+        fileChooserAttachement.showOpenDialog(this);
+        File f = fileChooserAttachement.getSelectedFile();
+        if (f != null) {
+            textFieldAttachmentBrowse.setText(f.getAbsolutePath());
+        }
+    }//GEN-LAST:event_buttonBrowseAttachemntActionPerformed
+
+    private void buttonAddAttachmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAddAttachmentActionPerformed
+        int row = tableEmployees.getSelectedRow();
+        if (row >= 0) {
+            String filePath = textFieldAttachmentBrowse.getText().trim();
+            if (textFieldAttachementName.getText().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Attachement Name Shouldn't be Empty..", "Warning", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            if (filePath.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "No File Selected");
+                return;
+            }
+            File f = new File(textFieldAttachmentBrowse.getText());
+            if (f.exists() && f.isFile()) {
+                EmpAccounts emp = (EmpAccounts) tableEmployees.getValueAt(row, EMPLOYEE_BEAN_COLUMN);
+                byte b[] = new byte[(int) f.length()];
+                try {
+                    new FileInputStream(f).read(b);
+                    DatabaseManager.addData(new EmpAccountAttachment(emp, f.getName(), b, textFieldAttachementName.getText()));
+                } catch (IOException | HibernateException ex) {
+                    JOptionPane.showMessageDialog(this, "Error Occured.. \n" + ex.getMessage());
+                    ex.printStackTrace(System.err);
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Please select a student from table to add attachement");
+        }
+    }//GEN-LAST:event_buttonAddAttachmentActionPerformed
+
+    private void buttonClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonClearActionPerformed
+        for (int i = startTab; i <= endTab; i++) {
+            tabbedPaneEmployees.setEnabledAt(i, false);
+        }
+        tabbedPaneEmployees.setSelectedIndex(0);
+        buttonDelete.setEnabled(false);
+        buttonUpdate.setEnabled(false);
+        textAreaAddress.setText(null);
+        textFieldContact.setText(null);
+        textFieldFather.setText(null);
+        textFieldName.setText(null);
+        textFieldDesignation.setText(null);
+        textFieldSalary.setText("0");
+        textFieldSurname.setText(null);
+        dateChooserBirth.setDate(null);
+        dateChooserJoining.setDate(null);
+        dateChooserLeaving.setDate(null);
+        tableEmployees.clearSelection();
+        tableSalaries.clearSelection();
+        labelPic.setIcon(null);
+        textFieldPictureBrowse.setText("");
+        textFieldNIC.setText(null);
+        textFieldTravelingAllowance.setText("0");
+        textFieldOtherAllowance.setText("0");
+        textFieldTotalAmount.setText("0");
+        textField5YearAllowance.setText("0");
+        textFieldCTAllowance.setText("0");
+        textFieldCoordinateAllowance.setText("0");
+        textFieldHeadAllowance.setText("0");
+        textFieldMedical.setText("0");
+        textFieldReferenceJob.setText(null);
+    }//GEN-LAST:event_buttonClearActionPerformed
+
+    private void textFieldSalaryKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldSalaryKeyReleased
+        calculateTotal();
+    }//GEN-LAST:event_textFieldSalaryKeyReleased
+
+    private void textFieldTravelingAllowanceKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldTravelingAllowanceKeyReleased
+        calculateTotal();
+    }//GEN-LAST:event_textFieldTravelingAllowanceKeyReleased
+
+    private void textFieldOtherAllowanceKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldOtherAllowanceKeyReleased
+        calculateTotal();
+    }//GEN-LAST:event_textFieldOtherAllowanceKeyReleased
+
+    private void buttonUpdateDesignationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonUpdateDesignationActionPerformed
+        try {
+            try {
+                int row = tableDesignation.getSelectedRow();
+                if (row < 0) {
+                    return;
+                }
+                Section section = (Section) comboBoxSection.getSelectedItem();
+                Designation desig = (Designation) tableDesignation.getValueAt(row, 0);
+                if (desig == null) {
+                    return;
+                }
+                desig.setSection(section);
+                if (!isSetDesignation(desig)) {
+                    return;
+                }
+                DatabaseManager.updateData(desig);
+                JOptionPane.showMessageDialog(this, "Promote Updated Successfully..!");
+                refreshDesignations(desig.getEmpAccounts());
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Error Occured.\n" + ex.getMessage());
+                ex.printStackTrace(System.err);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace(System.err);
+        }
+    }//GEN-LAST:event_buttonUpdateDesignationActionPerformed
+
+    private void buttonPromoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPromoteActionPerformed
+        try {
+            int row = tableEmployees.getSelectedRow();
+            if (row < 0) {
+                return;
+            }
+            EmpAccounts emp = (EmpAccounts) tableEmployees.getValueAt(row, EMPLOYEE_BEAN_COLUMN);
+            Section section = (Section) comboBoxSection.getSelectedItem();
+
+            if (emp == null || section == null) {
+                return;
+            }
+            Designation design = new Designation(emp, section);
+            if (!isSetDesignation(design)) {
+                return;
+            }
+            DatabaseManager.addData(design);
+            emp.setPost(design.getName());
+            DatabaseManager.updateData(emp);
+            JOptionPane.showMessageDialog(this, "Promoted Successfully..!");
+            refreshDesignations(emp);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error Occured.\n" + ex.getMessage());
+            ex.printStackTrace(System.err);
+        }
+    }//GEN-LAST:event_buttonPromoteActionPerformed
+
+    private void buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonActionPerformed
+        try {
+            int row = tableEmployees.getSelectedRow();
+            EmpAccounts emp = (EmpAccounts) tableEmployees.getValueAt(row, EMPLOYEE_BEAN_COLUMN);
+            if (emp == null) {
+                return;
+            }
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-YYYY");
+            Map<String, Object> params = new HashMap();
+            params.put("employeeName", emp.getName());
+            params.put("today", sdf.format(new Date()));
+            ArrayList list = new ArrayList();
+            int salriesRows = tableSalaries.getRowCount();
+            for (int i = 0; i < salriesRows; i++) {
+                int year = (Integer) tableSalaries.getValueAt(i, 0);
+                String month = (String) tableSalaries.getValueAt(i, 1);
+                int paid = (Integer) tableSalaries.getValueAt(i, 2);
+                int casual = (Integer) tableSalaries.getValueAt(i, 3);
+                int absent = (Integer) tableSalaries.getValueAt(i, 4);
+                int warning = (Integer) tableSalaries.getValueAt(i, 5);
+                int late = (Integer) tableSalaries.getValueAt(i, 6);
+                int went = (Integer) tableSalaries.getValueAt(i, 7);
+                int other = (Integer) tableSalaries.getValueAt(i, 8);
+                int bonus = (Integer) tableSalaries.getValueAt(i, 9);
+                com.school.report.bean.EmployeeMonthsReportBean empMonth = new com.school.report.bean.EmployeeMonthsReportBean("" + year, month, paid, casual, absent, warning, late, went, other, bonus);
+                list.add(empMonth);
+            }
+            JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(list);
+            JasperPrint print = JasperFillManager.fillReport(getClass().getResource("/report/EmployeeMonthlyReport.jasper").openStream(), params, ds);
+            JasperViewer.viewReport(print, false);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Not printed...\n" + ex);
+            ex.printStackTrace(System.err);
+        }
+    }//GEN-LAST:event_buttonActionPerformed
+
+    private void buttonPrintAllEmployeesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPrintAllEmployeesActionPerformed
+        printEmployees(evt);
+    }//GEN-LAST:event_buttonPrintAllEmployeesActionPerformed
+
+    private void buttonPrintPayOfferActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPrintPayOfferActionPerformed
+        try {
+            int row = tableEmployees.getSelectedRow();
+            EmpAccounts emp = (EmpAccounts) tableEmployees.getValueAt(row, EMPLOYEE_BEAN_COLUMN);
+            if (emp == null) {
+                return;
+            }
+            Map<String, Object> params = new HashMap();
+            ArrayList list = new ArrayList();
+            list.add(emp);
+            JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(list);
+
+            JasperPrint print = JasperFillManager.fillReport(getClass().getResource("/report/SalaryOfferedPackage.jasper").openStream(), params, ds);
+            try {
+                com.school.model.EmpCertificateIssue certificate = new com.school.model.EmpCertificateIssue(emp, "Pay Offer", new Date(), "");
+                DatabaseManager.addData(certificate);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Error Occured\n" + ex.getMessage());
+                ex.printStackTrace(System.err);
+            }
+
+            JasperViewer.viewReport(print, false);
+
+            try {
+                
+                refreshCertificates(emp);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error OccuredNot printed...\n" + ex);
+            ex.printStackTrace(System.err);
+        }
+    }//GEN-LAST:event_buttonPrintPayOfferActionPerformed
+
+    private void buttonPrintAppointmentLetterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPrintAppointmentLetterActionPerformed
+        try {
+            int row = tableEmployees.getSelectedRow();
+            EmpAccounts emp = (EmpAccounts) tableEmployees.getValueAt(row, EMPLOYEE_BEAN_COLUMN);
+            if (emp == null) {
+                return;
+            }
+            Map<String, Object> params = new HashMap();
+            int value = spinFieldProbationarymonths.getValue();
+            String words = com.school.utils.NumberToWord.numberToWords(value);
+            params.put("months", words + "(" + value + ")");
+            ArrayList list = new ArrayList();
+            list.add(emp);
+            JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(list);
+
+            JasperPrint print = JasperFillManager.fillReport(getClass().getResource("/report/AppointmentLetter.jasper").openStream(), params, ds);
+            try {
+                com.school.model.EmpCertificateIssue certificate = new com.school.model.EmpCertificateIssue(emp, "Appointment Letter", new Date(), words);
+                DatabaseManager.addData(certificate);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Error Occured\n" + ex.getMessage());
+                ex.printStackTrace(System.err);
+            }
+            JasperViewer.viewReport(print, false);
+
+            try {
+                
+                refreshCertificates(emp);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error Occured Not printed...\n" + ex);
+            ex.printStackTrace(System.err);
+        }
+    }//GEN-LAST:event_buttonPrintAppointmentLetterActionPerformed
+
+    private void buttonPrintInformationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPrintInformationActionPerformed
+        try {
+            int row = tableEmployees.getSelectedRow();
+            EmpAccounts emp = (EmpAccounts) tableEmployees.getValueAt(row, EMPLOYEE_BEAN_COLUMN);
+            Campus campus = (Campus) comboBoxCampus.getSelectedItem();
+            if (emp == null) {
+                return;
+            }            
+            
+            // DISTINCT BASIC SALARY BECAUSE IT TELLS US HISTORY OF CHANGES IN BASIC SALARY
+            ArrayList basicList = new ArrayList();
+            List<Object[]> salList = DatabaseQueryExecuter.getDistinctBasicSalary(emp);
+            for (int i=0;i<salList.size();i++) {
+                Salary salary = (Salary)(salList.get(i))[0];
+                AccountSummaryReportBean be = new AccountSummaryReportBean();
+                String monthName = (String)(salList.get(i))[1];
+                int yearName = (Integer)(salList.get(i))[2];
+                be.setName(monthName+ "(" + yearName + ")");
+                be.setAmount(salary.getBasicSalary());
+                basicList.add(be);
+            }
+            // DISTINCT TRAVELLING BECAUSE IT TELLS US HISTORY OF CHANGES IN TRAVELLING
+            ArrayList travelList = new ArrayList();
+//            salList = DatabaseQueryExecuter.getDistinctTravellingAllowance(emp);
+//            for (int i=0;i<salList.size();i++) {
+//                Salary salary = salList.get(i);
+//                AccountSummaryReportBean be = new AccountSummaryReportBean();
+//                be.setName(salary.getMonths().getMonthName() + "(" + salary.getMonths().getYears().getYearName() + ")");
+//                be.setAmount(salary.getTravellingAllowance());
+//                travelList.add(be);
+//            }
+
+            List<Designation> designationList = DatabaseQueryExecuter.getDesignations(emp);
+            ArrayList<DesignationReportBean> desginationsBeanList = new ArrayList<>();
+            
+            for(int i=0;i<designationList.size();i++){
+                DesignationReportBean desgRB = new DesignationReportBean();
+                Designation designation = (Designation)designationList.get(i);
+                desgRB.setAssignDate(designation.getAssignDate());
+                desgRB.setLeaveDate(designation.getLeaveDate());
+                desgRB.setName(designation.getName());
+                desgRB.setRemarks(designation.getRemarks());
+                desgRB.setSection(designation.getSection().getName());
+                
+                desginationsBeanList.add(desgRB);
+            }
+            
+            EmployeeInformationReportBean employeeInformation = new EmployeeInformationReportBean();
+            employeeInformation.setAddress(emp.getAddress());
+            employeeInformation.setBasicSalary(emp.getBasicSalary());
+            employeeInformation.setBasicSalaryList(basicList);
+            employeeInformation.setBirthDate(emp.getBirthDate());
+            employeeInformation.setCampus(campus.getName());
+            employeeInformation.setContact(emp.getContact());
+            employeeInformation.setDesignations(desginationsBeanList);
+            employeeInformation.setEmpAccountsId(emp.getEmpAccountsId());
+            employeeInformation.setFather(emp.getFather());
+            employeeInformation.setGender(emp.getGender());
+            employeeInformation.setJoiningDate(emp.getJoiningDate());
+            employeeInformation.setLeavingDate(emp.getLeavingDate());
+            employeeInformation.setName(emp.getName());
+            employeeInformation.setNic(emp.getNic());
+            employeeInformation.setOtherAllowance(emp.getOtherAllowance());
+            employeeInformation.setPost(emp.getPost());
+            employeeInformation.setStaffId(emp.getStaffId());
+            employeeInformation.setSurname(emp.getSurname());
+            employeeInformation.setTravelingAllowance(emp.getTravelingAllowance());
+            employeeInformation.setTravellingAllowanceList(travelList);
+            
+            InputStream salarySubreportStream = getClass().getResource("/report/SalarySubReport.jasper").openStream();
+            InputStream designationSubreportStream = getClass().getResource("/report/DesignationSubreport.jasper").openStream();
+                     
+            Map<String, Object> params = new HashMap();
+            
+            params.put("SUB_REPORT_SALARY_STREAM",salarySubreportStream);
+            params.put("SUB_REPORT_DESIGNATION_STREAM",designationSubreportStream);           
+            
+            ArrayList dsList = new ArrayList();
+            dsList.add(employeeInformation);
+            JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(dsList);
+            JasperPrint print = JasperFillManager.fillReport(getClass().getResource("/report/EmployeeDetailsInformation.jasper").openStream(), params, ds);
+
+            try {
+                EmpCertificateIssue certificate = new EmpCertificateIssue(emp, "Employee Information", new Date(), "");
+                DatabaseManager.addData(certificate);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Error Occured\n" + ex.getMessage());
+                ex.printStackTrace(System.err);
+            }
+            JasperViewer.viewReport(print, false);
+
+//                DatabaseManager.refresh(emp);
+                refreshCertificates(emp);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error Occured Not printed...\n" + ex);
+            ex.printStackTrace(System.err);
+        }
+    }//GEN-LAST:event_buttonPrintInformationActionPerformed
+
+    private void buttonClearDepostActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonClearDepostActionPerformed
+        try {
+            int rowSelected = tableSalaries.getSelectedRow();
+            if (rowSelected < 0) {
+                JOptionPane.showMessageDialog(this, "Select a row from table");
+                return;
+            }
+            Salary s = (Salary) tableSalaries.getValueAt(rowNo, 10);
+            s.setDeposit(0);
+            DatabaseManager.updateData(s);
+            JOptionPane.showMessageDialog(this, "Updated...");
+            tableSalaries.setValueAt(0, rowNo, 9);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error Occured Printing..!\n" + ex.getMessage());
+            ex.printStackTrace(System.err);
+        }
+    }//GEN-LAST:event_buttonClearDepostActionPerformed
+
+    private void textFieldTravelingAllowanceKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldTravelingAllowanceKeyPressed
+    }//GEN-LAST:event_textFieldTravelingAllowanceKeyPressed
+
+    private void textFieldHeadAllowanceKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldHeadAllowanceKeyReleased
+        calculateTotal();
+    }//GEN-LAST:event_textFieldHeadAllowanceKeyReleased
+
+    private void textFieldCoordinateAllowanceKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldCoordinateAllowanceKeyReleased
+        calculateTotal();
+    }//GEN-LAST:event_textFieldCoordinateAllowanceKeyReleased
+
+    private void textFieldCTAllowanceKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldCTAllowanceKeyReleased
+        calculateTotal();
+    }//GEN-LAST:event_textFieldCTAllowanceKeyReleased
+
+    private void textField5YearAllowanceKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textField5YearAllowanceKeyReleased
+        calculateTotal();
+    }//GEN-LAST:event_textField5YearAllowanceKeyReleased
+
+    private void textFieldMedicalKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldMedicalKeyReleased
+        calculateTotal();
+    }//GEN-LAST:event_textFieldMedicalKeyReleased
+
+    private void buttonPrintExperienceCertificateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPrintExperienceCertificateActionPerformed
+        try {
+            int row = tableEmployees.getSelectedRow();
+            if (row < 0) {
+                return;
+            }
+            EmpAccounts emp = (EmpAccounts) tableEmployees.getValueAt(row, EMPLOYEE_BEAN_COLUMN);
+            
+            row = tableDesignation.getSelectedRow();
+            if (row < 0) {
+                JOptionPane.showMessageDialog(this, "Please select any designation from table");
+                return;
+            }
+            
+            
+            String experienceReport = "";
+
+            if (radioButtonExperienceNormal.isSelected()) {
+                experienceReport = "/report/ExperienceCertificate.jasper";
+            } else {
+                experienceReport = "/report/ExperienceCertificateSenior.jasper";
+            }
+            Designation designation = (Designation) tableDesignation.getValueAt(row, 0);
+            Map<String, Object> params = new HashMap();
+            ArrayList<EmployeeExperienceReportBean> list = new ArrayList();
+            
+            EmployeeExperienceReportBean experienceBean = new EmployeeExperienceReportBean();
+            Campus campus = DatabaseQueryExecuter.getCampus(emp);
+            experienceBean.setCampusName( campus.getName());
+            experienceBean.setFathersName(emp.getFather());
+            experienceBean.setGender(emp.getGender());
+            experienceBean.setJoinDate(designation.getAssignDate());
+            experienceBean.setLeaveDate(designation.getLeaveDate());
+            experienceBean.setSection(designation.getSection().getName());
+            experienceBean.setDesignation(designation.getName());
+            experienceBean.setName(emp.getName());
+            list.add(experienceBean);
+            
+            JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(list);
+            JasperPrint print = JasperFillManager.fillReport(getClass().getResource(experienceReport).openStream(), params, ds);
+            try {
+                com.school.model.EmpCertificateIssue certificate = new com.school.model.EmpCertificateIssue(designation.getEmpAccounts(), "Experience Letter", new Date(), designation.getName() + "");
+                DatabaseManager.addData(certificate);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Error Occured\n" + ex.getMessage());
+                ex.printStackTrace(System.err);
+            }
+            JasperViewer.viewReport(print, false);
+            try {
+               
+                refreshCertificates(designation.getEmpAccounts());
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error Occured Printing..!\n" + ex.getMessage());
+            ex.printStackTrace(System.err);
+        }
+    }//GEN-LAST:event_buttonPrintExperienceCertificateActionPerformed
+
+    private void comboBoxCampusItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboBoxCampusItemStateChanged
+        refreshEmployees();
+    }//GEN-LAST:event_comboBoxCampusItemStateChanged
+
+    private void textFieldNameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldNameKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            textFieldFather.requestFocusInWindow();
+        }
+        toCapital(evt);
+    }//GEN-LAST:event_textFieldNameKeyPressed
+
+    private void textFieldFatherKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldFatherKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            textFieldSurname.requestFocusInWindow();
+        }
+        toCapital(evt);
+    }//GEN-LAST:event_textFieldFatherKeyPressed
+
+    private void textFieldSurnameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldSurnameKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            textFieldDesignation.requestFocusInWindow();
+        }
+        toCapital(evt);
+    }//GEN-LAST:event_textFieldSurnameKeyPressed
+
+    private void textFieldDesignationKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldDesignationKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            comboBoxSection.requestFocusInWindow();
+        }
+        toCapital(evt);
+    }//GEN-LAST:event_textFieldDesignationKeyPressed
+
+    private void textAreaAddressKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textAreaAddressKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            textFieldContact.requestFocusInWindow();
+        }
+        toCapital(evt);
+    }//GEN-LAST:event_textAreaAddressKeyPressed
+
+    private void textFieldContactKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldContactKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            dateChooserBirth.requestFocusInWindow();
+        }
+    }//GEN-LAST:event_textFieldContactKeyPressed
+
+    private void comboBoxSectionKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_comboBoxSectionKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            textAreaAddress.requestFocusInWindow();
+        }
+    }//GEN-LAST:event_comboBoxSectionKeyPressed
+
+    private void comboBoxGenderKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_comboBoxGenderKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            textFieldNIC.requestFocusInWindow();
+        }
+    }//GEN-LAST:event_comboBoxGenderKeyPressed
+
+    private void buttonPrintAllEmpContactActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPrintAllEmpContactActionPerformed
+        printEmployees(evt);
+    }//GEN-LAST:event_buttonPrintAllEmpContactActionPerformed
+
+    private void buttonSortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSortActionPerformed
+        OrderDisplayDialog orderDisplayDialog = new OrderDisplayDialog(this, "Employee", empList, "refreshEmployees");
+        orderDisplayDialog.setVisible(true);
+    }//GEN-LAST:event_buttonSortActionPerformed
+
+    private void checkBoxSortByCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkBoxSortByCategoryActionPerformed
+        refreshEmployees();
+    }//GEN-LAST:event_checkBoxSortByCategoryActionPerformed
+
+    private void buttonSalaryDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSalaryDeleteActionPerformed
+       int option = JOptionPane.showConfirmDialog(this, "Do you want to delete salary?", "Delete?", JOptionPane.YES_NO_OPTION);
+       if(option == JOptionPane.NO_OPTION){return;}
+       int selectedRow = tableSalaries.getSelectedRow();
+       if(selectedRow<0){return;}
+       DefaultTableModel model = (DefaultTableModel)tableSalaries.getModel();
+       Salary sal = (Salary) model.getValueAt(selectedRow, SALARY_BEAN_COLUMN);
+       EmpAccounts emp = sal.getEmpAccounts();
+//       emp.getSalaries().remove(sal);
+       DatabaseManager.deleteData(sal);
+//       DatabaseManager.openSession();
+       refreshSalaries(emp);
+    }//GEN-LAST:event_buttonSalaryDeleteActionPerformed
+
+    /**
+     * Calculate the total amounts of salary.
+     */
+    private void calculateTotal() {
+        int basic = 0, travellingAlowance = 0, otherAllowance = 0, headAllowance = 0, coordinateAllownce = 0, ctAllowance = 0, medicalAllowance = 0, fiveYearAllowance = 0;
+        try {
+            basic = Integer.parseInt(textFieldSalary.getText().trim());
+        } catch (Exception ex) {
+            textFieldSalary.setText("0");
+        }
+        try {
+            travellingAlowance = Integer.parseInt(textFieldTravelingAllowance.getText().trim());
+        } catch (Exception ex) {
+            textFieldTravelingAllowance.setText("0");
+        }
+        try {
+            otherAllowance = Integer.parseInt(textFieldOtherAllowance.getText().trim());
+        } catch (Exception ex) {
+            textFieldOtherAllowance.setText("0");
+        }
+        try {
+            headAllowance = Integer.parseInt(textFieldHeadAllowance.getText().trim());
+        } catch (Exception ex) {
+            textFieldHeadAllowance.setText("0");
+        }
+        try {
+            coordinateAllownce = Integer.parseInt(textFieldCoordinateAllowance.getText().trim());
+        } catch (Exception ex) {
+            textFieldCoordinateAllowance.setText("0");
+        }
+        try {
+            ctAllowance = Integer.parseInt(textFieldCTAllowance.getText().trim());
+        } catch (Exception ex) {
+            textFieldCTAllowance.setText("0");
+        }
+        try {
+            medicalAllowance = Integer.parseInt(textFieldMedical.getText().trim());
+        } catch (Exception ex) {
+            textFieldMedical.setText("0");
+        }
+
+        try {
+            fiveYearAllowance = Integer.parseInt(textField5YearAllowance.getText().trim());
+        } catch (Exception ex) {
+            textField5YearAllowance.setText("0");
+        }
+        textFieldTotalAmount.setText("" + (basic + travellingAlowance + otherAllowance + headAllowance + coordinateAllownce + ctAllowance + medicalAllowance + fiveYearAllowance));
+    }
+
+    /**
+     * Add all gender in combobox.
+     */
+    private void setGenders() {
+        comboBoxGender.setModel(new DefaultComboBoxModel(Gender.getGenders()));
+    }
+
+    /**
+     * Add all Employee / Account category in combobox.
+     */
+    private void setCategories() {
+        try {
+            comboBoxEmplyeeCategory.setModel(new DefaultComboBoxModel(DatabaseManager.getData(EmpAccountCategory.class).toArray()));
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error Occured..!\n" + ex.getMessage());
+            ex.printStackTrace(System.err);
+        }
+    }
+
+    /**
+     * set option in combobox for searching task.
+     */
+    private void setSearchOptions() {
+        String[] key = {"Name", "Father", "Surname", "Campus"};
+        comboBoxSearch.setModel(new DefaultComboBoxModel(key));
+    }
+
+    /**
+     * Search the particular text from employee table.
+     */
+    private void search() {
+        DefaultTableModel model = (DefaultTableModel) tableEmployees.getModel();
+        String sortBy = (String) comboBoxSearch.getSelectedItem();
+        int columns = model.getColumnCount();
+        for (int i = 0; i < columns; i++) {
+            if (sortBy.equals(model.getColumnName(i))) {
+                searchString(i);
+                break;
+            }
+        }
+    }
+
+    /**
+     * search according to given column number. used by search()
+     *
+     * @param column column number.
+     */
+    private void searchString(int column) {
+        String searchItem = textFieldSearch.getText().trim();
+        if (searchItem.isEmpty()) {
+            return;
+        }
+        int rows = tableEmployees.getRowCount();
+        for (int i = rowNo; i < rows; i++) {
+            String str = tableEmployees.getValueAt(i, column).toString();
+            if (str.trim().contains(searchItem)) {
+                tableEmployees.setRowSelectionInterval(i, i);
+                rowNo = i + 1;
+                return;
+            }
+        }
+        rowNo = 0;
+    }
+
+    /**
+     * Get employees from database and insert into table.
+     */
+    public void refreshEmployees() {
+        try {
+            EmpAccountCategory cat = null;
+            if(checkBoxSortByCategory.isSelected()){
+                cat = (EmpAccountCategory) comboBoxEmplyeeCategory.getSelectedItem();
+            }
+
+            Object obCamp = comboBoxCampus.getSelectedItem();
+            if (obCamp == null) {
+                return;
+            }
+            buttonDelete.setEnabled(false);
+            buttonUpdate.setEnabled(false);
+            for (int i = startTab; i <= endTab; i++) {
+                tabbedPaneEmployees.setEnabledAt(i, false);
+            }
+            ComponentHandler.emptyTable(tableEmployees);
+            DefaultTableModel model = (DefaultTableModel) tableEmployees.getModel();
+            
+            empList = DatabaseQueryExecuter.getEmpAccounts(obCamp,cat,checkBoxLeftEmployees.isSelected());
+            for (int i=0; i<empList.size();i++) {
+                EmpAccounts empAccounts = empList.get(i);
+                String campusName = empAccounts.getCampus().getName();
+                model.addRow(new Object[]{empAccounts, empAccounts.getFather(), empAccounts.getSurname(), campusName});
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error Occured.. \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace(System.err);
+        }
+    }
+
+    /**
+     * Set the attribute of employee from selected row from table.
+     */
+    private void setEmployeePropertiesOnFields() {
+        try {
+            for (int i = startTab; i <= endTab; i++) {
+                tabbedPaneEmployees.setEnabledAt(i, true);
+            }
+            buttonDelete.setEnabled(true);
+            buttonUpdate.setEnabled(true);
+            int row = tableEmployees.getSelectedRow();
+            EmpAccounts emp = (EmpAccounts) tableEmployees.getValueAt(row, EMPLOYEE_BEAN_COLUMN);
+            if (emp == null) {
+                return;
+            }
+            comboBoxEmplyeeCategory.setSelectedItem(emp.getEmpAccountCategory());
+            textAreaAddress.setText(emp.getAddress());
+            textFieldContact.setText(emp.getContact());
+            textFieldFather.setText(emp.getFather());
+            textFieldName.setText(emp.getName());
+            textFieldDesignation.setText(emp.getPost());
+            textFieldSalary.setText("" + emp.getBasicSalary());
+            textFieldTravelingAllowance.setText("" + emp.getTravelingAllowance());
+            textFieldOtherAllowance.setText("" + emp.getOtherAllowance());
+            textFieldTotalAmount.setText("" + emp.getTotalAmount());
+            textFieldRemarks.setText(emp.getRemarks());
+            textFieldSurname.setText(emp.getSurname());
+            dateChooserBirth.setDate(emp.getBirthDate());
+            dateChooserJoining.setDate(emp.getJoiningDate());
+            dateChooserLeaving.setDate(emp.getLeavingDate());
+            comboBoxGender.setSelectedItem(Gender.getString(emp.getGender()));
+            textFieldNIC.setText(emp.getNic());
+            textField5YearAllowance.setText("" + emp.getFiveYearAllowance());
+            textFieldCTAllowance.setText("" + emp.getCtAllowance());
+            textFieldCoordinateAllowance.setText("" + emp.getCoordinateAllowace());
+            textFieldHeadAllowance.setText("" + emp.getHeadAllowance());
+            textFieldMedical.setText("" + emp.getMedicalAllowance());
+            textFieldStaffId.setText(emp.getStaffId());
+            textFieldBankAccountNo.setText(emp.getBankAccountNo());
+            refreshAttachements(emp);
+            refreshSalaries(emp);
+            refreshDesignations(emp);
+            refreshCertificates(emp);
+        } catch (Exception ex) {
+            ex.printStackTrace(System.err);
+        }
+
+    }
+
+    /**
+     * Refresh attachments regarding to employee / account (in list).
+     *
+     * @param emp
+     */
+    private void refreshAttachements(EmpAccounts emp) {
+        try {
+            buttonAddAttachment.setEnabled(false);
+            buttonSaveAttachement.setEnabled(false);
+            List<EmpAccountAttachment> attachList =  DatabaseQueryExecuter.getEmpAccountAttachements(emp);
+//            Object[] attachArray = emp.getEmpAccountAttachments().toArray();
+            EmpAccountAttachment attachment = (EmpAccountAttachment) attachList.get(0);
+            if (!attachment.getAttachName().isEmpty()) {
+                labelPic.setIcon(new ImageIcon(new ImageIcon(attachment.getAttachement()).getImage().getScaledInstance(labelPic.getWidth(), labelPic.getHeight(), BufferedImage.SCALE_SMOOTH)));
+            } else {
+                labelPic.setIcon(null);
+            }
+            listAttachement.setListData(attachList.toArray());
+        } catch (Exception ex) {
+            ex.printStackTrace(System.err);
+        }
+    }
+
+    /**
+     * Refresh all salaries which were given to employee (in table)
+     *
+     * @param emp
+     */
+    private void refreshSalaries(EmpAccounts emp) {
+        try {
+            ComponentHandler.emptyTable(tableSalaries);
+            DefaultTableModel model = (DefaultTableModel) tableSalaries.getModel();
+            List<Salary> list = DatabaseQueryExecuter.getSalaries(emp);
+            for(int i=0;i<list.size();i++) {
+                Salary salary = list.get(i);
+                model.addRow(new Object[]{salary.getMonths().getYears().getYearName(), salary.getMonths().getMonthName(), salary.getAmount(), salary.getCasualLeave(), salary.getWarning(), salary.getLate(), salary.getWentEarly(), salary.getOther(), salary.getBonus(), salary.getDeposit(), salary});
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace(System.err);
+        }
+    }
+
+    /**
+     * Set the data from fields (Text Field) in Employee object.
+     *
+     * @param emp
+     * @return <tt>true</tt> if all data from fields are successfully stored in
+     * object of Employee.
+     */
+    private boolean isSetInEmployee(EmpAccounts emp) {
+        if (textFieldName.getText().trim().isEmpty() || textFieldFather.getText().trim().isEmpty() || textFieldSurname.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, " Emplyee Name , Father Name , Surname is EMPTY..  ", "ERROR", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        emp.setName(textFieldName.getText().toUpperCase());
+        emp.setFather(textFieldFather.getText().toUpperCase());
+        emp.setSurname(textFieldSurname.getText().toUpperCase());
+        emp.setContact(textFieldContact.getText().toUpperCase());
+        emp.setAddress(textAreaAddress.getText().toUpperCase());
+        emp.setPost(textFieldDesignation.getText().toUpperCase());
+        emp.setGender(Gender.getCode((String) comboBoxGender.getSelectedItem()));
+        emp.setBirthDate(dateChooserBirth.getDate());
+        emp.setJoiningDate(dateChooserJoining.getDate());
+        emp.setLeavingDate(dateChooserLeaving.getDate());
+        int basic = 0, travellingAlowance = 0, otherAllowance = 0, headAllowance = 0, coordinateAllownce = 0, ctAllowance = 0, medicalAllowance = 0, fiveYearAllowance = 0;
+        try {
+            basic = Integer.parseInt(textFieldSalary.getText().trim());
+        } catch (Exception ex) {
+            textFieldSalary.setText("0");
+        }
+        try {
+            travellingAlowance = Integer.parseInt(textFieldTravelingAllowance.getText().trim());
+        } catch (Exception ex) {
+            textFieldTravelingAllowance.setText("0");
+        }
+        try {
+            otherAllowance = Integer.parseInt(textFieldOtherAllowance.getText().trim());
+        } catch (Exception ex) {
+            textFieldOtherAllowance.setText("0");
+        }
+        try {
+            headAllowance = Integer.parseInt(textFieldHeadAllowance.getText().trim());
+        } catch (Exception ex) {
+            textFieldHeadAllowance.setText("0");
+        }
+        try {
+            coordinateAllownce = Integer.parseInt(textFieldCoordinateAllowance.getText().trim());
+        } catch (Exception ex) {
+            textFieldCoordinateAllowance.setText("0");
+        }
+        try {
+            ctAllowance = Integer.parseInt(textFieldCTAllowance.getText().trim());
+        } catch (Exception ex) {
+            textFieldCTAllowance.setText("0");
+        }
+        try {
+            medicalAllowance = Integer.parseInt(textFieldMedical.getText().trim());
+        } catch (Exception ex) {
+            textFieldMedical.setText("0");
+        }
+
+        try {
+            fiveYearAllowance = Integer.parseInt(textField5YearAllowance.getText().trim());
+        } catch (Exception ex) {
+            textField5YearAllowance.setText("0");
+        }
+        int total = 0;
+        try {
+            total = Integer.parseInt(textFieldTotalAmount.getText().trim());
+        } catch (Exception ex) {
+        }
+        emp.setBasicSalary(basic);
+        emp.setTravelingAllowance(travellingAlowance);
+        emp.setOtherAllowance(otherAllowance);
+        emp.setTotalAmount(total);
+        emp.setRemarks(textFieldRemarks.getText());
+        emp.setNic(textFieldNIC.getText());
+        emp.setRefLetter(textFieldReferenceJob.getText());
+        emp.setHeadAllowance(headAllowance);
+        emp.setCoordinateAllowace(coordinateAllownce);
+        emp.setCtAllowance(ctAllowance);
+        emp.setMedicalAllowance(medicalAllowance);
+        emp.setFiveYearAllowance(fiveYearAllowance);
+        emp.setStaffId(textFieldStaffId.getText());
+        emp.setBankAccountNo(textFieldBankAccountNo.getText());
+        return true;
+    }
+
+    /**
+     * Refresh all designation of employee (in table).
+     *
+     * @param emp
+     */
+    private void refreshDesignations(EmpAccounts emp) {
+        try {
+            ComponentHandler.emptyTable(tableDesignation);
+            DefaultTableModel model = (DefaultTableModel) tableDesignation.getModel();
+            List<Designation> it = DatabaseQueryExecuter.getDesignations(emp);
+            for(int i=0;i<it.size();i++) {
+                Designation designation = it.get(i);
+                model.addRow(new Object[]{designation, designation.getAssignDate(), designation.getLeaveDate(), designation.getRemarks(), designation.getSection()});
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace(System.err);
+        }
+    }
+
+    /**
+     * if any row in table is selected then shows selected employee's data.
+     */
+    private void setSelectionEventOnModel() {
+        tableEmployees.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                new Thread() {
+                    @Override
+                    public void run() {
+                        if (tableEmployees.getSelectedRow() < 0) {
+                            return;
+                        }
+                        setEmployeePropertiesOnFields();
+                    }
+                }.start();
+            }
+        });
+        tableDesignation.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                new Thread() {
+                    @Override
+                    public void run() {
+                        if (tableDesignation.getSelectedRow() < 0) {
+                            return;
+                        }
+                        extractDesignation();
+                    }
+                }.start();
+            }
+        });
+    }
+
+    /**
+     * Show attributes in field of selected designation (from designation
+     * table).
+     */
+    private void extractDesignation() {
+        try {
+            int row = tableDesignation.getSelectedRow();
+            Designation designation = (Designation) tableDesignation.getValueAt(row, 0);
+            textFieldDesignationPromote.setText(designation.getName());
+            textFieldRemarksPromote.setText(designation.getRemarks());
+            dateChooserJoiningPromote.setDate(designation.getAssignDate());
+            dateChooserLeavingPromote.setDate(designation.getLeaveDate());
+        } catch (Exception ex) {
+            ex.printStackTrace(System.err);
+        }
+    }
+
+    /**
+     * Set the attributes of designation from fields in designation object.
+     *
+     * @param desig - Employee's Designation
+     * @return <tt>true</tt> if all data from fields are successfully stored in
+     * object of Designation.
+     */
+    private boolean isSetDesignation(Designation desig) {
+        if (textFieldDesignationPromote.getText() == null || textFieldDesignationPromote.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Designation should not be empty");
+            return false;
+        }
+        desig.setAssignDate(dateChooserJoiningPromote.getDate());
+        desig.setLeaveDate(dateChooserLeavingPromote.getDate());
+        desig.setName(textFieldDesignationPromote.getText());
+        desig.setRemarks(textFieldRemarksPromote.getText());
+        return true;
+    }
+
+    /**
+     * Print all employees in table.
+     */
+    private void printEmployees(java.awt.event.ActionEvent evt) {
+        try {
+            int rowsTotal = tableEmployees.getRowCount();
+            ArrayList<EmpAccounts> empAccountList = new ArrayList();
+            for (int rowNo = 0; rowNo < rowsTotal; rowNo++) {
+                EmpAccounts emp = (EmpAccounts) tableEmployees.getValueAt(rowNo, EMPLOYEE_BEAN_COLUMN);
+                empAccountList.add(emp);
+            }
+            JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(empAccountList);
+            Map<String, Object> params = new HashMap();
+            String status = "";
+            String reportPath = "/report/EmployeeInfo.jasper";
+            if (evt.getSource() == buttonPrintAllEmpContact) {
+                reportPath = "/report/EmployeeInfoContact.jasper";
+                DatabaseQueryExecuter.setLastDesignation(empAccountList);
+            } else {
+                if (checkBoxLeftEmployees.isSelected()) {
+                    reportPath = "/report/EmployeeInfoLeft.jasper";
+                    status = "Left";
+                } else {
+                    status = "Current";
+                }
+            }
+
+            params.put("status", status);
+            InputStream jasperStream = getClass().getResource(reportPath).openStream();
+
+            JasperPrint print = JasperFillManager.fillReport(jasperStream, params, ds);
+            JasperViewer.viewReport(print, false);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error Occured\n" + ex.getMessage());
+            ex.printStackTrace(System.err);
+        }
+    }
+
+    private void toCapital(KeyEvent evt) {
+        JTextComponent field = (JTextComponent) evt.getSource();
+        int caret = field.getCaretPosition();
+        String str = field.getText().toUpperCase();
+        field.setText(str);
+        field.setCaretPosition(caret);
+    }
+
+    private void eventDateChooser() {
+        dateChooserBirth.getDateEditor().getUiComponent().addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    dateChooserLeaving.requestFocusInWindow();
+                }
+            }
+        });
+        dateChooserLeaving.getDateEditor().getUiComponent().addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    dateChooserJoining.requestFocusInWindow();
+                }
+            }
+        });
+        dateChooserJoining.getDateEditor().getUiComponent().addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    comboBoxGender.requestFocusInWindow();
+                }
+            }
+        });
+
+    }
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton button;
+    private javax.swing.JButton buttonAdd;
+    private javax.swing.JButton buttonAddAttachment;
+    private javax.swing.JButton buttonBrowseAttachemnt;
+    private javax.swing.JButton buttonClear;
+    private javax.swing.JButton buttonClearDepost;
+    private javax.swing.JButton buttonDelete;
+    private javax.swing.JButton buttonDeleteAttachment;
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JButton buttonPrintAllEmpContact;
+    private javax.swing.JButton buttonPrintAllEmployees;
+    private javax.swing.JButton buttonPrintAppointmentLetter;
+    private javax.swing.JButton buttonPrintExperienceCertificate;
+    private javax.swing.JButton buttonPrintInformation;
+    private javax.swing.JButton buttonPrintPayOffer;
+    private javax.swing.JButton buttonPromote;
+    private javax.swing.JButton buttonSalaryDelete;
+    private javax.swing.JButton buttonSaveAttachement;
+    private javax.swing.JButton buttonSearch;
+    private javax.swing.JButton buttonSort;
+    private javax.swing.JButton buttonStudentPic;
+    private javax.swing.JButton buttonUpdate;
+    private javax.swing.JButton buttonUpdateDesignation;
+    private javax.swing.JCheckBox checkBoxLeftEmployees;
+    private javax.swing.JCheckBox checkBoxSortByCategory;
+    private javax.swing.JComboBox comboBoxCampus;
+    private javax.swing.JComboBox comboBoxEmplyeeCategory;
+    private javax.swing.JComboBox comboBoxGender;
+    private javax.swing.JComboBox comboBoxSearch;
+    private javax.swing.JComboBox comboBoxSection;
+    private com.toedter.calendar.JDateChooser dateChooserBirth;
+    private com.toedter.calendar.JDateChooser dateChooserJoining;
+    private com.toedter.calendar.JDateChooser dateChooserJoiningPromote;
+    private com.toedter.calendar.JDateChooser dateChooserLeaving;
+    private com.toedter.calendar.JDateChooser dateChooserLeavingPromote;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel30;
+    private javax.swing.JLabel jLabel31;
+    private javax.swing.JLabel jLabel32;
+    private javax.swing.JLabel jLabel33;
+    private javax.swing.JLabel jLabel34;
+    private javax.swing.JLabel jLabel35;
+    private javax.swing.JLabel jLabel36;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JLabel labelPic;
+    private javax.swing.JList listAttachement;
+    private javax.swing.JRadioButton radioButtonExperienceNormal;
+    private javax.swing.JRadioButton radioButtonExperienceSenior;
+    private com.toedter.components.JSpinField spinFieldProbationarymonths;
+    private javax.swing.JTabbedPane tabbedPaneEmployees;
+    private javax.swing.JTable tableCertificates;
+    private javax.swing.JTable tableDesignation;
+    private javax.swing.JTable tableEmployees;
+    private javax.swing.JTable tableSalaries;
+    private javax.swing.JTextArea textAreaAddress;
+    private javax.swing.JTextField textField5YearAllowance;
+    private javax.swing.JTextField textFieldAttachementName;
+    private javax.swing.JTextField textFieldAttachmentBrowse;
+    private javax.swing.JTextField textFieldBankAccountNo;
+    private javax.swing.JTextField textFieldCTAllowance;
+    private javax.swing.JTextField textFieldContact;
+    private javax.swing.JTextField textFieldCoordinateAllowance;
+    private javax.swing.JTextField textFieldDesignation;
+    private javax.swing.JTextField textFieldDesignationPromote;
+    private javax.swing.JTextField textFieldFather;
+    private javax.swing.JTextField textFieldHeadAllowance;
+    private javax.swing.JTextField textFieldMedical;
+    private javax.swing.JFormattedTextField textFieldNIC;
+    private javax.swing.JTextField textFieldName;
+    private javax.swing.JTextField textFieldOtherAllowance;
+    private javax.swing.JTextField textFieldPictureBrowse;
+    private javax.swing.JTextField textFieldReferenceJob;
+    private javax.swing.JTextField textFieldRemarks;
+    private javax.swing.JTextField textFieldRemarksPromote;
+    private javax.swing.JTextField textFieldSalary;
+    private javax.swing.JTextField textFieldSearch;
+    private javax.swing.JTextField textFieldStaffId;
+    private javax.swing.JTextField textFieldSurname;
+    private javax.swing.JTextField textFieldTotalAmount;
+    private javax.swing.JTextField textFieldTravelingAllowance;
+    // End of variables declaration//GEN-END:variables
+
+    private void refreshCertificates(EmpAccounts emp) {
+        try {
+            ComponentHandler.emptyTable(tableCertificates);
+            DefaultTableModel model = (DefaultTableModel) tableCertificates.getModel();
+            List<EmpCertificateIssue> list = DatabaseQueryExecuter.getEmpCertificateIssue(emp);
+            for (int i=0;i<list.size();i++) {
+                EmpCertificateIssue certificate = list.get(i);
+                model.addRow(new Object[]{certificate, certificate.getIssueDate(), certificate.getRemarks()});
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error Occured Refreshing Certificates,"
+                    + "\n Please reselect the selected row or close and reopen the frame and select row.. \n" + ex.getMessage());
+            ex.printStackTrace();
+            DatabaseManager.openSession();
+        }
+    }
+}

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dbupdate>
+<!--    <update version="4" type="sql">
+        <![CDATA[ALTER TABLE emp_account_attachment ADD CONSTRAINT `fk_emp_account_attachment_emp_accounts1` FOREIGN KEY `fk_emp_account_attachment_emp_accounts1` (`emp_accounts_id`) REFERENCES `emp_accounts` (`emp_accounts_id`) ON DELETE CASCADE ON UPDATE NO ACTION;]]>
+    </update>-->
+
+</dbupdate>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->

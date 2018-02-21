@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="7ad7cf9a-525c-4973-be1b-c1ac93cbe2df">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<field name="grNo" class="java.lang.String"/>
+	<field name="studentName" class="java.lang.String"/>
+	<field name="fatherName" class="java.lang.String"/>
+	<field name="surname" class="java.lang.String"/>
+	<field name="religion" class="java.lang.String"/>
+	<field name="dateOfBirth" class="java.util.Date"/>
+	<field name="lastSchool" class="java.lang.String"/>
+	<field name="dateOfLeaving" class="java.util.Date"/>
+	<field name="progress" class="java.lang.String"/>
+	<field name="condition" class="java.lang.String"/>
+	<field name="remarks" class="java.lang.String"/>
+	<field name="admittedClass" class="java.lang.String"/>
+	<field name="passedClass" class="java.lang.String"/>
+	<field name="reason" class="java.lang.String"/>
+	<field name="arrears" class="java.lang.String"/>
+	<field name="dateOfBirthInWords" class="java.lang.String"/>
+	<variable name="today" class="java.lang.String">
+		<variableExpression><![CDATA[new java.text.SimpleDateFormat("dd-MM-YYYY").format(new java.util.Date())]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="669" splitType="Stretch">
+			<textField>
+				<reportElement uuid="2b2b8497-f7ab-43db-a253-8c32d91274b7" x="265" y="124" width="117" height="20"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$F{grNo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="c7b1bce6-3cbb-42b7-8cd5-07778716a82f" x="197" y="202" width="341" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{studentName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="45d7b31b-06c8-457e-bd80-8a21822001d8" x="197" y="230" width="341" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{fatherName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="74906ba7-8aea-4dc9-bf72-3656edcc5ce7" x="142" y="255" width="115" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{religion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="ef73d9bf-d325-4955-849a-ef9c20b9eeba" x="382" y="255" width="148" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{surname}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="cbbe7e8c-430a-4658-8172-feb6d4426f0d" x="215" y="280" width="243" height="20"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd-MM-YYYY").format($F{dateOfBirth})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="cbbe7e8c-430a-4658-8172-feb6d4426f0d" x="207" y="308" width="341" height="20"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$F{dateOfBirthInWords}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="2e4fb77f-e445-4451-adfc-99d6ebe36e40" x="187" y="334" width="406" height="20"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$F{lastSchool}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="39755492-741a-4eef-9798-1742a3f1db67" x="187" y="384" width="385" height="20"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$F{admittedClass}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="39755492-741a-4eef-9798-1742a3f1db67" x="187" y="436" width="385" height="20"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$F{passedClass}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="cbbe7e8c-430a-4658-8172-feb6d4426f0d" x="187" y="464" width="215" height="20"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd-MM-YYYY").format($F{dateOfLeaving})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="3c7925ca-dce3-491d-9e63-b41803fa2ed8" x="187" y="488" width="385" height="20"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$F{reason}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="c3bcda6e-ae33-4a4a-b9e8-bdb7bfb56fd6" x="159" y="516" width="413" height="20"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$F{arrears}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="be75552a-e4ca-410f-b9c1-74bb6c578592" x="125" y="542" width="148" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{progress}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="6df5ba83-f7b5-42b0-bf0d-a9f4b41384e0" x="382" y="542" width="170" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{condition}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="83cea20b-f1d7-45cb-a59f-960d7e39ec1d" x="159" y="565" width="413" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{remarks}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="cbbe7e8c-430a-4658-8172-feb6d4426f0d" x="187" y="359" width="233" height="20"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd-MM-YYYY").format($F{dateOfLeaving})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="86438313-fb82-492e-949b-f9171b1b9149" x="187" y="412" width="251" height="20"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$F{passedClass}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="51daa7bf-e6d5-44a9-848a-e338261b123a" x="462" y="120" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$V{today}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

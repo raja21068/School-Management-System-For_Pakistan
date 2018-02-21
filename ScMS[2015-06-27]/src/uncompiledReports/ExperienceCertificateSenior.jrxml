@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6fb74cbf-3d28-4c7c-ae64-bce25c40322f">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="281"/>
+	<field name="name" class="java.lang.String"/>
+	<field name="fathersName" class="java.lang.String"/>
+	<field name="gender" class="java.lang.String"/>
+	<field name="campusName" class="java.lang.String"/>
+	<field name="section" class="java.lang.String"/>
+	<field name="joinDate" class="java.util.Date"/>
+	<field name="leaveDate" class="java.util.Date"/>
+	<field name="designation" class="java.lang.String"/>
+	<variable name="sonOrDuaghter" class="java.lang.String">
+		<variableExpression><![CDATA[$F{gender}.startsWith("M")?"S/o":"D/o"]]></variableExpression>
+	</variable>
+	<variable name="himher" class="java.lang.String">
+		<variableExpression><![CDATA[$F{gender}.startsWith("M")?"him":"her"]]></variableExpression>
+	</variable>
+	<variable name="heshe" class="java.lang.String">
+		<variableExpression><![CDATA[$F{gender}.startsWith("M")?"He":"She"]]></variableExpression>
+	</variable>
+	<variable name="today" class="java.lang.String">
+		<variableExpression><![CDATA[new java.text.SimpleDateFormat("dd-MM-YYYY").format(new java.util.Date())]]></variableExpression>
+	</variable>
+	<variable name="hisher" class="java.lang.String">
+		<variableExpression><![CDATA[$F{gender}.startsWith("M")?"his":"her"]]></variableExpression>
+	</variable>
+	<variable name="HisHer" class="java.lang.String">
+		<variableExpression><![CDATA[$F{gender}.startsWith("M")?"His":"Her"]]></variableExpression>
+	</variable>
+	<variable name="article" class="java.lang.String">
+		<variableExpression><![CDATA[($F{designation}.toLowerCase().startsWith("a")||$F{designation}.toLowerCase().startsWith("e")||$F{designation}.toLowerCase().startsWith("i")||$F{designation}.toLowerCase().startsWith("o") ||$F{designation}.toLowerCase().startsWith("u") ) ? "an" :"a"]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="802" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="6cf6d215-4e6d-4a8e-936a-660cd4fbf71d" mode="Opaque" x="185" y="214" width="179" height="20" forecolor="#FFFFFF" backcolor="#000000"/>
+				<textElement>
+					<font size="15" isBold="true"/>
+				</textElement>
+				<text><![CDATA[To whom it may concern]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="4b314a0b-5e4c-4274-b5fe-b868624299c0" x="52" y="259" width="447" height="385"/>
+				<textElement textAlignment="Justified" markup="styled">
+					<font size="12"/>
+					<paragraph lineSpacing="1_1_2"/>
+				</textElement>
+				<textFieldExpression><![CDATA["\tThis is to certify that <u>"+$F{name}
++ "</u> "+$V{sonOrDuaghter}+" <u>"+$F{fathersName}
++"</u> worked for as "+$V{article}+" <u>"+$F{designation}+"</u> at our "
++"<u>"+($F{section}).toString().toLowerCase()+" section</u>, <u>"+$F{campusName}+"</u> since <u>"+(new java.text.SimpleDateFormat("dd MMM YYYY").format($F{joinDate}))+"</u>"
++" to "+($F{leaveDate}==null ? "date" : ("<u>"+(new java.text.SimpleDateFormat("dd MMM YYYY").format($F{leaveDate})))+"</u>")
++".\nI feel pleasure to write the following facts about "
++$V{himher}+".\n"
++"\t"+$V{heshe}+" has the ability to maintain a good standard of work."
++" "+$V{heshe}+" proved "+$V{himher}+"self hardworking and to be one of the most energetic faculty members."
++" "+$V{heshe}+" is committed to work plus, honest and obedient for any employer, which adds grace to the quality of"
++" "+$V{hisher}+" hard work.\n"
++"\tIn the course, of "+$V{hisher}+" employment, I found "
++$V{himher}+" very keen to get the work done on time."
++" In addition, "+$V{heshe}.toLowerCase()+" has the ability to maintain a good standard of work."
++$V{heshe}+" had been part of promoting extra carricular activities, such as,\n"
++"__________________________________________________________________\n"
++"\t"+$V{heshe}+" will be an asset to any institute / firm if given the chance to work. I am sure "
++$V{heshe}.toLowerCase()+" will prove my words to be true."
++"\nI can recommend "+$V{himher}+" without any reservation."
++"\n"+$V{HisHer}+" attendence had been upto mark."
++"\nI wish "+$V{himher}+" all the best for "+$V{himher}+" tremendous success in "+$V{hisher}+" future career."]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="450c293e-f21c-478d-8ccf-8042cebab13e" x="52" y="669" width="100" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Principal]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="450c293e-f21c-478d-8ccf-8042cebab13e" x="52" y="689" width="100" height="20"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SHAMIM AHMED]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>
